@@ -1,1 +1,309 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Deutsch-Spiele: Kapitel 1</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✉️</text></svg>">
+<style>
+:root{
+  --paper:#FAFAF7; --card:#FFFFFF; --ink:#1E2A5A; --muted:#4D5675;
+  --blue:#2F5DD8; --blue-l:#E4EBFB; --coral:#C7461F; --coral-l:#FCE6DF; --line:#D5DAE6;
+  --font:'Avenir Next Rounded','Nunito','Trebuchet MS','Segoe UI',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.5;
+  padding-bottom:env(safe-area-inset-bottom,0px)}
+.airmail{height:12px;background:repeating-linear-gradient(-45deg,var(--blue) 0 16px,#fff 16px 24px,var(--coral) 24px 40px,#fff 40px 48px)}
+header{max-width:1000px;margin:0 auto;padding:calc(28px + env(safe-area-inset-top,0px)) 20px 8px}
+h1{margin:0;font-size:clamp(30px,5vw,44px);line-height:1.1;font-weight:800;letter-spacing:-.5px}
+.lead{margin:6px 0 0;color:var(--muted)}
+nav{max-width:1000px;margin:0 auto;padding:16px 20px 4px;display:flex;flex-wrap:wrap;gap:10px}
+.stamp{border:0;cursor:pointer;padding:7px;font:inherit;color:inherit;
+  background:radial-gradient(circle,transparent 3.5px,#fff 4px) -6px -6px/12px 12px;
+  filter:drop-shadow(0 1px 1px rgba(30,42,90,.25));transition:transform .15s}
+.stamp span{display:block;background:#fff;border:2px solid var(--ink);padding:8px 14px;font-weight:800;font-size:16px;white-space:nowrap}
+.stamp[aria-selected="true"]{transform:rotate(-2deg)}
+.stamp[aria-selected="true"] span{background:var(--blue);border-color:var(--blue);color:#fff}
+.stamp:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+main{max-width:1000px;margin:0 auto;padding:12px 20px 48px}
+section{display:none}
+section.active{display:block}
+h2{font-size:26px;margin:10px 0 2px}
+.hint{color:var(--muted);margin:0 0 14px}
+.bar{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin:14px 0}
+.btn{font:inherit;font-weight:800;border:2px solid var(--ink);background:#fff;color:var(--ink);border-radius:10px;padding:10px 18px;cursor:pointer;min-height:44px}
+.btn.main{background:var(--ink);color:#fff}
+.btn:focus-visible,.chip:focus-visible,.zone:focus-visible,.mcard:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+.status{font-weight:700;min-height:1.5em}
+.status.good{color:var(--blue)}
+.status.warn{color:var(--coral)}
 
+/* Memory */
+.mgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+.mcard{border:0;padding:0;background:none;cursor:pointer;aspect-ratio:4/3;perspective:700px;font:inherit;color:inherit}
+.mi{position:relative;display:block;width:100%;height:100%;transition:transform .45s;transform-style:preserve-3d}
+.mcard.open .mi{transform:rotateY(180deg)}
+.mf,.mb{position:absolute;inset:0;border-radius:12px;backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6px}
+.mf{background:repeating-linear-gradient(-45deg,var(--blue) 0 10px,#fff 10px 15px,var(--coral) 15px 25px,#fff 25px 30px);border:3px solid #fff;box-shadow:0 0 0 2px var(--ink)}
+.mb{transform:rotateY(180deg);background:var(--blue-l);border:2px solid var(--blue);font-weight:800;font-size:clamp(14px,2vw,19px);line-height:1.2}
+.perf .mb{background:var(--coral-l);border-color:var(--coral)}
+.mb small{font-size:11px;font-weight:700;color:var(--muted);margin-bottom:4px}
+.mcard.done .mb{border-width:4px}
+.mcard.done{cursor:default}
+
+/* Drag and drop */
+.bank{display:flex;flex-wrap:wrap;gap:8px;padding:12px;border:2px dashed var(--line);border-radius:14px;min-height:64px;background:#fff}
+.chip{font:inherit;font-weight:700;font-size:16px;border:2px solid var(--ink);background:#fff;color:var(--ink);border-radius:999px;padding:7px 14px;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;min-height:40px}
+.chip.sel{background:var(--ink);color:#fff}
+.chip.dragging{opacity:.35}
+.chip.ok{border-color:var(--blue);background:var(--blue-l)}
+.chip.bad{border-color:var(--coral);background:var(--coral-l);border-style:dashed}
+.ghost{position:fixed;z-index:99;pointer-events:none;transform:translate(-50%,-60%) rotate(-3deg);box-shadow:0 6px 16px rgba(30,42,90,.3)}
+.baskets{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.basket{border:3px solid var(--ink);border-radius:16px;background:#fff;min-height:200px;padding:12px;display:flex;flex-wrap:wrap;align-content:flex-start;gap:8px;cursor:pointer}
+.basket h3{width:100%;margin:0 0 4px;font-size:22px}
+.zone.over{background:var(--blue-l)}
+.sent{padding:9px 0;border-bottom:1px solid var(--line);font-size:17px}
+.slot{display:inline-flex;align-items:center;justify-content:center;min-width:76px;min-height:36px;padding:2px 10px;margin:0 4px;border:2px dashed var(--muted);border-radius:8px;background:#fff;font-weight:800;cursor:pointer;vertical-align:middle}
+.slot.filled{border-style:solid;border-color:var(--ink)}
+.slot.ok{border-color:var(--blue);background:var(--blue-l)}
+.slot.bad{border-color:var(--coral);background:var(--coral-l)}
+.sticky{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);padding:8px 0}
+.pairs{display:grid;grid-template-columns:1fr 1fr;gap:8px 18px;margin-top:14px}
+.pair{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#fff;border:2px solid var(--line);border-radius:12px;padding:6px 6px 6px 14px;font-weight:800}
+.wslot{min-width:150px;min-height:44px;border:2px dashed var(--muted);border-radius:999px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.wslot .chip{margin:0}
+h3.sub{margin:22px 0 4px;font-size:20px}
+footer{max-width:1000px;margin:0 auto;padding:0 20px 32px;color:var(--muted);font-size:14px}
+
+@media (max-width:640px){
+  .mgrid{grid-template-columns:repeat(4,1fr)}
+  .baskets,.pairs{grid-template-columns:1fr}
+  .stamp span{padding:7px 10px;font-size:15px}
+}
+@media (prefers-reduced-motion:reduce){.mi,.stamp{transition:none}}
+</style>
+</head>
+<body>
+<div class="airmail" aria-hidden="true"></div>
+<header>
+  <h1>Deutsch-Spiele</h1>
+  <p class="lead">Kapitel 1: Äußeres und Charakter. Freunde</p>
+</header>
+
+<nav role="tablist" aria-label="Spiele">
+  <button class="stamp" role="tab" aria-selected="true" data-tab="memory"><span>Verb-Memory</span></button>
+  <button class="stamp" role="tab" aria-selected="false" data-tab="hatist"><span>hat oder ist?</span></button>
+  <button class="stamp" role="tab" aria-selected="false" data-tab="reflex"><span>mich, dich, sich</span></button>
+  <button class="stamp" role="tab" aria-selected="false" data-tab="woerter"><span>Wörter</span></button>
+</nav>
+
+<main>
+  <section id="memory" class="active" role="tabpanel">
+    <h2>Verb-Memory</h2>
+    <p class="hint">Finde die Paare: Infinitiv + Perfekt. Bei jedem Paar sag einen Satz im Perfekt!</p>
+    <div class="bar"><span class="status" id="mem-status">Klick auf zwei Karten.</span></div>
+    <div class="mgrid" id="mem-grid"></div>
+    <div class="bar"><button class="btn" id="mem-reset">Neu mischen</button><span id="mem-count"></span></div>
+  </section>
+
+  <section id="hatist" role="tabpanel">
+    <h2>Perfekt: hat oder ist?</h2>
+    <p class="hint">Zieh jedes Partizip in den richtigen Korb. Oder: Wort antippen, dann Korb antippen.</p>
+    <div class="bank zone" data-bank></div>
+    <div class="baskets">
+      <div class="basket zone" data-ans="hat" tabindex="0"><h3>hat …</h3></div>
+      <div class="basket zone" data-ans="ist" tabindex="0"><h3>ist …</h3></div>
+    </div>
+    <div class="bar"><button class="btn main" data-check>Prüfen</button><button class="btn" data-reset>Von vorn</button><span class="status"></span></div>
+  </section>
+
+  <section id="reflex" role="tabpanel">
+    <h2>Ich freue mich!</h2>
+    <p class="hint">Zieh das passende Wort in die Lücke. Die Wörter kannst du mehrmals benutzen. Lücke antippen = leer machen.</p>
+    <div class="sticky"><div class="bank" data-bank></div></div>
+    <h3 class="sub">mich, dich, sich, uns oder euch?</h3>
+    <div data-list="r"></div>
+    <h3 class="sub">auf oder über?</h3>
+    <div data-list="a"></div>
+    <div class="bar"><button class="btn main" data-check>Prüfen</button><button class="btn" data-reset>Von vorn</button><span class="status"></span></div>
+  </section>
+
+  <section id="woerter" role="tabpanel">
+    <h2>Wörter aus dem Text</h2>
+    <p class="hint">Katrin Weber und ihre Brieffreunde: Was passt zusammen? Zieh die Übersetzung zum deutschen Wort.</p>
+    <div class="sticky"><div class="bank zone" data-bank></div></div>
+    <div class="pairs"></div>
+    <div class="bar"><button class="btn main" data-check>Prüfen</button><button class="btn" data-reset>Von vorn</button><span class="status"></span></div>
+  </section>
+</main>
+<footer>Keine Anmeldung, keine Daten: Alles bleibt in deinem Browser.</footer>
+
+<script>
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+
+/* ---------- Data ---------- */
+const PAIRS=[["sehen","hat gesehen"],["schreiben","hat geschrieben"],["sprechen","hat gesprochen"],["lesen","hat gelesen"],["essen","hat gegessen"],["helfen","hat geholfen"],["fahren","ist gefahren"],["gehen","ist gegangen"],["kommen","ist gekommen"],["treffen","hat getroffen"],["finden","hat gefunden"],["tragen","hat getragen"]];
+const HATIST=[["gesehen","hat"],["gelesen","hat"],["geschrieben","hat"],["bekommen","hat"],["geholfen","hat"],["getroffen","hat"],["gefunden","hat"],["getragen","hat"],["geschlafen","hat"],["gefahren","ist"],["gegangen","ist"],["gekommen","ist"],["gelaufen","ist"],["geschwommen","ist"],["geblieben","ist"],["gestoßen","ist"]];
+const REFL=[["Ich freue","auf die Ferien.","mich"],["Katrin hat","auf der Internet-Seite eingetragen.","sich"],["Viele Jugendliche trauen","nicht, auf Deutsch zu schreiben.","sich"],["Freust du","über das Geschenk?","dich"],["Wir interessieren","für Musik.","uns"],["Fühlt ihr","heute gut?","euch"],["Wer meldet","als Nächster?","sich"],["Ich kann","gut konzentrieren.","mich"]];
+const AUF=[["Morgen beginnen die Ferien. Ich freue mich","die Ferien.","auf"],["Ich habe eine Eins bekommen. Ich freue mich","die Note.","über"],["Nächste Woche haben wir eine Party. Wir freuen uns","die Party.","auf"],["Oma hat mir einen Pullover geschenkt. Ich freue mich","den Pullover.","über"],["Im Sommer fahren wir ans Meer. Ich freue mich","die Reise.","auf"]];
+const WORDS=[["zufällig","случайно"],["die Erfahrung","опыт"],["sich eintragen","записаться"],["ausführlich","подробный"],["feiern","праздновать"],["das Unterrichtsfach","школьный предмет"],["sich unterhalten","беседовать"],["aufgeben","бросить, перестать"],["sich trauen","осмеливаться"],["anstrengend","утомительный"],["verbessern","улучшать"],["die Anzeige","объявление"]];
+
+/* ---------- Tabs ---------- */
+$$('.stamp').forEach(t=>t.addEventListener('click',()=>{
+  $$('.stamp').forEach(x=>x.setAttribute('aria-selected',x===t?'true':'false'));
+  $$('section').forEach(s=>s.classList.toggle('active',s.id===t.dataset.tab));
+}));
+
+/* ---------- Memory ---------- */
+let first=null,lock=false,moves=0,found=0;
+function memCount(){$('#mem-count').textContent=`Züge: ${moves} · Paare: ${found} von ${PAIRS.length}`}
+function buildMemory(){
+  const g=$('#mem-grid');g.innerHTML='';first=null;lock=false;moves=0;found=0;memCount();
+  $('#mem-status').textContent='Klick auf zwei Karten.';$('#mem-status').className='status';
+  shuffle(PAIRS.flatMap((p,i)=>[{id:i,t:p[0],k:'inf'},{id:i,t:p[1],k:'perf'}])).forEach(c=>{
+    const b=document.createElement('button');
+    b.className='mcard '+c.k;b.dataset.id=c.id;b.setAttribute('aria-label','Karte umdrehen');
+    b.innerHTML=`<span class="mi"><span class="mf"></span><span class="mb"><small>${c.k==='inf'?'Infinitiv':'Perfekt'}</small>${c.t}</span></span>`;
+    b.addEventListener('click',()=>flip(b,c));g.appendChild(b);
+  });
+}
+function flip(b,c){
+  if(lock||b.classList.contains('open'))return;
+  b.classList.add('open');b.setAttribute('aria-label',c.t);
+  if(!first){first=b;return}
+  moves++;const a=first;first=null;const st=$('#mem-status');
+  if(a.dataset.id===b.dataset.id){
+    a.classList.add('done');b.classList.add('done');found++;
+    const p=PAIRS[+b.dataset.id];
+    st.className='status good';
+    st.textContent=found===PAIRS.length?`Super! Alle Paare in ${moves} Zügen gefunden.`:`Ein Paar! Sag einen Satz: „Gestern … ich … ${p[1].split(' ')[1]}.“`;
+  }else{
+    lock=true;st.className='status';st.textContent='Leider kein Paar. Versuch es noch einmal!';
+    setTimeout(()=>{[a,b].forEach(x=>{x.classList.remove('open');x.setAttribute('aria-label','Karte umdrehen')});lock=false},1100);
+  }
+  memCount();
+}
+$('#mem-reset').addEventListener('click',buildMemory);
+
+/* ---------- Drag & drop engine ---------- */
+let sel=null;
+function clearSel(){if(sel)sel.classList.remove('sel');sel=null}
+function selectChip(el){if(sel===el){clearSel();return}clearSel();sel=el;el.classList.add('sel')}
+function makeChip(text,data={}){
+  const c=document.createElement('button');c.className='chip';c.type='button';c.textContent=text;
+  Object.assign(c.dataset,data);
+  c.addEventListener('pointerdown',e=>{
+    if(e.button!==0)return;
+    const sx=e.clientX,sy=e.clientY;let ghost=null,over=null;
+    c.setPointerCapture(e.pointerId);
+    const move=ev=>{
+      if(!ghost&&Math.hypot(ev.clientX-sx,ev.clientY-sy)>6){
+        ghost=c.cloneNode(true);ghost.classList.add('ghost');ghost.classList.remove('sel','ok','bad');
+        document.body.appendChild(ghost);c.classList.add('dragging');clearSel();
+      }
+      if(ghost){
+        ghost.style.left=ev.clientX+'px';ghost.style.top=ev.clientY+'px';
+        const t=document.elementFromPoint(ev.clientX,ev.clientY);const z=t&&t.closest('.zone,.slot');
+        if(over!==z){if(over)over.classList.remove('over');over=z;if(z)z.classList.add('over')}
+      }
+    };
+    const up=ev=>{
+      c.removeEventListener('pointermove',move);c.removeEventListener('pointerup',up);c.removeEventListener('pointercancel',up);
+      if(over)over.classList.remove('over');
+      if(ghost){
+        ghost.remove();c.classList.remove('dragging');
+        if(ev.type==='pointerup'){const t=document.elementFromPoint(ev.clientX,ev.clientY);const z=t&&t.closest('.zone,.slot');if(z)dropOn(c,z)}
+      }else if(ev.type==='pointerup'){selectChip(c)}
+    };
+    c.addEventListener('pointermove',move);c.addEventListener('pointerup',up);c.addEventListener('pointercancel',up);
+  });
+  c.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectChip(c)}});
+  c.addEventListener('click',e=>e.preventDefault());
+  return c;
+}
+function bankOf(el){return $('[data-bank]',el.closest('section'))}
+function dropOn(chip,zone){
+  clearSel();
+  if(chip.dataset.reuse){
+    if(zone.classList.contains('slot')){zone.textContent=chip.textContent;zone.dataset.val=chip.textContent;zone.classList.add('filled');zone.classList.remove('ok','bad')}
+    return;
+  }
+  if(zone.classList.contains('slot'))return;
+  if(zone.dataset.single!==undefined){
+    const old=$('.chip',zone);if(old&&old!==chip){bankOf(zone).appendChild(old);old.classList.remove('ok','bad')}
+  }
+  zone.appendChild(chip);chip.classList.remove('ok','bad');
+}
+function zoneHandlers(z){
+  const act=e=>{
+    if(e.target.closest('.chip')&&!z.classList.contains('slot'))return;
+    if(sel){dropOn(sel,z)}
+    else if(z.classList.contains('slot')&&z.dataset.val){z.textContent='';delete z.dataset.val;z.classList.remove('filled','ok','bad')}
+  };
+  z.addEventListener('click',act);
+  z.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();act(e)}});
+}
+function setStatus(sec,right,total){
+  const s=$('.status',sec);
+  if(right===total){s.className='status good';s.textContent=`Alles richtig: ${right} von ${total}!`}
+  else{s.className='status warn';s.textContent=`${right} von ${total} richtig. Die orangen noch einmal versuchen!`}
+}
+
+/* ---------- hat oder ist? ---------- */
+function buildHatIst(){
+  const sec=$('#hatist'),bank=$('[data-bank]',sec);
+  $$('.chip',sec).forEach(c=>c.remove());$('.status',sec).textContent='';
+  shuffle(HATIST.slice()).forEach(([w,a])=>bank.appendChild(makeChip(w,{ans:a})));
+}
+$('#hatist [data-check]').addEventListener('click',()=>{
+  const sec=$('#hatist');let r=0;
+  $$('.basket',sec).forEach(b=>$$('.chip',b).forEach(c=>{const ok=c.dataset.ans===b.dataset.ans;c.classList.toggle('ok',ok);c.classList.toggle('bad',!ok);if(ok)r++}));
+  $$('[data-bank] .chip',sec).forEach(c=>c.classList.add('bad'));
+  setStatus(sec,r,HATIST.length);
+});
+$('#hatist [data-reset]').addEventListener('click',buildHatIst);
+
+/* ---------- Reflexiv ---------- */
+function buildReflex(){
+  const sec=$('#reflex'),bank=$('[data-bank]',sec);bank.innerHTML='';$('.status',sec).textContent='';
+  ['mich','dich','sich','uns','euch','auf','über'].forEach(w=>bank.appendChild(makeChip(w,{reuse:'1'})));
+  const fill=(key,data)=>{const box=$(`[data-list="${key}"]`,sec);box.innerHTML='';
+    data.forEach(([a,b,ans],i)=>{const d=document.createElement('div');d.className='sent';
+      d.append(`${i+1}. ${a} `);const s=document.createElement('span');s.className='slot';s.tabIndex=0;s.dataset.ans=ans;s.setAttribute('aria-label','Lücke');zoneHandlers(s);
+      d.append(s,` ${b}`);box.appendChild(d)})};
+  fill('r',REFL);fill('a',AUF);
+}
+$('#reflex [data-check]').addEventListener('click',()=>{
+  const sec=$('#reflex');let r=0;const sl=$$('.slot',sec);
+  sl.forEach(s=>{const ok=s.dataset.val===s.dataset.ans;s.classList.toggle('ok',ok);s.classList.toggle('bad',!ok);if(ok)r++});
+  setStatus(sec,r,sl.length);
+});
+$('#reflex [data-reset]').addEventListener('click',buildReflex);
+
+/* ---------- Wörter ---------- */
+function buildWords(){
+  const sec=$('#woerter'),bank=$('[data-bank]',sec),pairs=$('.pairs',sec);
+  bank.innerHTML='';pairs.innerHTML='';$('.status',sec).textContent='';
+  WORDS.forEach(([de],i)=>{const p=document.createElement('div');p.className='pair';
+    const z=document.createElement('div');z.className='wslot zone';z.dataset.single='';z.dataset.ans=i;z.tabIndex=0;z.setAttribute('aria-label',`Übersetzung für ${de}`);zoneHandlers(z);
+    p.append(de,z);pairs.appendChild(p)});
+  shuffle(WORDS.map((w,i)=>[w[1],i])).forEach(([ru,i])=>bank.appendChild(makeChip(ru,{ans:i})));
+}
+$('#woerter [data-check]').addEventListener('click',()=>{
+  const sec=$('#woerter');let r=0;
+  $$('.wslot',sec).forEach(z=>{const c=$('.chip',z);if(!c)return;const ok=c.dataset.ans===z.dataset.ans;c.classList.toggle('ok',ok);c.classList.toggle('bad',!ok);if(ok)r++});
+  setStatus(sec,r,WORDS.length);
+});
+$('#woerter [data-reset]').addEventListener('click',buildWords);
+
+/* zones for hat/ist and banks */
+$$('.zone').forEach(zoneHandlers);
+
+buildMemory();buildHatIst();buildReflex();buildWords();
+</script>
+</body>
+</html>
