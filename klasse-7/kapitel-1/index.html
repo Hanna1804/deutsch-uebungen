@@ -78,11 +78,48 @@ h2{font-size:26px;margin:10px 0 2px}
 h3.sub{margin:22px 0 4px;font-size:20px}
 footer{max-width:1000px;margin:0 auto;padding:0 20px 32px;color:var(--muted);font-size:14px}
 
+
+/* Reader */
+.legend{display:flex;flex-wrap:wrap;gap:8px 22px;font-size:15px;color:var(--muted);margin-bottom:6px}
+.player{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;position:sticky;top:env(safe-area-inset-top,0px);z-index:6;background:var(--paper);padding:10px 0}
+.rate,.voice{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px}
+.voice select{font:inherit;font-size:15px;max-width:230px;padding:8px;border:2px solid var(--ink);border-radius:10px;background:#fff;color:var(--ink);min-height:44px}
+#reader{background:#fff;border:2px solid var(--line);border-radius:18px;padding:22px 24px;font-size:20px;line-height:1.9;max-width:760px}
+#reader p{margin:0 0 14px}
+.sn{border-radius:6px;transition:background .2s}
+.sn.now{background:#FFF1B8}
+.wd{cursor:pointer;border-radius:3px}
+.wd,.w-s,.w-w{-webkit-tap-highlight-color:transparent}
+.w-s{font-weight:800;color:var(--coral);text-decoration:underline;text-decoration-thickness:3px;text-underline-offset:4px;cursor:pointer}
+.w-w{color:var(--blue);text-decoration:underline dotted;text-decoration-thickness:2px;text-underline-offset:4px;cursor:pointer}
+.w-s:focus-visible,.w-w:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+.pop{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);width:min(440px,calc(100% - 24px));background:#fff;border:3px solid var(--ink);border-radius:18px;padding:16px 18px;z-index:50;box-shadow:0 10px 30px rgba(30,42,90,.25)}
+.pop[hidden]{display:none}
+.pop .kind{font-size:14px;font-weight:800;color:var(--muted)}
+.pop .head{font-size:26px;font-weight:800;margin:2px 0}
+.pop .forms{font-size:20px;font-weight:800;color:var(--coral);background:var(--coral-l);border-radius:10px;padding:8px 12px;margin:8px 0}
+.pop .ru{font-size:19px}
+.pop .row2{display:flex;gap:10px;margin-top:12px}
+.pop .x{position:absolute;top:8px;right:8px;width:44px;height:44px;border:0;background:none;font-size:26px;cursor:pointer;color:var(--ink)}
+.own{margin-top:22px;max-width:760px}
+.own summary{font-weight:800;cursor:pointer;padding:8px 0;font-size:18px}
+.own textarea{width:100%;font:inherit;font-size:16px;border:2px solid var(--ink);border-radius:12px;padding:12px}
+@media (max-width:640px){.player{position:static}#reader{font-size:18px;padding:16px;line-height:1.85}.voice select{max-width:100%}.voice{width:100%}.voice select{flex:1}}
 @media (max-width:640px){
   .mgrid{grid-template-columns:repeat(4,1fr)}
-  .baskets,.pairs{grid-template-columns:1fr}
+  .pairs{grid-template-columns:1fr}
+  .basket{min-height:160px;padding:10px}
+  .basket h3{font-size:19px}
   .stamp span{padding:7px 10px;font-size:15px}
 }
+@media (max-width:480px){
+  .mgrid{grid-template-columns:repeat(3,1fr);gap:8px}
+  .mcard{aspect-ratio:1/1}
+  .mb{font-size:15px;padding:4px;overflow-wrap:anywhere}
+  .pair{flex-wrap:wrap}
+  .wslot{min-width:0;flex:1 1 150px}
+}
+button{touch-action:manipulation}
 @media (prefers-reduced-motion:reduce){.mi,.stamp{transition:none}}
 </style>
 </head>
@@ -94,14 +131,35 @@ footer{max-width:1000px;margin:0 auto;padding:0 20px 32px;color:var(--muted);fon
 </header>
 
 <nav role="tablist" aria-label="Spiele">
-  <button class="stamp" role="tab" aria-selected="true" data-tab="memory"><span>Verb-Memory</span></button>
+  <button class="stamp" role="tab" aria-selected="true" data-tab="lesen"><span>Lesen &amp; hören</span></button>
+  <button class="stamp" role="tab" aria-selected="false" data-tab="memory"><span>Verb-Memory</span></button>
   <button class="stamp" role="tab" aria-selected="false" data-tab="hatist"><span>hat oder ist?</span></button>
   <button class="stamp" role="tab" aria-selected="false" data-tab="reflex"><span>mich, dich, sich</span></button>
   <button class="stamp" role="tab" aria-selected="false" data-tab="woerter"><span>Wörter</span></button>
 </nav>
 
 <main>
-  <section id="memory" class="active" role="tabpanel">
+  <section id="lesen" class="active" role="tabpanel">
+    <h2 id="txt-title">Mia und Olga</h2>
+    <p class="hint">Hör den Text und lies mit. Tipp auf ein markiertes Wort: Du siehst die Übersetzung. Tipp auf ein anderes Wort: Der Satz wird vorgelesen.</p>
+    <div class="legend"><span><span class="w-s">schrieb</span> starkes Verb: 3 Formen</span><span><span class="w-w">zufällig</span> neues Wort</span></div>
+    <div class="player">
+      <button class="btn main" id="tts-play">Vorlesen</button>
+      <button class="btn" id="tts-stop">Stopp</button>
+      <label class="rate">Tempo <input type="range" id="tts-rate" min="0.6" max="1.1" step="0.05" value="0.9"></label>
+      <label class="voice">Stimme <select id="tts-voice"></select></label>
+    </div>
+    <p class="status" id="tts-msg"></p>
+    <article id="reader" lang="de"></article>
+    <details class="own">
+      <summary>Eigenen Text einfügen</summary>
+      <p class="hint">Füge einen deutschen Text ein (zum Beispiel aus dem Lehrbuch). Er bleibt nur in diesem Browser und wird nirgends gespeichert.</p>
+      <textarea id="own-text" rows="8" placeholder="Text hier einfügen …"></textarea>
+      <div class="bar"><button class="btn main" id="own-show">Text anzeigen</button><button class="btn" id="own-reset">Zurück zu „Mia und Olga“</button></div>
+    </details>
+  </section>
+
+  <section id="memory" role="tabpanel">
     <h2>Verb-Memory</h2>
     <p class="hint">Finde die Paare: Infinitiv + Perfekt. Bei jedem Paar sag einen Satz im Perfekt!</p>
     <div class="bar"><span class="status" id="mem-status">Klick auf zwei Karten.</span></div>
@@ -139,6 +197,7 @@ footer{max-width:1000px;margin:0 auto;padding:0 20px 32px;color:var(--muted);fon
     <div class="bar"><button class="btn main" data-check>Prüfen</button><button class="btn" data-reset>Von vorn</button><span class="status"></span></div>
   </section>
 </main>
+<div class="pop" id="pop" hidden role="dialog" aria-label="Wort"><button class="x" id="pop-x" aria-label="Schließen">×</button><div class="kind" id="pop-kind"></div><div class="head" id="pop-head"></div><div class="forms" id="pop-forms"></div><div class="ru" id="pop-ru"></div><div class="row2"><button class="btn" id="pop-say">Anhören</button></div></div>
 <footer>Keine Anmeldung, keine Daten: Alles bleibt in deinem Browser.</footer>
 
 <script>
@@ -198,7 +257,7 @@ function makeChip(text,data={}){
   Object.assign(c.dataset,data);
   c.addEventListener('pointerdown',e=>{
     if(e.button!==0)return;
-    const sx=e.clientX,sy=e.clientY;let ghost=null,over=null;
+    const sx=e.clientX,sy=e.clientY;let ghost=null,over=null,scroller=null,lastY=0;
     c.setPointerCapture(e.pointerId);
     const move=ev=>{
       if(!ghost&&Math.hypot(ev.clientX-sx,ev.clientY-sy)>6){
@@ -207,6 +266,7 @@ function makeChip(text,data={}){
       }
       if(ghost){
         ghost.style.left=ev.clientX+'px';ghost.style.top=ev.clientY+'px';
+        lastY=ev.clientY;if(!scroller)scroller=setInterval(()=>{const e=60;if(lastY>innerHeight-e)scrollBy(0,12);else if(lastY<e)scrollBy(0,-12)},16);
         const t=document.elementFromPoint(ev.clientX,ev.clientY);const z=t&&t.closest('.zone,.slot');
         if(over!==z){if(over)over.classList.remove('over');over=z;if(z)z.classList.add('over')}
       }
@@ -214,6 +274,7 @@ function makeChip(text,data={}){
     const up=ev=>{
       c.removeEventListener('pointermove',move);c.removeEventListener('pointerup',up);c.removeEventListener('pointercancel',up);
       if(over)over.classList.remove('over');
+      if(scroller)clearInterval(scroller);
       if(ghost){
         ghost.remove();c.classList.remove('dragging');
         if(ev.type==='pointerup'){const t=document.elementFromPoint(ev.clientX,ev.clientY);const z=t&&t.closest('.zone,.slot');if(z)dropOn(c,z)}
@@ -302,6 +363,187 @@ $('#woerter [data-reset]').addEventListener('click',buildWords);
 
 /* zones for hat/ist and banks */
 $$('.zone').forEach(zoneHandlers);
+
+/* ---------- Lesen & hören ---------- */
+const MIA_TITLE="Mia und Olga";
+const MIA=`Mia ist 13 Jahre alt und wohnt in Leipzig. Vor einem Jahr hat sie im Internet zufällig eine Seite für Brieffreundschaften gefunden. Sie hat sich sofort eingetragen und eine kurze Anzeige geschrieben. Schon am nächsten Tag hat sie drei E-Mails bekommen: aus Polen, aus Spanien und aus Belarus.
+
+Ihre Brieffreundin Olga aus Minsk schreibt ihr jede Woche. Olga lernt Deutsch als Fremdsprache. Manchmal macht sie Fehler, aber sie traut sich, auf Deutsch zu schreiben. Mia hilft ihr gern und korrigiert die Fehler. Und Olga hilft Mia mit Russisch.
+
+Die Mädchen unterhalten sich über die Schule, über Hobbys und über Feste. Mia war überrascht: In Belarus ist die Zehn die beste Note, in Deutschland die Eins! Olga hat auch von ihren Unterrichtsfächern erzählt. Einige Fächer gibt es in Deutschland gar nicht.
+
+Nicht alle Brieffreunde schreiben so fleißig. Viele haben nach der ersten E-Mail aufgegeben. Das findet Mia schade, denn ein ausführlicher Brief macht ihr viel Freude. Im Sommer fährt Olga mit ihren Eltern nach Deutschland. Dann wollen sich die Freundinnen endlich treffen. Mia freut sich schon sehr darauf!`;
+
+const GLOSS=[
+['s','finden','finden – fand – hat gefunden','находить','finden finde findest findet fand fanden gefunden'],
+['s','schreiben','schreiben – schrieb – hat geschrieben','писать','schreiben schreibe schreibst schreibt schrieb schrieben geschrieben'],
+['s','bekommen','bekommen – bekam – hat bekommen','получать','bekommen bekomme bekommst bekommt bekam bekamen'],
+['s','helfen','helfen – half – hat geholfen','помогать','helfen helfe hilfst hilft half halfen geholfen'],
+['s','lesen','lesen – las – hat gelesen','читать','lesen lese liest las lasen gelesen'],
+['s','sehen','sehen – sah – hat gesehen','видеть; aussehen – выглядеть','sehen sehe siehst sieht sah sahen gesehen'],
+['s','sich unterhalten','unterhalten – unterhielt – hat unterhalten','беседовать, разговаривать','unterhalten unterhalte unterhältst unterhält unterhielt unterhielten'],
+['s','aufgeben','aufgeben – gab auf – hat aufgegeben','бросить, перестать','aufgeben aufgegeben'],
+['s','fahren','fahren – fuhr – ist gefahren','ехать','fahren fahre fährst fährt fuhr fuhren gefahren'],
+['s','sich eintragen','eintragen – trug ein – hat eingetragen','записаться','eintragen eingetragen'],
+['s','stoßen (auf)','stoßen – stieß – ist gestoßen','наткнуться (на)','stoßen stieß gestoßen'],
+['s','kommen','kommen – kam – ist gekommen','приходить, приезжать','kommen komme kommst kommt kam kamen gekommen'],
+['s','gehen','gehen – ging – ist gegangen','идти','gehen gehe gehst geht ging gingen gegangen'],
+['s','geben','geben – gab – hat gegeben','давать; es gibt – есть, имеется','geben gibt gibst gab gaben gegeben'],
+['s','wissen','wissen – wusste – hat gewusst','знать','wissen weiß weißt wusste gewusst'],
+['s','kennen','kennen – kannte – hat gekannt','знать (кого-то), быть знакомым','kennen kenne kennst kennt kannte gekannt'],
+['s','treffen','treffen – traf – hat getroffen','встречать; sich treffen – встречаться','treffen treffe triffst trifft traf getroffen'],
+['s','verstehen','verstehen – verstand – hat verstanden','понимать','verstehen verstehe verstehst versteht verstand verstanden'],
+['s','sprechen','sprechen – sprach – hat gesprochen','говорить','sprechen spreche sprichst spricht sprach gesprochen'],
+['s','sein','sein – war – ist gewesen','быть','war waren warst gewesen'],
+['s','werden','werden – wurde – ist geworden','становиться','werden werde wirst wird wurde wurden geworden'],
+['s','unternehmen','unternehmen – unternahm – hat unternommen','предпринимать, затевать','unternehmen unternimmt unternahm unternommen'],
+['w','zufällig','','случайно','zufällig'],
+['w','die Brieffreundschaft, -en','','дружба по переписке','brieffreundschaft brieffreundschaften'],
+['w','der Brieffreund, -e','','друг по переписке','brieffreund brieffreunde brieffreunden'],
+['w','die Brieffreundin, -nen','','подруга по переписке','brieffreundin brieffreundinnen'],
+['w','die Anzeige, -n','','объявление','anzeige'],
+['w','die Erfahrung, -en','','опыт','erfahrung erfahrungen'],
+['w','ausführlich','','подробный','ausführlich ausführliche ausführlichen ausführlicher'],
+['w','der Fehler, -','','ошибка','fehler fehlern'],
+['w','die Note, -n','','оценка','note noten'],
+['w','das Unterrichtsfach, die Unterrichtsfächer','','школьный предмет','unterrichtsfach unterrichtsfächer unterrichtsfächern fach fächer'],
+['w','das Fest, -e','','праздник','fest feste'],
+['w','das Geschenk, -e','','подарок','geschenk geschenke geschenken'],
+['w','die Gemeinsamkeit, -en','','общее, сходство','gemeinsamkeit gemeinsamkeiten'],
+['w','das Wörterbuch, die Wörterbücher','','словарь','wörterbuch'],
+['w','anstrengend','','утомительный, трудный','anstrengend'],
+['w','die Kenntnisse (Pl.)','','знания','kenntnisse'],
+['w','verbessern','','улучшать','verbessern'],
+['w','sicher','','уверенный','sicher sicherer'],
+['w','schade','','жаль','schade'],
+['w','überrascht','','удивлён, удивлена','überrascht'],
+['w','die Redakteurin, -nen','','редактор','redakteurin'],
+['w','die Schulzeitung, -en','','школьная газета','schulzeitung'],
+['w','der / die Jugendliche, -n','','подросток','jugendliche jugendlichen'],
+['w','Weihnachten','','Рождество','weihnachten'],
+['w','die Sitten und Bräuche','','обычаи и традиции','sitten bräuche bräuchen'],
+['w','verschieden','','разный','verschieden verschiedene verschiedenen verschiedensten'],
+['w','einige','','некоторые; кое-что','einige einiges'],
+['w','sich trauen','','осмеливаться','traut traue trauen'],
+['w','sich melden','','давать о себе знать','meldet melden'],
+['w','korrigieren','','исправлять','korrigiert korrigieren'],
+['w','endlich','','наконец','endlich'],
+['w','eigentlich','','вообще-то, собственно','eigentlich'],
+['w','während','','в то время как','während'],
+['w','die Fremdsprache, -n','','иностранный язык','fremdsprache'],
+['w','nachschauen','','посмотреть (в словаре)','nachzuschauen nachschauen'],
+['w','spontan','','спонтанно, не раздумывая','spontan'],
+['w','sich freuen auf / über','','радоваться (предстоящему / тому, что есть)','freut freue freust'],
+['w','gerade','','только что','gerade'],
+['w','regelmäßig','','регулярно','regelmäßig regelmäßigen'],
+['w','das Schulsystem, -e','','школьная система','schulsystem schulsysteme'],
+['w','feiern','','праздновать','feiert feiern'],
+['w','erzählen','','рассказывать','erzählt erzählen'],
+['w','fleißig','','прилежно, старательно','fleißig'],
+['w','die Freude','','радость','freude']
+];
+const LOOK={};GLOSS.forEach((g,i)=>g[4].split(' ').forEach(f=>LOOK[f]=i));
+
+const WORD_RE=/([A-Za-zÄÖÜäöüß]+(?:-[A-Za-zÄÖÜäöüß]+)*)/;
+let sents=[],cur=-1,playing=false,utt=null;
+function renderText(title,text){
+  stopTTS();
+  $('#txt-title').textContent=title;
+  const r=$('#reader');r.innerHTML='';sents=[];
+  text.replace(/\r/g,'').split(/\n\s*\n|\n/).map(p=>p.trim()).filter(Boolean).forEach(par=>{
+    const p=document.createElement('p');
+    (par.match(/[^.!?]+[.!?]*["“”»]?\s*/g)||[par]).forEach(st=>{
+      const sp=document.createElement('span');sp.className='sn';sp.dataset.i=sents.length;sents.push(st.trim());
+      st.split(WORD_RE).forEach((part,k)=>{
+        if(k%2===0){if(part)sp.append(part);return}
+        const g=LOOK[part.toLowerCase()];
+        const w=document.createElement('span');w.textContent=part;
+        if(g!==undefined){w.className=GLOSS[g][0]==='s'?'w-s':'w-w';w.dataset.g=g;w.tabIndex=0;w.setAttribute('role','button')}
+        else w.className='wd';
+        sp.append(w);
+      });
+      p.append(sp);
+    });
+    r.append(p);
+  });
+}
+
+/* voices: pick the most natural German voice available */
+let voices=[];
+function voiceScore(v){
+  const n=v.name,l=(v.lang||'').toLowerCase().replace('_','-');
+  if(!l.startsWith('de'))return -1;
+  let s=0;
+  if(l==='de-de')s+=3;
+  if(/natural|neural|online|premium|enhanced|erweitert|wavenet|studio/i.test(n))s+=10;
+  if(/google/i.test(n))s+=6;
+  if(/siri/i.test(n))s+=7;
+  if(/anna|helena|petra|katja|conrad|amala|seraphina|florian|marlene|vicki/i.test(n))s+=2;
+  if(!v.localService)s+=2;
+  if(/espeak|compact|eloquence|grandma|grandpa|rocko|shelley|reed|sandy|flo|eddy/i.test(n))s-=8;
+  return s;
+}
+function loadVoices(){
+  voices=speechSynthesis.getVoices().filter(v=>voiceScore(v)>=0).sort((a,b)=>voiceScore(b)-voiceScore(a));
+  const sel=$('#tts-voice'),prev=sel.value;sel.innerHTML='';
+  voices.forEach((v,i)=>{const o=document.createElement('option');o.value=v.name;o.textContent=v.name.replace(/Microsoft |Google /,'')+(i===0?' (empfohlen)':'');sel.append(o)});
+  if(prev&&voices.some(v=>v.name===prev))sel.value=prev;
+  $('#tts-msg').textContent=voices.length?'':'Keine deutsche Stimme gefunden. Bitte in den Einstellungen des Geräts eine deutsche Stimme installieren.';
+  $('#tts-msg').className=voices.length?'status':'status warn';
+}
+function pickVoice(){return voices.find(v=>v.name===$('#tts-voice').value)||voices[0]}
+function speak(text,onend){
+  speechSynthesis.cancel();
+  utt=new SpeechSynthesisUtterance(text);
+  const v=pickVoice();if(v){utt.voice=v;utt.lang=v.lang}else utt.lang='de-DE';
+  utt.rate=+$('#tts-rate').value;
+  utt.onend=onend||null;
+  speechSynthesis.speak(utt);
+}
+function mark(i){$$('#reader .sn.now').forEach(x=>x.classList.remove('now'));if(i>=0){const el=$(`#reader .sn[data-i="${i}"]`);if(el){el.classList.add('now');const r=el.getBoundingClientRect();if(r.top<120||r.bottom>innerHeight-40)el.scrollIntoView({block:'center',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})}}}
+function playFrom(i){
+  if(i>=sents.length){stopTTS();return}
+  cur=i;playing=true;mark(i);$('#tts-play').textContent='Pause';
+  speak(sents[i],()=>{if(playing)playFrom(cur+1)});
+}
+function stopTTS(){playing=false;if('speechSynthesis'in window)speechSynthesis.cancel();mark(-1);$('#tts-play').textContent='Vorlesen'}
+$('#tts-play').addEventListener('click',()=>{
+  if(!('speechSynthesis'in window)){$('#tts-msg').textContent='Dieser Browser kann nicht vorlesen.';return}
+  if(playing){playing=false;speechSynthesis.cancel();$('#tts-play').textContent='Weiter';return}
+  playFrom(cur<0||cur>=sents.length?0:cur);
+});
+$('#tts-stop').addEventListener('click',()=>{stopTTS();cur=-1});
+$('#tts-voice').addEventListener('change',()=>{if(playing)playFrom(cur)});
+
+/* popup */
+let popG=null;
+function openPop(i){
+  const g=GLOSS[i];popG=g;
+  $('#pop-kind').textContent=g[0]==='s'?'Starkes Verb':'Wort';
+  $('#pop-head').textContent=g[1];
+  $('#pop-forms').textContent=g[2];$('#pop-forms').hidden=!g[2];
+  $('#pop-ru').textContent=g[3];
+  $('#pop').hidden=false;$('#pop-x').focus({preventScroll:true});
+}
+function closePop(){$('#pop').hidden=true}
+$('#pop-x').addEventListener('click',closePop);
+$('#pop-say').addEventListener('click',()=>{if(!popG)return;playing=false;$('#tts-play').textContent=cur>=0?'Weiter':'Vorlesen';speak(popG[2]?popG[2].replace(/ – /g,', '):popG[1].replace(/,.*$/,'').replace(/\(.*\)/,''))});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closePop()});
+document.addEventListener('pointerdown',e=>{if(!$('#pop').hidden&&!e.target.closest('#pop,[data-g]'))closePop()},true);
+$('#reader').addEventListener('click',e=>{
+  const w=e.target.closest('[data-g]');
+  if(w){openPop(+w.dataset.g);return}
+  const sn=e.target.closest('.sn');
+  if(sn&&'speechSynthesis'in window){closePop();playing=false;cur=+sn.dataset.i;mark(cur);$('#tts-play').textContent='Weiter';speak(sents[cur])}
+});
+$('#reader').addEventListener('keydown',e=>{const w=e.target.closest('[data-g]');if(w&&(e.key==='Enter'||e.key===' ')){e.preventDefault();openPop(+w.dataset.g)}});
+$('#own-show').addEventListener('click',()=>{const t=$('#own-text').value.trim();if(!t)return;renderText('Dein Text',t);$('#reader').scrollIntoView({block:'start'})});
+$('#own-reset').addEventListener('click',()=>{$('#own-text').value='';renderText(MIA_TITLE,MIA)});
+$$('.stamp').forEach(t=>t.addEventListener('click',()=>{if(t.dataset.tab!=='lesen'){stopTTS();closePop()}}));
+
+if('speechSynthesis'in window){loadVoices();speechSynthesis.addEventListener?speechSynthesis.addEventListener('voiceschanged',loadVoices):(speechSynthesis.onvoiceschanged=loadVoices)}
+else{$('#tts-msg').textContent='Dieser Browser kann nicht vorlesen. Probiere Chrome, Edge oder Safari.'}
+renderText(MIA_TITLE,MIA);
 
 buildMemory();buildHatIst();buildReflex();buildWords();
 </script>
