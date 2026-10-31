@@ -111,6 +111,75 @@ main{padding-top:10px;padding-bottom:48px}
 .missed span{background:var(--coral-l);border:2px solid var(--coral);border-radius:999px;padding:4px 12px;font-weight:700;font-size:15px}
 .done .row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
 footer{max-width:1000px;margin:0 auto;padding:0 20px 32px;color:var(--muted);font-size:14px}
+
+/* Verkehrsmittel */
+body[data-tab="verkehr"] .chips{display:none}
+.vh{margin:8px 0 2px;font-size:26px}
+.vbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin:10px 0}
+.vgame{background:#fff;border:3px solid var(--ink);border-radius:16px;padding:12px 16px;margin:0 0 12px;max-width:760px}
+.vprompt{font-size:clamp(22px,5vw,30px);font-weight:800;line-height:1.25;margin-bottom:8px}
+.vrow{display:flex;flex-wrap:wrap;gap:8px}
+.scene{overflow-x:auto;border:3px solid var(--ink);border-radius:18px;background:#CDE9F6;-webkit-overflow-scrolling:touch}
+.scene-inner{position:relative;min-width:720px;aspect-ratio:3/2}
+.scene-inner svg,.scene-inner img{position:absolute;inset:0;width:100%;height:100%;display:block}
+.spot{position:absolute;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;border:3px solid var(--ink);background:#fff;color:var(--ink);font:inherit;font-weight:800;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;box-shadow:0 2px 6px rgba(30,42,90,.35);animation:pulse 2.2s infinite}
+.spot.seen{background:var(--blue-l);animation:none}
+.spot[aria-pressed="true"]{background:var(--ink);color:#fff;animation:none}
+.spot:focus-visible{outline:3px solid var(--coral);outline-offset:3px}
+.spot.shake{animation:shake .4s}
+.spot.drag{cursor:grab}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(47,93,216,.5)}50%{box-shadow:0 0 0 12px rgba(47,93,216,0)}}
+@keyframes shake{0%,100%{transform:translate(-50%,-50%)}25%{transform:translate(calc(-50% - 7px),-50%)}75%{transform:translate(calc(-50% + 7px),-50%)}}
+.small{font-size:14px;margin:6px 0 0}
+.vcard{background:#fff;border:3px solid var(--ink);border-radius:18px;padding:16px 18px;margin-top:14px;max-width:760px}
+.vtop{display:flex;gap:12px;align-items:center}
+.vword{font-size:26px;font-weight:800;line-height:1.2}
+.vword .alt{display:block;font-size:15px;font-weight:600;color:var(--muted)}
+.vfact{margin:12px 0 0}
+.vfact .lbl{font-weight:800;color:var(--coral)}
+.vfact .ex{font-style:normal;color:var(--ink);font-size:17px;padding:2px 0}
+.vsent{background:var(--blue-l);border-radius:12px;padding:10px 14px;margin-top:10px}
+.vsent .q{font-size:15px;color:var(--muted)}
+.vsent .a{font-size:19px;font-weight:700}
+.dat{color:#B23C17;font-weight:800;background:var(--coral-l);border-radius:6px;padding:0 5px}
+.vedit{margin-top:14px;padding:12px;border:2px dashed var(--coral);border-radius:12px;max-width:760px}
+.vedit textarea{width:100%;font:13px/1.4 ui-monospace,Menlo,Consolas,monospace;border:2px solid var(--ink);border-radius:8px;padding:8px}
+@media (prefers-reduced-motion:reduce){.spot{animation:none!important}}
+
+.vcard{position:relative}
+.vclose{display:none;position:absolute;top:4px;right:4px;width:44px;height:44px;border:0;background:none;font-size:30px;line-height:1;cursor:pointer;color:var(--ink)}
+.vclose:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+.vplace{display:none}
+.vgame{position:sticky;top:env(safe-area-inset-top,0px);z-index:30}
+#verkehr.portrait .scene{overflow:hidden;max-width:560px;margin:0 auto}
+#verkehr.portrait .scene-inner{min-width:0}
+#verkehr.portrait .vscroll-hint{display:none}
+@media (min-width:900px){
+  #verkehr.portrait .vwrap{display:grid;grid-template-columns:minmax(0,560px) minmax(0,1fr);gap:24px;align-items:start}
+  #verkehr.portrait .vcard{position:sticky;top:16px;margin-top:0}
+  #verkehr.gaming.portrait .vcard,#verkehr.gaming.portrait .vplace{top:150px}
+  #verkehr.portrait .vcard[hidden]~.vplace{display:block;position:sticky;top:16px;padding:16px 18px;border:2px dashed var(--line);border-radius:16px;color:var(--muted)}
+}
+@media (max-width:899px){
+  #verkehr.portrait .vcard{position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px));margin:0;max-width:none;max-height:58vh;overflow:auto;z-index:40;padding-right:52px;box-shadow:0 10px 30px rgba(30,42,90,.35)}
+  #verkehr.portrait .vclose{display:block}
+  #verkehr.portrait.sheet{padding-bottom:46vh}
+  #verkehr.portrait .vcard{max-height:44vh;padding:10px 46px 10px 14px}
+  #verkehr.portrait .vword{font-size:21px}
+  #verkehr.portrait .vword .alt{font-size:13px}
+  #verkehr.portrait .vtop{gap:10px}
+  #verkehr.portrait .vtop .say{width:40px;height:40px}
+  #verkehr.portrait .vfact{margin-top:6px}
+  #verkehr.portrait .vfact .ex{font-size:15px;line-height:1.35;min-height:0;padding:0}
+  #verkehr.portrait #v-factru{font-size:13px!important}
+  #verkehr.portrait .vsent{margin-top:8px;padding:6px 12px}
+  #verkehr.portrait .vsent .a{font-size:17px}
+}
+@media (max-width:640px){
+  .vgame{padding:8px 12px}
+  .vprompt{font-size:22px;margin-bottom:6px}
+  .vgame .status{margin:6px 0 0;min-height:0}
+}
 @media (max-width:640px){
   .stamp span{padding:7px 12px;font-size:15px}
   .face{min-height:240px;padding:28px 14px 14px;gap:8px}
@@ -149,7 +218,7 @@ footer{max-width:1000px;margin:0 auto;padding:0 20px 32px;color:var(--muted);fon
 }
 </style>
 </head>
-<body>
+<body data-tab="dict">
 <div class="airmail" aria-hidden="true"></div>
 <header>
   <h1>Wortschatz</h1>
@@ -159,6 +228,7 @@ footer{max-width:1000px;margin:0 auto;padding:0 20px 32px;color:var(--muted);fon
 <nav role="tablist" aria-label="Ansicht">
   <button class="stamp" role="tab" aria-selected="true" data-tab="dict"><span>Wörterbuch</span></button>
   <button class="stamp" role="tab" aria-selected="false" data-tab="cards"><span>Karten</span></button>
+  <button class="stamp" role="tab" aria-selected="false" data-tab="verkehr"><span>Verkehrsmittel</span></button>
 </nav>
 
 <div class="filters">
@@ -216,6 +286,81 @@ footer{max-width:1000px;margin:0 auto;padding:0 20px 32px;color:var(--muted);fon
         <button class="btn" id="again-all" type="button">Alles noch einmal</button>
       </div>
     </div>
+  </section>
+
+  <section id="verkehr" class="panel" role="tabpanel">
+    <h2 class="vh">Verkehrsmittel in der Stadt</h2>
+    <p class="hint">Tippe auf einen Kreis: Du siehst das Wort, die Übersetzung und etwas Interessantes. Oder spiele: Finde das Verkehrsmittel!</p>
+    <div class="vbar"><button class="btn main" id="vstart" type="button">Spiel starten</button><span class="hint" id="vseen" role="status"></span></div>
+    <div class="vgame" id="vgame" hidden>
+      <div class="vprompt" id="vprompt"></div>
+      <div class="vrow"><button class="btn" id="vhear" type="button">Wort anhören</button><button class="btn main" id="vnext" type="button" hidden>Weiter</button><button class="btn" id="vquit" type="button">Spiel beenden</button></div>
+      <p class="status" id="vfeed" role="status"></p>
+    </div>
+    <div class="vwrap"><div class="vleft"><div class="scene" id="scene">
+      <div class="scene-inner" id="scene-inner">
+        <svg id="scene-svg" viewBox="0 0 1200 800" role="img" aria-label="Querschnitt einer Stadt: oben die S-Bahn auf einer Brücke, auf der Straße Straßenbahn, Obus, Bus, Taxi, Linientaxi, Haltestelle, Fahrrad und Elektroroller, unten die U-Bahn im Tunnel"><defs><pattern id="win" width="16" height="20" patternUnits="userSpaceOnUse"><rect x="4" y="5" width="7" height="9" fill="#fff" fill-opacity=".75"/></pattern></defs>
+<rect width="1200" height="400" fill="#CDE9F6"/><circle cx="110" cy="90" r="44" fill="#FFE08A"/>
+<g fill="#fff" fill-opacity=".9"><ellipse cx="380" cy="80" rx="60" ry="20"/><ellipse cx="420" cy="68" rx="40" ry="18"/><ellipse cx="620" cy="130" rx="55" ry="18"/><ellipse cx="660" cy="118" rx="36" ry="16"/></g>
+<rect x="10" y="260" width="80" height="140" fill="#B9C7E6"/><rect x="10" y="260" width="80" height="140" fill="url(#win)"/><rect x="95" y="300" width="60" height="100" fill="#E8C9B5"/><rect x="95" y="300" width="60" height="100" fill="url(#win)"/><rect x="160" y="230" width="90" height="170" fill="#C9DDEF"/><rect x="160" y="230" width="90" height="170" fill="url(#win)"/><rect x="255" y="290" width="70" height="110" fill="#D8CFE8"/><rect x="255" y="290" width="70" height="110" fill="url(#win)"/><rect x="330" y="250" width="80" height="150" fill="#BFD8C8"/><rect x="330" y="250" width="80" height="150" fill="url(#win)"/><rect x="415" y="310" width="60" height="90" fill="#E8C9B5"/><rect x="415" y="310" width="60" height="90" fill="url(#win)"/><rect x="480" y="240" width="85" height="160" fill="#B9C7E6"/><rect x="480" y="240" width="85" height="160" fill="url(#win)"/><rect x="570" y="285" width="70" height="115" fill="#C9DDEF"/><rect x="570" y="285" width="70" height="115" fill="url(#win)"/><rect x="645" y="320" width="60" height="80" fill="#E8D9B5"/><rect x="645" y="320" width="60" height="80" fill="url(#win)"/><rect x="710" y="260" width="80" height="140" fill="#BFD8C8"/><rect x="710" y="260" width="80" height="140" fill="url(#win)"/><rect x="795" y="300" width="65" height="100" fill="#D8CFE8"/><rect x="795" y="300" width="65" height="100" fill="url(#win)"/><rect x="865" y="245" width="85" height="155" fill="#B9C7E6"/><rect x="865" y="245" width="85" height="155" fill="url(#win)"/><rect x="955" y="295" width="70" height="105" fill="#E8C9B5"/><rect x="955" y="295" width="70" height="105" fill="url(#win)"/><rect x="1030" y="255" width="80" height="145" fill="#C9DDEF"/><rect x="1030" y="255" width="80" height="145" fill="url(#win)"/><rect x="1115" y="300" width="75" height="100" fill="#BFD8C8"/><rect x="1115" y="300" width="75" height="100" fill="url(#win)"/>
+<g fill="#8C93A3"><rect x="650" y="232" width="26" height="190"/><rect x="880" y="232" width="26" height="190"/><rect x="1100" y="232" width="26" height="190"/></g>
+<rect x="600" y="214" width="600" height="20" fill="#6F7686"/><rect x="600" y="210" width="600" height="5" fill="#333"/>
+<path d="M610 118H1200" stroke="#1D2433" stroke-width="2"/><g transform="translate(700,210)"><path d="M190 -76L176 -96M190 -76L204 -96M168 -97H212" stroke="#1D2433" stroke-width="3" fill="none"/>
+<rect y="-72" width="420" height="72" rx="24" fill="#F2F2F6" stroke="#1D2433" stroke-width="3"/><rect y="-24" width="420" height="12" fill="#C7461F"/>
+<g fill="#CDE9F6" stroke="#1D2433" stroke-width="2.5"><rect x="16" y="-62" width="34" height="26" rx="4"/><rect x="60" y="-62" width="34" height="26" rx="4"/><rect x="104" y="-62" width="34" height="26" rx="4"/><rect x="148" y="-62" width="34" height="26" rx="4"/><rect x="192" y="-62" width="34" height="26" rx="4"/><rect x="236" y="-62" width="34" height="26" rx="4"/><rect x="280" y="-62" width="34" height="26" rx="4"/><rect x="324" y="-62" width="34" height="26" rx="4"/><rect x="368" y="-62" width="34" height="26" rx="4"/></g><circle cx="404" cy="-30" r="5" fill="#F2B91F"/></g>
+<rect y="400" width="1200" height="20" fill="#C9CDD6"/><rect y="420" width="1200" height="146" fill="#5A6070"/>
+<path d="M0 512H1200" stroke="#fff" stroke-width="4" stroke-dasharray="40 30" stroke-opacity=".8"/>
+<rect x="880" y="518" width="320" height="48" fill="#6BAE75"/><path d="M880 518H1200" stroke="#fff" stroke-width="3" stroke-dasharray="14 10"/>
+<rect x="296" y="318" width="6" height="104" fill="#6F7686"/>
+<path d="M10 354H300" stroke="#1D2433" stroke-width="3"/><path d="M300 326H620M300 338H620" stroke="#1D2433" stroke-width="3"/>
+<g transform="translate(20,468)"><path d="M130 -86L116 -114M130 -86L144 -114" stroke="#1D2433" stroke-width="3" fill="none"/><path d="M106 -115H154" stroke="#1D2433" stroke-width="5" stroke-linecap="round"/>
+<rect y="-84" width="260" height="68" rx="14" fill="#D9473D" stroke="#1D2433" stroke-width="3"/><rect y="-40" width="260" height="10" fill="#FFF3E0"/>
+<g fill="#CDE9F6" stroke="#1D2433" stroke-width="2.5"><rect x="16" y="-74" width="36" height="28" rx="4"/><rect x="64" y="-74" width="36" height="28" rx="4"/><rect x="112" y="-74" width="36" height="28" rx="4"/><rect x="160" y="-74" width="36" height="28" rx="4"/><rect x="208" y="-74" width="36" height="28" rx="4"/></g><rect x="118" y="-78" width="26" height="60" rx="4" fill="#A82E26" stroke="#1D2433" stroke-width="2.5"/><circle cx="40" cy="-10" r="10" fill="#333" stroke="#1D2433" stroke-width="2"/><circle cx="100" cy="-10" r="10" fill="#333" stroke="#1D2433" stroke-width="2"/><circle cx="160" cy="-10" r="10" fill="#333" stroke="#1D2433" stroke-width="2"/><circle cx="220" cy="-10" r="10" fill="#333" stroke="#1D2433" stroke-width="2"/></g><g transform="translate(305,468)"><path d="M120 -94L80 -142M136 -94L96 -130" stroke="#1D2433" stroke-width="4" fill="none" stroke-linecap="round"/>
+<rect y="-94" width="250" height="76" rx="12" fill="#FFFFFF" stroke="#1D2433" stroke-width="3"/><rect y="-46" width="250" height="12" fill="#2E8B57"/>
+<g fill="#CDE9F6" stroke="#1D2433" stroke-width="2.5"><rect x="14" y="-84" width="34" height="26" rx="4"/><rect x="60" y="-84" width="34" height="26" rx="4"/><rect x="106" y="-84" width="34" height="26" rx="4"/><rect x="152" y="-84" width="34" height="26" rx="4"/><rect x="198" y="-84" width="34" height="26" rx="4"/></g><rect x="102" y="-82" width="26" height="62" rx="4" fill="#E1F3E8" stroke="#1D2433" stroke-width="2.5"/>
+<circle cx="55" cy="-16" r="16" fill="#333" stroke="#1D2433" stroke-width="2"/><circle cx="195" cy="-16" r="16" fill="#333" stroke="#1D2433" stroke-width="2"/></g><g transform="translate(580,468)"><rect y="-98" width="270" height="80" rx="12" fill="#F2B91F" stroke="#1D2433" stroke-width="3"/><rect y="-46" width="270" height="8" fill="#1D2433"/>
+<g fill="#CDE9F6" stroke="#1D2433" stroke-width="2.5"><rect x="14" y="-86" width="32" height="30" rx="4"/><rect x="54" y="-86" width="32" height="30" rx="4"/><rect x="94" y="-86" width="32" height="30" rx="4"/><rect x="134" y="-86" width="32" height="30" rx="4"/><rect x="174" y="-86" width="32" height="30" rx="4"/><rect x="220" y="-84" width="34" height="62" rx="4"/></g><rect x="206" y="-84" width="4" height="62" fill="#1D2433"/>
+<circle cx="60" cy="-16" r="17" fill="#333" stroke="#1D2433" stroke-width="2"/><circle cx="210" cy="-16" r="17" fill="#333" stroke="#1D2433" stroke-width="2"/></g>
+<g transform="translate(100,556)"><rect x="68" y="-72" width="34" height="12" rx="3" fill="#fff" stroke="#1D2433" stroke-width="2"/><text x="85" y="-63" font-size="9" font-weight="800" text-anchor="middle" fill="#1D2433" font-family="sans-serif">TAXI</text>
+<path d="M30 -36L48 -60H120L142 -36Z" fill="#F2B91F" stroke="#1D2433" stroke-width="3" stroke-linejoin="round"/><path d="M52 -40L62 -55H82V-40ZM88 -40V-55H116L130 -40Z" fill="#CDE9F6" stroke="#1D2433" stroke-width="2"/>
+<rect y="-38" width="170" height="26" rx="9" fill="#F2B91F" stroke="#1D2433" stroke-width="3"/><rect x="12" y="-30" width="10" height="8" fill="#1D2433"/><rect x="22" y="-22" width="10" height="8" fill="#1D2433"/><rect x="32" y="-30" width="10" height="8" fill="#1D2433"/><rect x="42" y="-22" width="10" height="8" fill="#1D2433"/><rect x="52" y="-30" width="10" height="8" fill="#1D2433"/><rect x="62" y="-22" width="10" height="8" fill="#1D2433"/><rect x="72" y="-30" width="10" height="8" fill="#1D2433"/><rect x="82" y="-22" width="10" height="8" fill="#1D2433"/><rect x="92" y="-30" width="10" height="8" fill="#1D2433"/><rect x="102" y="-22" width="10" height="8" fill="#1D2433"/><rect x="112" y="-30" width="10" height="8" fill="#1D2433"/><rect x="122" y="-22" width="10" height="8" fill="#1D2433"/><rect x="132" y="-30" width="10" height="8" fill="#1D2433"/><rect x="142" y="-22" width="10" height="8" fill="#1D2433"/>
+<circle cx="38" cy="-12" r="13" fill="#333" stroke="#1D2433" stroke-width="2"/><circle cx="134" cy="-12" r="13" fill="#333" stroke="#1D2433" stroke-width="2"/></g><g transform="translate(300,556)"><rect x="72" y="-88" width="40" height="12" rx="3" fill="#2F5DD8" stroke="#1D2433" stroke-width="2"/><text x="92" y="-78" font-size="10" font-weight="800" text-anchor="middle" fill="#fff" font-family="sans-serif">7</text>
+<path d="M0 -18V-62Q0 -78 14 -78H130Q144 -78 152 -64L178 -42Q190 -36 190 -24V-18Z" fill="#FFFFFF" stroke="#1D2433" stroke-width="3" stroke-linejoin="round"/><rect y="-38" width="190" height="10" fill="#2F5DD8"/>
+<g fill="#CDE9F6" stroke="#1D2433" stroke-width="2.5"><rect x="14" y="-66" width="34" height="24" rx="4"/><rect x="56" y="-66" width="34" height="24" rx="4"/><rect x="98" y="-66" width="34" height="24" rx="4"/><path d="M146 -66L168 -44H146Z"/></g>
+<circle cx="40" cy="-14" r="14" fill="#333" stroke="#1D2433" stroke-width="2"/><circle cx="150" cy="-14" r="14" fill="#333" stroke="#1D2433" stroke-width="2"/></g><g transform="translate(520,566)"><rect x="0" y="-88" width="124" height="9" rx="4" fill="#3C4A66"/><rect x="6" y="-79" width="112" height="60" fill="#CDE9F6" fill-opacity=".6" stroke="#1D2433" stroke-width="2"/>
+<rect x="4" y="-80" width="5" height="80" fill="#6F7686"/><rect x="115" y="-80" width="5" height="80" fill="#6F7686"/><rect x="22" y="-30" width="76" height="8" rx="2" fill="#8B5E3C"/><rect x="28" y="-22" width="5" height="22" fill="#6B4028"/><rect x="88" y="-22" width="5" height="22" fill="#6B4028"/>
+<rect x="150" y="-76" width="5" height="76" fill="#6F7686"/><circle cx="152" cy="-76" r="19" fill="#3FA06A" stroke="#1D2433" stroke-width="3"/><text x="152" y="-68" font-size="24" font-weight="800" text-anchor="middle" fill="#fff" font-family="sans-serif">H</text></g>
+<g transform="translate(900,556)" fill="none" stroke="#1D2433" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="-22" r="22"/><circle cx="96" cy="-22" r="22"/>
+<path d="M24 -22H52L70 -60H92L96 -22M52 -22L44 -62M70 -60L52 -22"/><path d="M34 -66H56" stroke-width="6"/><path d="M92 -60L100 -68"/>
+<path d="M50 -68L72 -98" stroke="#2F5DD8" stroke-width="14"/><path d="M72 -96L96 -66" stroke="#2F5DD8" stroke-width="6"/><path d="M52 -66L64 -42L58 -24" stroke="#1D2433" stroke-width="7"/>
+<circle cx="78" cy="-110" r="10" fill="#F4CBA8" stroke="#1D2433" stroke-width="3"/><path d="M68 -112A10 10 0 0 1 88 -112Z" fill="#C7461F" stroke="#1D2433" stroke-width="2"/></g><g transform="translate(1040,556)" stroke="#1D2433" stroke-linecap="round"><circle cx="8" cy="-8" r="8" fill="#333" stroke-width="2"/><circle cx="46" cy="-8" r="8" fill="#333" stroke-width="2"/>
+<rect x="6" y="-22" width="42" height="8" rx="3" fill="#F2B91F" stroke-width="2.5"/><path d="M46 -20L40 -80M30 -82H52" stroke-width="5" fill="none"/></g><g transform="translate(1090,556)" stroke="#1D2433" stroke-linecap="round"><circle cx="8" cy="-8" r="8" fill="#333" stroke-width="2"/><circle cx="46" cy="-8" r="8" fill="#333" stroke-width="2"/>
+<rect x="6" y="-22" width="42" height="8" rx="3" fill="#F2B91F" stroke-width="2.5"/><path d="M46 -20L40 -80M30 -82H52" stroke-width="5" fill="none"/></g><g transform="translate(1140,556)" stroke="#1D2433" stroke-linecap="round"><circle cx="8" cy="-8" r="8" fill="#333" stroke-width="2"/><circle cx="46" cy="-8" r="8" fill="#333" stroke-width="2"/>
+<rect x="6" y="-22" width="42" height="8" rx="3" fill="#F2B91F" stroke-width="2.5"/><path d="M46 -20L40 -80M30 -82H52" stroke-width="5" fill="none"/></g>
+<rect y="566" width="1200" height="24" fill="#C9CDD6"/>
+<rect y="590" width="1200" height="210" fill="#A27B58"/><ellipse cx="60" cy="620" rx="10" ry="6" fill="#8A6542"/><ellipse cx="300" cy="780" rx="12" ry="7" fill="#8A6542"/><ellipse cx="520" cy="605" rx="8" ry="5" fill="#8A6542"/><ellipse cx="700" cy="790" rx="14" ry="8" fill="#8A6542"/><ellipse cx="930" cy="610" rx="10" ry="6" fill="#8A6542"/><ellipse cx="1130" cy="780" rx="12" ry="7" fill="#8A6542"/><ellipse cx="1000" cy="790" rx="8" ry="5" fill="#8A6542"/><ellipse cx="180" cy="790" rx="9" ry="5" fill="#8A6542"/><ellipse cx="820" cy="602" rx="7" ry="4" fill="#8A6542"/>
+<rect x="40" y="622" width="1120" height="150" rx="42" fill="#2B3347"/>
+<g fill="#FFE9A8" fill-opacity=".7"><rect x="150" y="630" width="60" height="6" rx="3"/><rect x="450" y="630" width="60" height="6" rx="3"/><rect x="750" y="630" width="60" height="6" rx="3"/><rect x="1020" y="630" width="60" height="6" rx="3"/></g>
+<rect x="40" y="736" width="1120" height="36" fill="#9AA3B5"/><rect x="40" y="738" width="1120" height="4" fill="#F2B91F"/>
+<g transform="translate(170,736)"><rect y="-76" width="580" height="76" rx="22" fill="#2F5DD8" stroke="#1D2433" stroke-width="3"/><rect y="-28" width="580" height="10" fill="#fff"/>
+<g fill="#FFE9A8" stroke="#1D2433" stroke-width="2.5"><rect x="20" y="-62" width="52" height="30" rx="5"/><rect x="88" y="-62" width="52" height="30" rx="5"/><rect x="156" y="-62" width="52" height="30" rx="5"/><rect x="224" y="-62" width="52" height="30" rx="5"/><rect x="292" y="-62" width="52" height="30" rx="5"/><rect x="360" y="-62" width="52" height="30" rx="5"/><rect x="428" y="-62" width="52" height="30" rx="5"/><rect x="496" y="-62" width="52" height="30" rx="5"/></g><circle cx="562" cy="-22" r="5" fill="#F2B91F"/></g>
+<path d="M70 590L126 590L210 640L154 640Z" fill="#2B3347"/><path d="M86 600L142 600M98 610L154 610M110 620L166 620M122 630L178 630" stroke="#9AA3B5" stroke-width="2"/>
+<rect x="35" y="526" width="5" height="40" fill="#6F7686"/><rect x="14" y="488" width="46" height="44" rx="8" fill="#2F5DD8" stroke="#1D2433" stroke-width="3"/><text x="37" y="520" font-size="32" font-weight="800" text-anchor="middle" fill="#fff" font-family="sans-serif">M</text></svg>
+        <img id="scene-img" alt="Querschnitt einer Stadt mit allen Verkehrsmitteln" hidden>
+        <div id="spots"></div>
+      </div>
+    </div>
+    <p class="hint small vscroll-hint">Auf dem Handy: Bild nach links und rechts schieben.</p></div>
+    <div class="vcard" id="vcard" hidden tabindex="-1">
+      <button class="vclose" id="vclose" type="button" aria-label="Schließen">×</button>
+      <div class="vtop"><button class="say" id="v-say" type="button" aria-label="Wort anhören"></button><div><div class="vword"><span class="art" id="v-art"></span> <span id="v-word"></span><span class="alt" id="v-alt"></span></div><div class="forms" id="v-pl"></div><div class="ru" id="v-ru" lang="ru"></div></div></div>
+      <div class="vfact"><span class="lbl">Wusstest du?</span> <button class="ex" id="v-fact" type="button" lang="de"></button><div class="rus" id="v-factru" lang="ru" style="color:var(--muted);font-size:15px"></div></div>
+      <div class="vsent"><div class="q" id="v-q"></div><div class="a"><span id="v-sent"></span> <button class="say" id="v-sent-say" type="button" aria-label="Satz anhören" style="width:38px;height:38px;vertical-align:middle"></button></div></div>
+    </div>
+    <div class="vplace" id="vplace">Tippe auf einen Kreis im Bild: Hier erscheinen Wort, Übersetzung und ein Fakt.</div></div>
+    <div class="vedit" id="vedit" hidden><b>Bearbeiten-Modus:</b> Kreise mit der Maus oder dem Finger verschieben. Danach den Text kopieren und mir schicken.
+      <textarea id="vjson" rows="7" readonly></textarea>
+      <div class="vrow" style="margin-top:8px"><button class="btn main" id="vcopy" type="button">Kopieren</button><button class="btn" id="vreset" type="button">Zurücksetzen</button></div></div>
   </section>
 </main>
 <footer>Keine Anmeldung, keine Daten: Alles bleibt in deinem Browser. Tipp: Auf dem Handy Ton einschalten.</footer>
@@ -541,9 +686,135 @@ document.addEventListener('keydown',e=>{
   else if(e.key==='ArrowRight'){e.preventDefault();answer(true)}
 });
 
+
+/* ---------- Verkehrsmittel ---------- */
+const DATV={der:'dem',die:'der',das:'dem'};
+const VK=[
+{id:'ubahn',art:'die',w:'U-Bahn',pl:'die U-Bahnen',ru:'метро',q:'Womit fährst du?',pre:'Ich fahre mit',post:'U-Bahn.',fact:'Die U-Bahn fährt oft unter der Erde, aber nicht nur: In Berlin fährt sie stellenweise auch auf Brücken über der Straße. In Minsk fährt sie seit 1984.',factRu:'Метро часто ездит под землёй, но не только: в Берлине местами оно идёт по эстакадам над улицей. В Минске метро работает с 1984 года.',x:38.3,y:87.3},
+{id:'sbahn',art:'die',w:'S-Bahn',pl:'die S-Bahnen',ru:'городская электричка',q:'Womit fährst du?',pre:'Ich fahre mit',post:'S-Bahn.',fact:'Die S-Bahn verbindet die Stadt mit den Vororten. Sie fährt auf Schienen, oft oben auf Brücken, manchmal auch im Tunnel.',factRu:'S-Bahn соединяет город с пригородами. Она ходит по рельсам, часто по эстакадам, иногда и в тоннеле.',x:75.8,y:22},
+{id:'tram',art:'die',w:'Straßenbahn',alt:'auch: die Tram',pl:'die Straßenbahnen',ru:'трамвай',q:'Womit fährst du?',pre:'Ich fahre mit',post:'Straßenbahn.',fact:'Die Straßenbahn fährt auf Schienen mitten in der Straße. Ihren Strom bekommt sie aus einem Kabel über der Straße.',factRu:'Трамвай едет по рельсам прямо по улице. Электричество он получает от провода над улицей.',x:12.5,y:52.9},
+{id:'obus',art:'der',w:'Obus',pl:'die Obusse',ru:'троллейбус',q:'Womit fährst du?',pre:'Ich fahre mit',post:'Obus.',fact:'Der Obus sieht aus wie ein Bus, fährt aber mit Strom aus zwei Kabeln über der Straße. Schienen braucht er nicht.',factRu:'Троллейбус похож на автобус, но едет на электричестве от двух проводов над улицей. Рельсы ему не нужны.',x:35.8,y:51.5},
+{id:'bus',art:'der',w:'Bus',pl:'die Busse',ru:'автобус',q:'Womit fährst du?',pre:'Ich fahre mit',post:'Bus.',fact:'Der Bus hält an jeder Haltestelle. Viele Städte kaufen heute Elektrobusse: Sie sind leiser als Busse mit Diesel.',factRu:'Автобус останавливается на каждой остановке. Сегодня многие города покупают электробусы: они тише дизельных.',x:59.6,y:51.3},
+{id:'taxi',art:'das',w:'Taxi',pl:'die Taxis',ru:'такси',q:'Womit fährst du?',pre:'Ich fahre mit',post:'Taxi.',fact:'Das Taxi bringt dich genau dorthin, wohin du willst. Dafür kostet es mehr als Bus oder Bahn. Man kann es per Telefon oder per App bestellen.',factRu:'Такси привезёт тебя точно туда, куда ты хочешь. Зато оно дороже автобуса или метро. Его можно заказать по телефону или через приложение.',x:15.4,y:65.8},
+{id:'linientaxi',art:'das',w:'Linientaxi',pl:'die Linientaxis',ru:'маршрутное такси',q:'Womit fährst du?',pre:'Ich fahre mit',post:'Linientaxi.',fact:'Das Linientaxi ist kleiner als ein Bus und fährt immer dieselbe Strecke. Oft hält es auch auf Wunsch zwischen den Haltestellen.',factRu:'Маршрутка меньше автобуса и ездит по одному маршруту. Часто она останавливается по просьбе и между остановками.',x:32.9,y:64.5},
+{id:'haltestelle',art:'die',w:'Haltestelle',pl:'die Haltestellen',ru:'остановка',q:'Wo wartest du?',pre:'Ich warte an',post:'Haltestelle.',fact:'An der Haltestelle wartest du auf Bus, Obus oder Straßenbahn. Den Fahrplan findest du oft direkt am Schild.',factRu:'На остановке ты ждёшь автобус, троллейбус или трамвай. Расписание часто висит прямо на знаке.',x:48.5,y:65.3},
+{id:'fahrrad',art:'das',w:'Fahrrad',pl:'die Fahrräder',ru:'велосипед',q:'Womit fährst du?',pre:'Ich fahre mit',post:'Fahrrad.',fact:'Mit dem Fahrrad brauchst du keinen Fahrschein und kein Benzin. In vielen Städten gibt es eigene Fahrradwege.',factRu:'На велосипеде не нужен ни билет, ни бензин. Во многих городах есть отдельные велодорожки.',x:80,y:62},
+{id:'roller',art:'der',w:'Elektroroller',pl:'die Elektroroller',ru:'электросамокат',q:'Womit fährst du?',pre:'Ich fahre mit',post:'Elektroroller.',fact:'Elektroroller kann man in vielen Städten per App mieten. Fahre vorsichtig und achte auf die Fußgänger!',factRu:'Электросамокаты во многих городах можно арендовать через приложение. Езди осторожно и смотри на пешеходов!',x:93.2,y:64.5}
+];
+const EDIT=/[?&]edit(?:&|$|=)/.test(location.search);
+const IMGPOS={ubahn:{x:51.7,y:84.5},sbahn:{x:66,y:20},tram:{x:20.2,y:46.9},obus:{x:55.2,y:47.3},bus:{x:84.7,y:45},taxi:{x:26.4,y:57.5},linientaxi:{x:50,y:56.8},haltestelle:{x:66,y:58.1},fahrrad:{x:80.5,y:56.5},roller:{x:93.5,y:62.5}};
+let vSel=-1,vSeen=new Set(),vg=null,vpos={},vMode='svg';
+function vLoadPos(){
+  VK.forEach(v=>vpos[v.id]=vMode==='img'?{...IMGPOS[v.id]}:{x:v.x,y:v.y});
+  if(EDIT){try{const sv=JSON.parse(localStorage.getItem('k2-spots-'+vMode)||'null');if(sv)Object.keys(sv).forEach(k=>{if(vpos[k])vpos[k]=sv[k]})}catch(e){}}
+}
+function vUpdEdit(){$('#vjson').value=JSON.stringify(vpos)}
+function vLabels(){
+  $$('.spot').forEach((b,i)=>{const v=VK[i];b.setAttribute('aria-label',(vg&&!vg.done)?`Verkehrsmittel ${i+1}`:`${v.art} ${v.w}: Info anzeigen`)});
+}
+function vSync(){
+  $$('.spot').forEach((b,i)=>{b.setAttribute('aria-pressed',String(i===vSel));b.classList.toggle('seen',vSeen.has(i));b.firstChild.textContent=vSeen.has(i)&&i!==vSel?'✓':'?'});
+  $('#vseen').textContent=`Entdeckt: ${vSeen.size} von ${VK.length}`;
+}
+function vDrag(b,v){
+  b.classList.add('drag');b.style.touchAction='none';
+  b.addEventListener('pointerdown',e=>{
+    e.preventDefault();b.setPointerCapture(e.pointerId);
+    const r=$('#scene-inner').getBoundingClientRect();
+    const mv=ev=>{const x=Math.min(100,Math.max(0,(ev.clientX-r.left)/r.width*100)),y=Math.min(100,Math.max(0,(ev.clientY-r.top)/r.height*100));vpos[v.id]={x:+x.toFixed(1),y:+y.toFixed(1)};b.style.left=x+'%';b.style.top=y+'%';vUpdEdit()};
+    const up=()=>{b.removeEventListener('pointermove',mv);b.removeEventListener('pointerup',up);try{localStorage.setItem('k2-spots-'+vMode,JSON.stringify(vpos))}catch(e){}};
+    b.addEventListener('pointermove',mv);b.addEventListener('pointerup',up);
+  });
+}
+function buildSpots(){
+  vLoadPos();const box=$('#spots');box.innerHTML='';
+  VK.forEach((v,i)=>{
+    const b=document.createElement('button');b.type='button';b.className='spot';
+    b.style.left=vpos[v.id].x+'%';b.style.top=vpos[v.id].y+'%';
+    b.innerHTML='<span aria-hidden="true">?</span>';b.setAttribute('aria-pressed','false');
+    if(EDIT)vDrag(b,v);else b.addEventListener('click',()=>vPick(i));
+    box.append(b);
+  });
+  vLabels();vSync();
+  if(EDIT){$('#vedit').hidden=false;vUpdEdit()}
+}
+function vInfo(i){
+  const v=VK[i];vSel=i;vSeen.add(i);
+  $('#v-art').textContent=v.art;$('#v-art').className='art '+v.art;
+  $('#v-word').textContent=v.w;$('#v-alt').textContent=v.alt?`(${v.alt})`:'';
+  $('#v-pl').textContent='Pl.: '+v.pl;$('#v-ru').textContent=v.ru;
+  $('#v-fact').textContent=v.fact;$('#v-factru').textContent=v.factRu;
+  $('#v-q').textContent=v.q;
+  $('#v-sent').innerHTML=`${esc(v.pre)} <span class="dat">${DATV[v.art]}</span> ${esc(v.post)}`;
+  const c=$('#vcard');c.hidden=false;
+  if(getComputedStyle(c).position==='fixed'){
+    requestAnimationFrame(()=>{const mb=$$('.spot')[i].getBoundingClientRect(),top=c.getBoundingClientRect().top;
+      if(mb.bottom>top-12)window.scrollBy({top:mb.bottom-top+70,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+      else if(mb.top<70)window.scrollBy({top:mb.top-90,behavior:'auto'})});
+  }
+  if(getComputedStyle(c).position==='relative')c.scrollIntoView({block:'nearest',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+  vSync();
+}
+function vSayWord(i){const v=VK[i];speak(`${v.art} ${v.w}, ${v.pl}`)}
+function vSayRound(){if(vg&&!vg.done){const v=VK[vg.order[vg.i]];speak(`${v.art} ${v.w}`)}}
+function vCls(){$('#verkehr').classList.toggle('gaming',!!(vg&&!vg.done))}
+function vFeed(t,cls){const f=$('#vfeed');f.textContent=t;f.className='status'+(cls?' '+cls:'')}
+function vStartGame(){
+  vg={order:shuffle(VK.map((_,i)=>i)),i:0,ok:0,tries:0,wait:false,done:false};
+  $('#vgame').hidden=false;$('#vstart').hidden=true;vLabels();vCls();vRound();
+}
+function vRound(){
+  if(vg.i>=VK.length){vEnd();return}
+  const v=VK[vg.order[vg.i]];vg.tries=0;vg.wait=false;vSel=-1;
+  $('#vprompt').innerHTML=`Finde: <span class="art ${v.art}">${v.art}</span> ${esc(v.w)} <span class="hint" style="font-size:.55em;font-weight:700">(${vg.i+1} / ${VK.length})</span>`;
+  $('#vnext').hidden=true;$('#vhear').hidden=false;$('#vcard').hidden=true;
+  vFeed('Tippe auf das richtige Verkehrsmittel.');vSync();
+}
+function vEnd(){
+  vg.done=true;vSel=-1;vLabels();vCls();
+  $('#vprompt').textContent=`Geschafft! ${vg.ok} von ${VK.length} gleich beim ersten Versuch.`;
+  $('#vhear').hidden=true;$('#vnext').hidden=false;$('#vnext').textContent='Noch einmal';vFeed('');vSync();
+}
+function vQuit(){vg=null;vCls();$('#vgame').hidden=true;$('#vstart').hidden=false;vLabels();vSel=-1;vSync()}
+function vPick(i){
+  if(!vg||vg.done||vg.wait){vInfo(i);return}
+  const t=vg.order[vg.i];
+  if(i===t){
+    if(vg.tries===0)vg.ok++;
+    vg.wait=true;vFeed('Richtig!','good');vInfo(i);
+    $('#vnext').hidden=false;$('#vnext').textContent=(vg.i+1<VK.length)?'Weiter':'Ergebnis';$('#vhear').hidden=true;
+  }else{
+    vg.tries++;const w=VK[i],b=$$('.spot')[i];
+    vFeed(`Nicht ganz: Das ist ${w.art} ${w.w}. Suche weiter!`,'warn');
+    b.classList.remove('shake');void b.offsetWidth;b.classList.add('shake');
+  }
+}
+$('#vstart').addEventListener('click',vStartGame);
+$('#vquit').addEventListener('click',vQuit);
+new MutationObserver(()=>$('#verkehr').classList.toggle('sheet',!$('#vcard').hidden)).observe($('#vcard'),{attributes:true,attributeFilter:['hidden']});
+$('#vclose').addEventListener('click',()=>{$('#vcard').hidden=true;vSel=-1;vSync()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#vcard').hidden&&$('#verkehr').classList.contains('active')){$('#vcard').hidden=true;vSel=-1;vSync()}});
+$('#vhear').addEventListener('click',vSayRound);
+$('#vnext').addEventListener('click',()=>{if(vg.done){vStartGame();return}vg.i++;vRound()});
+$('#v-say').innerHTML=ICON;$('#v-sent-say').innerHTML=ICON;
+$('#v-say').addEventListener('click',()=>{if(vSel>=0)vSayWord(vSel)});
+$('#v-fact').addEventListener('click',()=>{if(vSel>=0)speak(VK[vSel].fact)});
+$('#v-sent-say').addEventListener('click',()=>{if(vSel>=0){const v=VK[vSel];speak(`${v.pre} ${DATV[v.art]} ${v.post}`)}});
+$('#vcopy').addEventListener('click',()=>{const t=$('#vjson');t.select();try{navigator.clipboard.writeText(t.value)}catch(e){document.execCommand('copy')}});
+$('#vreset').addEventListener('click',()=>{try{localStorage.removeItem('k2-spots-'+vMode)}catch(e){}buildSpots()});
+/* Szenenbild: eigenes Bild (verkehr.webp / .jpg / .png) ersetzt die gezeichnete Szene */
+(function(){
+  const img=$('#scene-img'),names=['verkehr.webp','verkehr.jpg','verkehr.png'];let k=0;
+  img.onload=()=>{if(img.naturalWidth){$('#scene-inner').style.aspectRatio=img.naturalWidth+'/'+img.naturalHeight;img.hidden=false;$('#scene-svg').hidden=true;vMode='img';$('#verkehr').classList.toggle('portrait',img.naturalHeight>img.naturalWidth*1.1);buildSpots()}};
+  img.onerror=()=>{k++;if(k<names.length)img.src=names[k]};
+  img.src=names[0];
+})();
+buildSpots();
+
 /* ---------- Tabs ---------- */
 $$('.stamp').forEach(t=>t.addEventListener('click',()=>{
   if('speechSynthesis' in window)speechSynthesis.cancel();
+  document.body.dataset.tab=t.dataset.tab;
   $$('.stamp').forEach(x=>x.setAttribute('aria-selected',String(x===t)));
   $$('.panel').forEach(s=>s.classList.toggle('active',s.id===t.dataset.tab));
 }));
