@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Wortschatz: Kapitel 2</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏙️</text></svg>">
+<style>
+:root{
+  --paper:#FAFAF7; --card:#FFFFFF; --ink:#1E2A5A; --muted:#4D5675;
+  --blue:#2F5DD8; --blue-l:#E4EBFB; --coral:#C7461F; --coral-l:#FCE6DF; --line:#D5DAE6;
+  --font:'Avenir Next Rounded','Nunito','Trebuchet MS','Segoe UI',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.5;padding-bottom:env(safe-area-inset-bottom,0px)}
+.airmail{height:12px;background:repeating-linear-gradient(-45deg,var(--blue) 0 16px,#fff 16px 24px,var(--coral) 24px 40px,#fff 40px 48px)}
+header,nav,.filters,main{max-width:1000px;margin:0 auto;padding-left:20px;padding-right:20px}
+header{padding-top:calc(26px + env(safe-area-inset-top,0px));padding-bottom:6px}
+h1{margin:0;font-size:clamp(30px,5vw,44px);line-height:1.1;font-weight:800;letter-spacing:-.5px}
+.lead{margin:6px 0 0;color:var(--muted)}
+nav{padding-top:14px;padding-bottom:4px;display:flex;flex-wrap:wrap;gap:10px}
+.stamp{border:0;cursor:pointer;padding:7px;font:inherit;color:inherit;background:radial-gradient(circle,transparent 3.5px,#fff 4px) -6px -6px/12px 12px;filter:drop-shadow(0 1px 1px rgba(30,42,90,.25));transition:transform .15s}
+.stamp span{display:block;background:#fff;border:2px solid var(--ink);padding:8px 16px;font-weight:800;font-size:16px;white-space:nowrap}
+.stamp[aria-selected="true"]{transform:rotate(-2deg)}
+.stamp[aria-selected="true"] span{background:var(--blue);border-color:var(--blue);color:#fff}
+.stamp:focus-visible,.cat:focus-visible,.btn:focus-visible,.say:focus-visible,.ex:focus-visible,.fc:focus-visible,.segb:focus-visible,#q:focus-visible,#voice:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+
+.filters{padding-top:12px;padding-bottom:4px;display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;justify-content:space-between}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.cat{font:inherit;font-weight:700;font-size:15px;border:2px solid var(--ink);background:#fff;color:var(--ink);border-radius:999px;padding:8px 14px;min-height:44px;cursor:pointer}
+.cat[aria-pressed="true"]{background:var(--ink);color:#fff}
+.voice{font-weight:700;font-size:15px}
+.voice summary{cursor:pointer;min-height:44px;display:flex;align-items:center;padding:0 4px}
+.voice summary::after{content:"▾";margin-left:6px}
+.voice summary:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+.voice select{margin-top:2px}
+#voice{font:inherit;font-size:15px;max-width:230px;padding:8px;border:2px solid var(--ink);border-radius:10px;background:#fff;color:var(--ink);min-height:44px}
+.msg{max-width:1000px;margin:0 auto;padding:0 20px;font-weight:700;min-height:0}
+.msg.warn{color:var(--coral);padding-top:6px}
+main{padding-top:10px;padding-bottom:48px}
+.panel{display:none}
+.panel.active{display:block}
+.btn{font:inherit;font-weight:800;border:2px solid var(--ink);background:#fff;color:var(--ink);border-radius:10px;padding:10px 18px;cursor:pointer;min-height:44px}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn.main{background:var(--ink);color:#fff}
+.hint{color:var(--muted)}
+
+/* Dictionary */
+.toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin:8px 0 6px}
+#q{font:inherit;font-size:17px;flex:1 1 240px;max-width:420px;border:2px solid var(--ink);border-radius:12px;padding:10px 14px;min-height:46px;background:#fff;color:var(--ink)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.grp h3{margin:26px 0 4px;font-size:22px;display:flex;align-items:center;gap:10px;border-bottom:3px solid var(--ink);padding-bottom:4px}
+.grp h3 .n{font-size:14px;font-weight:800;background:var(--blue-l);color:var(--ink);border-radius:999px;padding:1px 10px}
+.entries{list-style:none;margin:0;padding:0;column-count:1;column-gap:36px}
+@media (min-width:860px){.entries{column-count:2}}
+.entry{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--line);break-inside:avoid}
+.say{flex:none;width:44px;height:44px;border-radius:50%;border:2px solid var(--ink);background:#fff;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+.say:hover{background:var(--blue-l)}
+.body{min-width:0}
+.line{font-size:20px;line-height:1.3}
+.w{font-weight:800}
+.art{display:inline-block;padding:0 9px;border-radius:999px;font-weight:800;font-size:.8em;border:2px solid currentColor;margin-right:4px;line-height:1.35}
+.art.der{color:#2448B8;background:#E4EBFB}
+.art.die{color:#B23C17;background:#FCE6DF}
+.art.das{color:#1A6E43;background:#E1F3E8}
+.tag{display:inline-block;font-size:12px;font-weight:800;color:#B23C17;background:var(--coral-l);border-radius:6px;padding:1px 8px;vertical-align:middle;margin-left:6px}
+.forms{color:var(--muted);font-size:15px}
+.ru{font-size:17px}
+.ex{display:block;font:inherit;font-size:15px;font-style:italic;color:var(--muted);background:none;border:0;padding:6px 0;text-align:left;cursor:pointer;min-height:40px}
+.ex:hover{color:var(--ink);text-decoration:underline dotted}
+
+/* Cards */
+.opts{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin:8px 0 12px}
+.seg{display:inline-flex;border:2px solid var(--ink);border-radius:12px;overflow:hidden}
+.segb{font:inherit;font-weight:800;font-size:15px;border:0;background:#fff;color:var(--ink);padding:10px 14px;min-height:44px;cursor:pointer}
+.segb+.segb{border-left:2px solid var(--ink)}
+.segb[aria-pressed="true"]{background:var(--ink);color:#fff}
+.chk{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px;min-height:44px}
+.chk input{width:22px;height:22px}
+.prog{display:flex;align-items:center;gap:14px;margin:4px 0 16px}
+.bar{flex:1;height:14px;border-radius:999px;background:var(--blue-l);overflow:hidden}
+.bar span{display:block;height:100%;width:0;background:var(--blue);transition:width .3s}
+#ptxt{font-weight:700;font-size:15px;white-space:nowrap}
+.stage{perspective:1100px;max-width:600px;margin:0 auto}
+.fc{display:grid;transform-style:preserve-3d;transition:transform .5s;cursor:pointer;border-radius:22px;-webkit-tap-highlight-color:transparent}
+.fc.flip{transform:rotateY(180deg)}
+.face{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;min-height:310px;border-radius:22px;padding:34px 22px 22px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px;position:relative;overflow:hidden;border:3px solid var(--ink)}
+.face::before{content:"";position:absolute;left:0;right:0;top:0;height:12px;background:repeating-linear-gradient(-45deg,var(--blue) 0 14px,#fff 14px 20px,var(--coral) 20px 34px,#fff 34px 40px)}
+.front{background:#fff}
+.back{background:var(--blue-l);transform:rotateY(180deg)}
+.type{font-size:13px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted)}
+.big{font-size:clamp(30px,8vw,46px);font-weight:800;line-height:1.15;overflow-wrap:anywhere}
+.big .art{font-size:.55em;vertical-align:middle}
+.big.small{font-size:clamp(24px,6vw,34px)}
+.sec{font-size:22px;font-weight:700}
+.sec .art{font-size:.75em}
+.formsbig{font-size:21px;font-weight:800;color:#B23C17;background:var(--coral-l);border-radius:12px;padding:6px 14px}
+.exs{font-size:18px;font-style:italic;color:var(--ink);max-width:460px}
+.tools{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin:16px 0 6px}
+.tip{text-align:center;color:var(--muted);margin:4px 0 10px;min-height:1.5em}
+.ans{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:600px;margin:0 auto}
+.ans .btn{display:flex;flex-direction:column;align-items:center;gap:0;padding:12px 10px;font-size:19px;line-height:1.2}
+.ans small{font-weight:600;font-size:13px;color:inherit;opacity:.85}
+.ans .again{border-color:var(--coral);color:var(--coral)}
+.ans .good{background:var(--blue);border-color:var(--blue);color:#fff}
+.done{max-width:600px;margin:10px auto;text-align:center;background:#fff;border:3px solid var(--ink);border-radius:22px;padding:28px 20px}
+.done h2{margin:0 0 6px;font-size:30px}
+.missed{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:12px 0 18px}
+.missed span{background:var(--coral-l);border:2px solid var(--coral);border-radius:999px;padding:4px 12px;font-weight:700;font-size:15px}
+.done .row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+footer{max-width:1000px;margin:0 auto;padding:0 20px 32px;color:var(--muted);font-size:14px}
+@media (max-width:640px){
+  .stamp span{padding:7px 12px;font-size:15px}
+  .face{min-height:240px;padding:28px 14px 14px;gap:8px}
+  .opts{gap:6px 12px;margin:4px 0 8px}
+  .seg{width:100%}.segb{flex:1;padding:8px 6px;font-size:14px;min-height:44px}
+  .opts .btn{padding:8px 14px;font-size:15px}
+  .prog{margin:2px 0 10px}
+  .tools{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0 2px}
+  .tools .btn{padding:8px 6px;font-size:15px}
+  .tip{margin:2px 0 8px;font-size:15px}
+  .ans .btn{padding:8px 10px;font-size:18px}
+  .filters{padding-top:8px}
+  .cat{padding:6px 12px;font-size:14px}
+  header{padding-top:calc(16px + env(safe-area-inset-top,0px))}
+  nav{padding-top:8px}
+  #voice{max-width:100%;width:100%}
+  .chips{flex-wrap:nowrap;overflow-x:auto;margin:0 -20px;padding:2px 20px 8px;width:calc(100% + 40px);scrollbar-width:thin}
+  .cat{flex:none}
+  .filters{flex-direction:column;align-items:stretch;gap:0}
+}
+@media (prefers-reduced-motion:reduce){.fc,.stamp,.bar span{transition:none}}
+@media print{
+  body{background:#fff;font-size:12pt}
+  .airmail,nav,.filters,.msg,#cards,.toolbar button,.say,footer{display:none!important}
+  .toolbar{display:none!important}
+  #dict{display:block!important}
+  .entries{column-count:2!important;column-gap:20px}
+  .grp h3{margin-top:14px;font-size:15pt}
+  header{padding:0 0 6px}
+  h1{font-size:24pt}
+  .entry{padding:6px 0}
+  .line{font-size:13pt}
+  .ex{font-size:10pt;padding:2px 0;min-height:0;color:#333}
+  .grp h3{break-after:avoid}
+  .art,.tag,.formsbig{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+<div class="airmail" aria-hidden="true"></div>
+<header>
+  <h1>Wortschatz</h1>
+  <p class="lead">Kapitel 2: Das Leben in der Stadt und auf dem Lande</p>
+</header>
+
+<nav role="tablist" aria-label="Ansicht">
+  <button class="stamp" role="tab" aria-selected="true" data-tab="dict"><span>Wörterbuch</span></button>
+  <button class="stamp" role="tab" aria-selected="false" data-tab="cards"><span>Karten</span></button>
+</nav>
+
+<div class="filters">
+  <div class="chips" role="group" aria-label="Thema wählen"></div>
+  <details class="voice"><summary>Stimme wählen</summary><select id="voice" aria-label="Stimme"></select></details>
+</div>
+<p class="msg" id="tts-msg" role="status"></p>
+
+<main>
+  <section id="dict" class="panel active" role="tabpanel">
+    <div class="toolbar">
+      <label class="sr" for="q">Suchen</label>
+      <input id="q" type="search" placeholder="Suchen: deutsches Wort oder Übersetzung" autocomplete="off">
+      <span id="dict-count" class="hint"></span>
+      <button class="btn" id="print" type="button">Drucken</button>
+    </div>
+    <div id="dict-list"></div>
+  </section>
+
+  <section id="cards" class="panel" role="tabpanel">
+    <div class="opts">
+      <div class="seg" role="group" aria-label="Richtung">
+        <button class="segb" type="button" data-dir="de" aria-pressed="true">Deutsch → Russisch</button>
+        <button class="segb" type="button" data-dir="ru" aria-pressed="false">Russisch → Deutsch</button>
+      </div>
+      <label class="chk"><input type="checkbox" id="hideart"> Artikel erraten</label>
+      <button class="btn" id="reshuffle" type="button">Neu mischen</button>
+    </div>
+    <div class="prog"><div class="bar" id="pbar" role="progressbar" aria-label="Fortschritt" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="pfill"></span></div><span id="ptxt"></span></div>
+
+    <div id="play">
+      <div class="stage">
+        <div class="fc" id="fc" role="button" tabindex="0" aria-label="Karte umdrehen">
+          <div class="face front" id="ffront"></div>
+          <div class="face back" id="fback"></div>
+        </div>
+      </div>
+      <div class="tools">
+        <button class="btn" id="c-word" type="button">Wort anhören</button>
+        <button class="btn" id="c-ex" type="button">Satz anhören</button>
+      </div>
+      <p class="tip" id="tip">Tippe auf die Karte, um sie umzudrehen.</p>
+      <div class="ans">
+        <button class="btn again" id="a-no" type="button"><b>Nochmal</b><small lang="ru">ещё раз</small></button>
+        <button class="btn good" id="a-yes" type="button"><b>Gewusst</b><small lang="ru">знаю</small></button>
+      </div>
+    </div>
+
+    <div class="done" id="done" hidden>
+      <h2>Geschafft!</h2>
+      <p id="done-txt"></p>
+      <div class="missed" id="missed"></div>
+      <div class="row">
+        <button class="btn main" id="again-missed" type="button" hidden>Schwierige Wörter üben</button>
+        <button class="btn" id="again-all" type="button">Alles noch einmal</button>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>Keine Anmeldung, keine Daten: Alles bleibt in deinem Browser. Tipp: Auf dem Handy Ton einschalten.</footer>
+
+<script>
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const ICON='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>';
+
+/* ---------- Wortschatz: [Thema, Wort, Formen, Übersetzung, Beispielsatz] ---------- */
+const RAW=[
+/* Orte */
+["orte","die Großstadt","die Großstädte","большой город","Berlin ist eine Großstadt mit vielen Museen."],
+["orte","die Kleinstadt","die Kleinstädte","небольшой город","In einer Kleinstadt kennt fast jeder jeden."],
+["orte","die Hauptstadt","die Hauptstädte","столица","Minsk ist die Hauptstadt von Belarus."],
+["orte","die Heimatstadt","die Heimatstädte","родной город","Meine Heimatstadt liegt am Fluss."],
+["orte","der Wohnort","die Wohnorte","место жительства","Mein Wohnort ist klein, aber schön."],
+["orte","das Zentrum","die Zentren","центр","Im Zentrum gibt es viele Cafés."],
+["orte","das Dorf","die Dörfer","деревня","In unserem Dorf wohnen nur 300 Menschen."],
+["orte","der Einwohner","die Einwohner","житель","Die Stadt hat 20 000 Einwohner."],
+["orte","die Lage","—","расположение","Die Lage am See ist wunderbar."],
+["orte","der See","die Seen","озеро","Im Sommer schwimmen wir im See."],
+["orte","der Fluss","die Flüsse","река","Der Fluss fließt durch die Stadt."],
+["orte","das Ufer","die Ufer","берег","Am Ufer gibt es einen Park."],
+["orte","die Landschaft","die Landschaften","пейзаж, природа","Die Landschaft hier ist sehr schön."],
+["orte","der Bahnhof","die Bahnhöfe","вокзал","Der Bahnhof ist nicht weit vom Zentrum."],
+["orte","die Bibliothek","die Bibliotheken","библиотека","Ich leihe Bücher in der Bibliothek aus."],
+["orte","das Freibad","die Freibäder","открытый бассейн","Im Sommer gehen wir ins Freibad."],
+["orte","das Denkmal","die Denkmäler","памятник","Vor dem Theater steht ein Denkmal."],
+["orte","die Sehenswürdigkeit","die Sehenswürdigkeiten","достопримечательность","Die Stadt hat viele Sehenswürdigkeiten."],
+["orte","das Gebäude","die Gebäude","здание","Das alte Gebäude ist eine Schule."],
+["orte","das Hochhaus","die Hochhäuser","высотный дом, многоэтажка","Wir wohnen in einem Hochhaus."],
+["orte","das Einkaufszentrum","die Einkaufszentren","торговый центр","Am Wochenende gehen wir ins Einkaufszentrum."],
+["orte","das Lebensmittelgeschäft","die Lebensmittelgeschäfte","продуктовый магазин","Das Lebensmittelgeschäft ist um die Ecke."],
+["orte","das Spezialitätengeschäft","die Spezialitätengeschäfte","специализированный магазин (деликатесы)","Im Spezialitätengeschäft kauft man guten Käse."],
+["orte","die Universität","die Universitäten","университет","Nach der Schule möchte ich an der Universität studieren."],
+["orte","die Fachschule","die Fachschulen","профессиональное училище, колледж","Mein Bruder lernt an einer Fachschule."],
+["orte","die Arbeitsstelle","die Arbeitsstellen","место работы","In der Großstadt findet man leichter eine Arbeitsstelle."],
+/* Leben */
+["leben","die Atmosphäre","—","атмосфера","In der Altstadt herrscht eine gemütliche Atmosphäre."],
+["leben","die Hektik","—","суета, спешка","Ich mag die Hektik der Großstadt nicht."],
+["leben","der Lärm","—","шум","Nachts gibt es hier keinen Lärm."],
+["leben","die Stille","—","тишина","Auf dem Land kann man die Stille genießen."],
+["leben","der Vorteil","die Vorteile","преимущество","Ein Vorteil der Kleinstadt ist die Ruhe."],
+["leben","der Nachteil","die Nachteile","недостаток","Ein Nachteil im Dorf: Es gibt kein Kino."],
+["leben","die Auswahl","—","выбор","Im Supermarkt gibt es eine große Auswahl."],
+["leben","die Freizeit","—","свободное время, досуг","In meiner Freizeit gehe ich gern spazieren."],
+["leben","die Freizeitmöglichkeit","die Freizeitmöglichkeiten","возможность провести досуг","Im Dorf gibt es kaum Freizeitmöglichkeiten."],
+["leben","der Geschmack","—","вкус","Für jeden Geschmack gibt es hier ein Café."],
+["leben","die Ecke","die Ecken","угол, уголок","An der Ecke ist ein kleines Café."],
+["leben","der Gast","die Gäste","гость","Viele Gäste kommen im Sommer in unsere Stadt."],
+["leben","der Nachbar","die Nachbarn (Akk./Dat.: den Nachbarn)","сосед","Meine Nachbarn sind sehr nett."],
+["leben","der Nachbarort","die Nachbarorte","соседний населённый пункт","Das Kino ist im Nachbarort."],
+["leben","der Verwandte","die Verwandten","родственник","Zu Weihnachten besuchen wir die Verwandten."],
+["leben","der Klassenkamerad","die Klassenkameraden","одноклассник","Mein Klassenkamerad wohnt in der Nähe."],
+/* Verkehr */
+["verkehr","das Verkehrsmittel","die Verkehrsmittel","транспортное средство","Welches Verkehrsmittel nimmst du zur Schule?"],
+["verkehr","der Straßenverkehr","—","уличное движение","Der Straßenverkehr in der Großstadt ist dicht."],
+["verkehr","die Haltestelle","die Haltestellen","остановка","Wir treffen uns an der Haltestelle."],
+["verkehr","der Fahrschein","die Fahrscheine","билет на проезд","Ich brauche einen Fahrschein."],
+["verkehr","der Fahrgast","die Fahrgäste","пассажир","Die Fahrgäste steigen vorne ein."],
+["verkehr","der Schalter","die Schalter","касса, окошко","Am Schalter kann man Fahrscheine kaufen."],
+["verkehr","die Linie","die Linien","линия, маршрут","Welche Linie fährt zum Bahnhof?"],
+["verkehr","die Richtung","die Richtungen","направление","Der Bus fährt in Richtung Zentrum."],
+["verkehr","die Strecke","die Strecken","отрезок пути, расстояние","Die Strecke zur Schule ist kurz."],
+["verkehr","der Fahrplan","die Fahrpläne","расписание","Laut Fahrplan kommt der Bus um acht."],
+["verkehr","die Fahrzeit","die Fahrzeiten","время в пути","Die Fahrzeit beträgt zehn Minuten."],
+["verkehr","der Fahrradweg","die Fahrradwege","велодорожка","In vielen Städten gibt es neue Fahrradwege."],
+["verkehr","der Fußweg","die Fußwege","путь пешком","Der Fußweg zur Schule dauert fünf Minuten."],
+["verkehr","der Nachtbus","die Nachtbusse","ночной автобус","Der Nachtbus fährt bis ein Uhr."],
+["verkehr","die Straßenbahn","die Straßenbahnen","трамвай","Die Straßenbahn fährt durch die Innenstadt."],
+["verkehr","die U-Bahn","die U-Bahnen","метро","Mit der U-Bahn bin ich schnell im Zentrum."],
+["verkehr","die S-Bahn","die S-Bahnen","городская электричка","In Berlin fährt die S-Bahn durch die ganze Stadt."],
+["verkehr","der Obus","die Obusse","троллейбус","Der Obus fährt mit Strom."],
+["verkehr","das Linientaxi","die Linientaxis","маршрутное такси","Das Linientaxi fährt immer dieselbe Strecke."],
+["verkehr","der Elektroroller","die Elektroroller","электросамокат","Mit dem Elektroroller fahre ich zum Park."],
+/* Starke Verben */
+["starke","liegen","lag – hat gelegen","лежать; находиться","Meine Stadt liegt am Fluss."],
+["starke","sich befinden","befand sich – hat sich befunden","находиться","Im Zentrum befindet sich ein großer Park."],
+["starke","gefallen","(er) gefällt – gefiel – hat gefallen","нравиться (+ Dat.)","Die Stadt gefällt mir sehr gut."],
+["starke","bieten","bot – hat geboten","предлагать","Die Großstadt bietet viele Möglichkeiten."],
+["starke","zur Verfügung stehen","stand – hat gestanden","быть в распоряжении","Den Schülern steht eine große Bibliothek zur Verfügung."],
+["starke","genießen","genoss – hat genossen","наслаждаться","Ich genieße die Stille im Dorf."],
+["starke","beschreiben","beschrieb – hat beschrieben","описывать","Beschreibe bitte deinen Schulweg!"],
+["starke","vergleichen","verglich – hat verglichen","сравнивать","Wir vergleichen das Leben in der Stadt und auf dem Land."],
+["starke","sich entscheiden","entschied sich – hat sich entschieden","решать, выбирать (für + Akk.)","Ich entscheide mich für den Bus."],
+["starke","verbinden","verband – hat verbunden","соединять","Verbinde die zwei Sätze mit „denn“."],
+["starke","einsteigen","stieg ein – ist eingestiegen","садиться (в транспорт)","Ich steige an der Haltestelle ein."],
+["starke","aussteigen","stieg aus – ist ausgestiegen","выходить (из транспорта)","Wir steigen am Bahnhof aus."],
+["starke","umsteigen","stieg um – ist umgestiegen","пересаживаться","Im Zentrum musst du umsteigen."],
+["starke","vorbeifahren","(er) fährt vorbei – fuhr vorbei – ist vorbeigefahren","проезжать мимо (an + Dat.)","Der Bus fährt an der Schule vorbei."],
+["starke","laufen","(er) läuft – lief – ist gelaufen","идти пешком; бегать","Zur Schule laufe ich zehn Minuten."],
+["starke","ausgehen","ging aus – ist ausgegangen","выходить развлечься","Am Abend gehen wir mit Freunden aus."],
+["starke","ankommen","kam an – ist angekommen","прибывать, приезжать","Wir kommen um acht Uhr am Bahnhof an."],
+["starke","aufstehen","stand auf – ist aufgestanden","вставать","Morgens muss ich früh aufstehen."],
+["starke","rufen","rief – hat gerufen","звать; вызывать","Wir rufen ein Taxi."],
+/* Weitere Verben */
+["verben","herrschen","herrschte – hat geherrscht","царить, преобладать","Hier herrscht immer gute Stimmung."],
+["verben","sich beeilen","beeilte sich – hat sich beeilt","торопиться, спешить","Beeil dich, der Bus kommt gleich!"],
+["verben","verfügen über (+ Akk.)","verfügte – hat verfügt","располагать (чем-то)","Die Stadt verfügt über viele Parks."],
+["verben","erreichen","erreichte – hat erreicht","добираться до; достигать","Ich erreiche die Schule in zehn Minuten."],
+["verben","benutzen","benutzte – hat benutzt","пользоваться","Welche Verkehrsmittel benutzt du?"],
+["verben","bestellen","bestellte – hat bestellt","заказывать","Man kann ein Taxi per Telefon bestellen."],
+["verben","dauern","dauerte – hat gedauert","длиться","Die Fahrt dauert zehn Minuten."],
+["verben","kosten","kostete – hat gekostet","стоить","Was kostet ein Fahrschein?"],
+["verben","bummeln","bummelte – ist gebummelt","гулять без цели","Am Samstag bummeln wir durch die Stadt."],
+["verben","sich wohlfühlen","fühlte sich wohl – hat sich wohlgefühlt","чувствовать себя хорошо, уютно","Ich fühle mich in meiner Stadt wohl."],
+["verben","transportieren","transportierte – hat transportiert","перевозить","Mit dem Auto kann man viele Taschen transportieren."],
+["verben","klappen","klappte – hat geklappt","получаться, срабатывать","Das hat gut geklappt!"],
+["verben","studieren","studierte – hat studiert","учиться в вузе","Meine Schwester studiert in Minsk."],
+["verben","grüßen","grüßte – hat gegrüßt","здороваться, приветствовать","Im Dorf grüßen sich alle."],
+/* Adjektive */
+["adj","gemütlich","","уютный","Das Café ist klein und gemütlich."],
+["adj","lebendig","","оживлённый, живой","Im Zentrum ist es abends lebendig."],
+["adj","angenehm","","приятный","Die Atmosphäre in der Stadt ist angenehm."],
+["adj","bequem","","удобный","Mit der U-Bahn ist es bequem."],
+["adj","gefährlich","","опасный","Radfahren auf der Straße ist gefährlich."],
+["adj","günstig","","выгодный, недорогой","Die Fahrscheine sind günstig."],
+["adj","flexibel","","гибкий, свободный в выборе","Mit dem Fahrrad bist du flexibel."],
+["adj","pünktlich","","вовремя, пунктуальный","Der Bus kommt nicht immer pünktlich."],
+["adj","weltberühmt","","всемирно известный","Der Eiffelturm ist weltberühmt."],
+["adj","ereignisvoll","","насыщенный событиями","Das Leben in der Großstadt ist ereignisvoll."],
+["adj","alltäglich","","повседневный","Der alltägliche Weg zur Schule ist kurz."],
+["adj","gewöhnlich","","обычный; обычно","Gewöhnlich stehe ich um sieben Uhr auf."],
+["adj","wunderschön","","чудесный, прекрасный","Der See ist wunderschön."],
+["adj","bekannt","","известный","Die Stadt ist für ihr Theater bekannt."],
+["adj","verschieden","","разный","In der Stadt gibt es verschiedene Verkehrsmittel."],
+["adj","gemeinsam","","вместе; общий","Wir fahren gemeinsam zur Schule."],
+["adj","nah / weit","","близко / далеко","Die Schule ist nah, das Kino ist weit."],
+["adj","dicht","","плотный, густой","Der Verkehr ist sehr dicht."],
+["adj","vernetzt","","связанный в единую сеть","Die Stadt ist gut vernetzt: Bus, Tram und U-Bahn."],
+["adj","begeistert (von + Dat.)","","в восторге (от)","Ich bin vom Konzert begeistert."],
+["adj","einverstanden (mit + Dat.)","","согласный (с)","Bist du mit dem Plan einverstanden?"],
+["adj","selten","","редко","Der Bus fährt hier nur selten."],
+["adj","allerdings","","правда, однако","Der Weg ist kurz, allerdings gefährlich."],
+["adj","insgesamt","","всего, в целом","Insgesamt dauert die Fahrt 25 Minuten."],
+["adj","besonders","","особенно","Besonders gefällt mir der Park."],
+/* Redemittel */
+["red","Im Zentrum liegt … / befindet sich …","","В центре находится …","Im Zentrum befindet sich ein Theater."],
+["red","Besonders gut gefällt mir …","","Особенно мне нравится …","Besonders gut gefällt mir der Park am See."],
+["red","Ich bin von … begeistert, denn …","","Я в восторге от …, потому что …","Ich bin von meiner Stadt begeistert, denn sie ist grün."],
+["red","im Unterschied zu + Dat.","","в отличие от …","Im Unterschied zu Minsk ist mein Dorf ruhig."],
+["red","nicht nur …, sondern auch …","","не только …, но и …","Er spielt nicht nur Fußball, sondern auch Tennis."],
+["red","außerdem / darüber hinaus","","кроме того / сверх того","Die Stadt ist schön. Außerdem ist sie sauber."],
+["red","in erster Linie","","в первую очередь","In erster Linie möchte ich das Museum besuchen."],
+["red","zu Fuß","","пешком","Ich gehe zu Fuß zur Schule."],
+["red","Vor- und Nachteile","","плюсы и минусы","Wir sprechen über die Vor- und Nachteile."],
+["red","ein richtiges Stadtkind / Dorfkind sein","","быть настоящим горожанином / сельским жителем","Mein Bruder ist ein richtiges Dorfkind."],
+["red","im Fünf-Minuten-Takt","","каждые пять минут","Die U-Bahn fährt im Fünf-Minuten-Takt."],
+["red","laut Fahrplan","","по расписанию","Laut Fahrplan kommt der Bus um acht."],
+["red","in der Praxis","","на практике","In der Praxis klappt das nicht immer."],
+["red","zu spät kommen","","опаздывать","Ich komme nie zu spät zur Schule."],
+["red","Womit fährst du …?","","На чём ты едешь …?","Womit fährst du zur Schule? – Mit dem Fahrrad."],
+["red","Wo bekomme ich einen Fahrschein?","","Где я могу получить билет?","Entschuldigung, wo bekomme ich einen Fahrschein?"],
+["red","Welche Linie geht nach …?","","Какая линия идёт до …?","Welche Linie geht zum Bahnhof?"],
+["red","Das macht … Rubel.","","С вас … рублей.","Das macht zwei Rubel, bitte."],
+["red","bzw. (beziehungsweise)","","или, соответственно","Ich fahre mit dem Bus bzw. mit der U-Bahn."],
+["red","obwohl","","хотя (глагол в конце!)","Wir gehen spazieren, obwohl es regnet."]
+];
+const W=RAW.map((a,i)=>({id:i,cat:a[0],de:a[1],f:a[2],ru:a[3],ex:a[4]}));
+const CATS=[["all","Alle"],["orte","Orte"],["leben","Leben"],["verkehr","Verkehr"],["starke","Starke Verben"],["verben","Weitere Verben"],["adj","Adjektive"],["red","Redemittel"]];
+const CAT_TITLE={orte:"In der Stadt: Orte",leben:"Leben, Atmosphäre, Menschen",verkehr:"Verkehr und Verkehrsmittel",starke:"Starke Verben (3 Formen!)",verben:"Weitere Verben",adj:"Adjektive und Adverbien",red:"Redemittel"};
+const TYPE={orte:"Substantiv",leben:"Substantiv",verkehr:"Substantiv",starke:"Starkes Verb",verben:"Verb",adj:"Adjektiv / Adverb",red:"Redemittel"};
+const NOUN=['orte','leben','verkehr'];
+const artOf=w=>{if(!NOUN.includes(w.cat))return null;const m=/^(der|die|das) /.exec(w.de);return m?m[1]:null};
+const bare=w=>artOf(w)?w.de.replace(/^(der|die|das) /,''):w.de;
+const formsOf=w=>artOf(w)?(w.f==='—'?'kein Plural':'Pl.: '+w.f):(w.f||'');
+let cat='all';
+
+/* ---------- Sprache ---------- */
+let voices=[];
+function voiceScore(v){
+  const n=v.name,l=(v.lang||'').toLowerCase().replace('_','-');
+  if(!l.startsWith('de'))return -1;
+  let s=0;
+  if(l==='de-de')s+=3;
+  if(/natural|neural|online|premium|enhanced|erweitert|wavenet|studio/i.test(n))s+=10;
+  if(/google/i.test(n))s+=6;
+  if(/siri/i.test(n))s+=7;
+  if(/anna|helena|petra|katja|conrad|amala|seraphina|florian|marlene|vicki/i.test(n))s+=2;
+  if(!v.localService)s+=2;
+  if(/espeak|compact|eloquence|grandma|grandpa|rocko|shelley|reed|sandy|flo|eddy/i.test(n))s-=8;
+  return s;
+}
+function setMsg(t,warn){const m=$('#tts-msg');m.textContent=t;m.className='msg'+(warn?' warn':'')}
+function loadVoices(){
+  voices=speechSynthesis.getVoices().filter(v=>voiceScore(v)>=0).sort((a,b)=>voiceScore(b)-voiceScore(a));
+  const sel=$('#voice'),prev=sel.value;sel.innerHTML='';
+  voices.forEach((v,i)=>{const o=document.createElement('option');o.value=v.name;o.textContent=v.name.replace(/Microsoft |Google /,'')+(i===0?' (empfohlen)':'');sel.append(o)});
+  if(prev&&voices.some(v=>v.name===prev))sel.value=prev;
+  setMsg(voices.length?'':'Keine deutsche Stimme gefunden. Bitte in den Einstellungen des Geräts eine deutsche Stimme installieren.',!voices.length);
+}
+function speak(text){
+  if(!('speechSynthesis' in window)){setMsg('Dieser Browser kann nicht vorlesen. Probiere Chrome, Edge oder Safari.',true);return}
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  const v=voices.find(x=>x.name===$('#voice').value)||voices[0];
+  if(v){u.voice=v;u.lang=v.lang}else u.lang='de-DE';
+  u.rate=.9;speechSynthesis.speak(u);
+}
+function sayText(w){
+  if(w.cat==='red')return w.ex;
+  let t=w.de;
+  if(w.f&&w.f!=='—')t+=', '+w.f;
+  return t.replace(/\(Akk\.\/Dat\.:[^)]*\)/g,'').replace(/\(er\)\s*/g,'er ').replace(/\s*[–·]\s*/g,', ').replace(/\s*\/\s*/g,', ').replace(/\(\s*(\+\s*)?(Akk|Dat)\.?\s*\)/g,'').replace(/\s+/g,' ').trim();
+}
+
+/* ---------- Filter ---------- */
+function buildChips(){
+  const box=$('.chips');box.innerHTML='';
+  CATS.forEach(([k,l])=>{
+    const n=k==='all'?W.length:W.filter(w=>w.cat===k).length;
+    const b=document.createElement('button');b.type='button';b.className='cat';
+    b.setAttribute('aria-pressed',String(k===cat));b.textContent=`${l} (${n})`;
+    b.addEventListener('click',()=>{cat=k;buildChips();renderDict();startCards()});
+    box.append(b);
+  });
+}
+
+/* ---------- Wörterbuch ---------- */
+function entryHtml(w){
+  const a=artOf(w),fm=formsOf(w);
+  return `<li class="entry"><button class="say" type="button" data-say="${w.id}" aria-label="Anhören: ${esc(bare(w))}">${ICON}</button>`+
+  `<div class="body"><div class="line">${a?`<span class="art ${a}">${a}</span>`:''}<span class="w">${esc(bare(w))}</span>${w.cat==='starke'?'<span class="tag">stark</span>':''}</div>`+
+  (fm?`<div class="forms">${esc(fm)}</div>`:'')+
+  `<div class="ru" lang="ru">${esc(w.ru)}</div>`+
+  `<button class="ex" type="button" data-ex="${w.id}" lang="de" aria-label="Satz anhören: ${esc(w.ex)}">${esc(w.ex)}</button></div></li>`;
+}
+function renderDict(){
+  const q=$('#q').value.trim().toLowerCase();let html='',total=0;
+  CATS.slice(1).forEach(([k])=>{
+    if(cat!=='all'&&cat!==k)return;
+    const list=W.filter(w=>w.cat===k&&(!q||(w.de+' '+w.ru+' '+w.f).toLowerCase().includes(q)));
+    if(!list.length)return;total+=list.length;
+    html+=`<div class="grp"><h3>${CAT_TITLE[k]} <span class="n">${list.length}</span></h3><ul class="entries">${list.map(entryHtml).join('')}</ul></div>`;
+  });
+  $('#dict-list').innerHTML=html||'<p class="hint">Nichts gefunden.</p>';
+  $('#dict-count').textContent=`${total} Wörter`;
+}
+$('#dict-list').addEventListener('click',e=>{
+  const s=e.target.closest('[data-say]');if(s){speak(sayText(W[+s.dataset.say]));return}
+  const x=e.target.closest('[data-ex]');if(x)speak(W[+x.dataset.ex].ex);
+});
+$('#q').addEventListener('input',renderDict);
+$('#print').addEventListener('click',()=>window.print());
+
+/* ---------- Karten ---------- */
+let dir='de',hideArt=false,deck=[],queue=[],known=0,missed=new Set(),cur=null,flipped=false;
+function startCards(onlyMissed){
+  const base=onlyMissed?W.filter(w=>missed.has(w.id)):W.filter(w=>cat==='all'||w.cat===cat);
+  missed=new Set();deck=base;queue=shuffle(base.slice());known=0;
+  $('#play').hidden=false;$('#done').hidden=true;nextCard();
+}
+function progress(){
+  const p=deck.length?Math.round(known/deck.length*100):0;
+  $('#pfill').style.width=p+'%';$('#pbar').setAttribute('aria-valuenow',p);
+  $('#ptxt').textContent=`${known} von ${deck.length} gewusst`;
+}
+function nextCard(){
+  progress();
+  if(!queue.length){showDone();return}
+  cur=queue.shift();flipped=false;renderCard();
+}
+function renderCard(){
+  const w=cur,a=artOf(w),fm=formsOf(w);
+  const badge=a?`<span class="art ${a}">${a}</span> `:'';
+  const deFull=`${badge}${esc(bare(w))}`;
+  const deFront=(a&&hideArt)?esc(bare(w)):deFull;
+  const hint=dir==='de'?((a&&hideArt)?'<div class="hint">der, die oder das?</div>':(w.cat==='starke'?'<div class="hint">Wie lauten die Formen?</div>':'')):'';
+  const long=(s)=>s.length>26?' small':'';
+  let front,back;
+  if(dir==='de'){
+    front=`<div class="type">${TYPE[w.cat]}</div><div class="big${long(w.de)}" lang="de">${deFront}</div>${hint}`;
+    back=`<div class="big${long(w.ru)}" lang="ru">${esc(w.ru)}</div><div class="sec" lang="de">${deFull}</div>${fm?`<div class="formsbig">${esc(fm)}</div>`:''}<div class="exs" lang="de">${esc(w.ex)}</div>`;
+  }else{
+    front=`<div class="type">${TYPE[w.cat]}</div><div class="big${long(w.ru)}" lang="ru">${esc(w.ru)}</div><div class="hint">${a?'Wie heißt das? (mit Artikel)':(w.cat==='starke'?'Wie heißt das? + Formen':'Wie heißt das auf Deutsch?')}</div>`;
+    back=`<div class="big${long(w.de)}" lang="de">${deFull}</div>${fm?`<div class="formsbig">${esc(fm)}</div>`:''}<div class="exs" lang="de">${esc(w.ex)}</div>`;
+  }
+  $('#ffront').innerHTML=front;$('#fback').innerHTML=back;
+  syncFlip();
+}
+function syncFlip(){
+  $('#fc').classList.toggle('flip',flipped);
+  $('#ffront').setAttribute('aria-hidden',String(flipped));
+  $('#fback').setAttribute('aria-hidden',String(!flipped));
+  $('#fc').setAttribute('aria-label',flipped?'Karte zurückdrehen':'Karte umdrehen');
+  $('#a-no').disabled=!flipped;$('#a-yes').disabled=!flipped;
+  $('#c-ex').disabled=!flipped;
+  $('#c-word').disabled=(dir==='ru'&&!flipped);
+  $('#tip').textContent=flipped?'Wusstest du es?':'Tippe auf die Karte, um sie umzudrehen.';
+}
+function flip(){if(!cur)return;flipped=!flipped;syncFlip()}
+function answer(ok){
+  if(!flipped||!cur)return;
+  if(ok)known++;
+  else{missed.add(cur.id);queue.splice(Math.min(queue.length,3+Math.floor(Math.random()*3)),0,cur)}
+  nextCard();
+}
+function showDone(){
+  cur=null;$('#play').hidden=true;$('#done').hidden=false;
+  const n=missed.size;
+  $('#done-txt').textContent=n?`Du hast alle ${deck.length} Karten geschafft. ${n} ${n===1?'Wort war':'Wörter waren'} schwierig:`:`Alle ${deck.length} Karten gewusst. Super!`;
+  $('#missed').innerHTML=[...missed].map(id=>`<span lang="de">${esc(W[id].de)}</span>`).join('');
+  $('#again-missed').hidden=!n;
+  $('#again-missed').textContent=`Schwierige Wörter üben (${n})`;
+}
+$('#fc').addEventListener('click',flip);
+$('#fc').addEventListener('keydown',e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();flip()}});
+$('#a-yes').addEventListener('click',()=>answer(true));
+$('#a-no').addEventListener('click',()=>answer(false));
+$('#c-word').addEventListener('click',()=>{if(cur)speak(sayText(cur))});
+$('#c-ex').addEventListener('click',()=>{if(cur)speak(cur.ex)});
+$('#reshuffle').addEventListener('click',()=>startCards());
+$('#again-all').addEventListener('click',()=>startCards());
+$('#again-missed').addEventListener('click',()=>startCards(true));
+$('#hideart').addEventListener('change',e=>{hideArt=e.target.checked;if(cur)renderCard()});
+$$('.segb').forEach(b=>b.addEventListener('click',()=>{dir=b.dataset.dir;$$('.segb').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));startCards()}));
+document.addEventListener('keydown',e=>{
+  if(!$('#cards').classList.contains('active')||!cur)return;
+  if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;
+  if(e.key==='ArrowLeft'){e.preventDefault();answer(false)}
+  else if(e.key==='ArrowRight'){e.preventDefault();answer(true)}
+});
+
+/* ---------- Tabs ---------- */
+$$('.stamp').forEach(t=>t.addEventListener('click',()=>{
+  if('speechSynthesis' in window)speechSynthesis.cancel();
+  $$('.stamp').forEach(x=>x.setAttribute('aria-selected',String(x===t)));
+  $$('.panel').forEach(s=>s.classList.toggle('active',s.id===t.dataset.tab));
+}));
+
+/* ---------- Start ---------- */
+if('speechSynthesis' in window){
+  loadVoices();
+  if(speechSynthesis.addEventListener)speechSynthesis.addEventListener('voiceschanged',loadVoices);else speechSynthesis.onvoiceschanged=loadVoices;
+}else setMsg('Dieser Browser kann nicht vorlesen. Probiere Chrome, Edge oder Safari.',true);
+buildChips();renderDict();startCards();
+</script>
+</body>
+</html>
