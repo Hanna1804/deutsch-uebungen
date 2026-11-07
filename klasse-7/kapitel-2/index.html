@@ -180,6 +180,37 @@ body[data-tab="verkehr"] .chips{display:none}
   .vprompt{font-size:22px;margin-bottom:6px}
   .vgame .status{margin:6px 0 0;min-height:0}
 }
+
+/* Sprechen */
+body[data-tab="sprechen"] .chips{display:none}
+.psegs{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.psegb{font:inherit;font-weight:800;font-size:15px;border:2px solid var(--ink);background:#fff;color:var(--ink);border-radius:999px;padding:8px 14px;min-height:44px;cursor:pointer}
+.psegb[aria-pressed="true"]{background:var(--ink);color:#fff}
+.psegb:focus-visible,.sp-sum:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+.sp-card{background:#fff;border:3px solid var(--ink);border-radius:22px;padding:30px 20px 20px;max-width:640px;margin:12px 0;text-align:center;position:relative;overflow:hidden}
+.sp-card::before{content:"";position:absolute;left:0;right:0;top:0;height:12px;background:repeating-linear-gradient(-45deg,var(--blue) 0 14px,#fff 14px 20px,var(--coral) 20px 34px,#fff 34px 40px)}
+.sp-pat{font-size:clamp(24px,6vw,32px);font-weight:800;margin:6px 0 12px;line-height:1.2}
+.sp-pat small{display:block;font-size:14px;font-weight:700;color:var(--muted);letter-spacing:.5px}
+.sp-words{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px}
+.sp-chip{border-radius:14px;padding:8px 18px;font-size:clamp(24px,6.5vw,36px);font-weight:800;border:3px solid var(--ink)}
+.sp-chip.noun{background:var(--blue-l)}
+.sp-chip.adj{background:var(--coral-l);border-color:var(--coral);color:#8A3F0F}
+.sp-plus{font-size:26px;font-weight:800;color:var(--muted)}
+.sp-q{margin-top:14px;color:var(--muted)}
+.sp-sol{margin-top:14px;font-size:clamp(20px,5vw,28px);font-weight:700;line-height:1.6;background:var(--blue-l);border-radius:14px;padding:12px 14px}
+.sp-why{margin-top:10px;font-size:16px;text-align:left}
+.g-der{color:#2448B8}.g-die{color:#B23C17}.g-das{color:#1A6E43}
+.sp-end{background:#FFE08A;border-radius:6px;padding:0 3px;color:var(--ink)}
+.sp-ans{max-width:640px;margin:0}
+.sp-tools{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;margin:6px 0 10px}
+.sp-det{max-width:640px;margin:10px 0}
+.sp-sum{font-weight:800;font-size:17px;cursor:pointer;min-height:44px;display:flex;align-items:center}
+.sp-tab{border-collapse:collapse;width:100%;font-size:16px;background:#fff}
+.sp-tab th,.sp-tab td{border:2px solid var(--line);padding:6px 10px;text-align:left;vertical-align:top}
+.sp-tab th{background:var(--paper);font-weight:800}
+.sp-box{max-width:640px;background:#fff;border:2px solid #CFE3E8;border-radius:16px;padding:12px 16px;margin:12px 0;line-height:1.45}
+.sp-box ol{margin:6px 0 0 20px;padding:0}
+.sp-box .rus{color:var(--muted);font-size:15px}
 @media (max-width:640px){
   .stamp span{padding:7px 12px;font-size:15px}
   .face{min-height:240px;padding:28px 14px 14px;gap:8px}
@@ -229,6 +260,7 @@ body[data-tab="verkehr"] .chips{display:none}
   <button class="stamp" role="tab" aria-selected="true" data-tab="dict"><span>Wörterbuch</span></button>
   <button class="stamp" role="tab" aria-selected="false" data-tab="cards"><span>Karten</span></button>
   <button class="stamp" role="tab" aria-selected="false" data-tab="verkehr"><span>Verkehrsmittel</span></button>
+  <button class="stamp" role="tab" aria-selected="false" data-tab="sprechen"><span>Sprechen</span></button>
 </nav>
 
 <div class="filters">
@@ -361,6 +393,53 @@ body[data-tab="verkehr"] .chips{display:none}
     <div class="vedit" id="vedit" hidden><b>Bearbeiten-Modus:</b> Kreise mit der Maus oder dem Finger verschieben. Danach den Text kopieren und mir schicken.
       <textarea id="vjson" rows="7" readonly></textarea>
       <div class="vrow" style="margin-top:8px"><button class="btn main" id="vcopy" type="button">Kopieren</button><button class="btn" id="vreset" type="button">Zurücksetzen</button></div></div>
+  </section>
+
+  <section id="sprechen" class="panel" role="tabpanel">
+    <h2 class="vh">Sprechen: Artikel und Endungen</h2>
+    <p class="hint">Ziehe eine Karte und sag den ganzen Satz laut: mit Artikel und mit der richtigen Endung. Dann zeig die Lösung und prüfe.</p>
+    <div class="psegs" role="group" aria-label="Satzmuster">
+      <button class="psegb" type="button" data-pat="nom" aria-pressed="true">Das ist …</button>
+      <button class="psegb" type="button" data-pat="akk" aria-pressed="false">Ich sehe / suche …</button>
+      <button class="psegb" type="button" data-pat="dat" aria-pressed="false">mit … / in …</button>
+      <button class="psegb" type="button" data-pat="mix" aria-pressed="false">Alles gemischt</button>
+    </div>
+    <div class="sp-tools">
+      <label class="chk"><input type="checkbox" id="sp-hint"> Hilfe: Artikel zeigen</label>
+      <span class="hint" id="sp-prog" role="status"></span>
+    </div>
+    <div id="sp-play">
+      <div class="sp-card">
+        <div class="sp-pat" id="sp-pat"></div>
+        <div class="sp-words"><span class="sp-chip noun" id="sp-noun" lang="de"></span><span class="sp-plus" aria-hidden="true">+</span><span class="sp-chip adj" id="sp-adj" lang="de"></span></div>
+        <div class="sp-q">Sag den ganzen Satz! <span lang="ru">Скажи предложение целиком.</span></div>
+        <div class="sp-sol" id="sp-sol" hidden lang="de"></div>
+        <div class="sp-why" id="sp-why" hidden></div>
+      </div>
+      <div class="vrow" style="margin-bottom:10px"><button class="btn main" id="sp-show" type="button">Lösung zeigen</button><button class="btn" id="sp-hear" type="button" disabled>Satz anhören</button></div>
+      <div class="ans sp-ans" id="sp-ans" hidden>
+        <button class="btn again" id="sp-no" type="button"><b>Nochmal</b><small lang="ru">был(а) неточен — повторим</small></button>
+        <button class="btn good" id="sp-yes" type="button"><b>Richtig</b><small lang="ru">сказал(а) верно</small></button>
+      </div>
+    </div>
+    <div class="done" id="sp-done" hidden style="margin-left:0">
+      <h2>Geschafft!</h2>
+      <p id="sp-done-txt"></p>
+      <div class="missed" id="sp-missed"></div>
+      <div class="row"><button class="btn main" id="sp-again" type="button">Neue Runde</button></div>
+    </div>
+    <details class="sp-det">
+      <summary class="sp-sum">Hilfe: Endungen-Tabelle</summary>
+      <table class="sp-tab"><thead><tr><th></th><th class="g-der">der (m)</th><th class="g-die">die (f)</th><th class="g-das">das (n)</th></tr></thead><tbody>
+        <tr><th>Nominativ</th><td>ein neu<span class="sp-end">er</span> Bus</td><td>eine neu<span class="sp-end">e</span> U-Bahn</td><td>ein neu<span class="sp-end">es</span> Taxi</td></tr>
+        <tr><th>Akkusativ</th><td>einen neu<span class="sp-end">en</span> Bus</td><td>eine neu<span class="sp-end">e</span> U-Bahn</td><td>ein neu<span class="sp-end">es</span> Taxi</td></tr>
+        <tr><th>Dativ</th><td>einem neu<span class="sp-end">en</span> Bus</td><td>einer neu<span class="sp-end">en</span> U-Bahn</td><td>einem neu<span class="sp-end">en</span> Taxi</td></tr>
+      </tbody></table>
+      <p class="hint" style="margin:8px 0 0">Im Nominativ verrät die Endung den Artikel: <b>-er = der · -e = die · -es = das</b>. Im Dativ ist es nach ein-Wörtern immer <b>-en</b>.</p>
+    </details>
+    <div class="sp-box"><b>So geht's zu zweit</b> <span class="rus" lang="ru">(Учитель + ученица)</span>
+      <ol><li>Die Schülerin liest die Karte und sagt den ganzen Satz.</li><li>Die Lehrerin sagt nichts. Sie zeigt nur eine Ampel: grün = richtig, gelb = fast, rot = nochmal.</li><li>Dann zeigt ihr die Lösung und sprecht den Satz noch einmal zusammen.</li><li>Fehler-Detektiv: Die Lehrerin macht absichtlich einen Fehler in Artikel oder Endung. Die Schülerin findet ihn.</li></ol>
+      <div class="rus" lang="ru" style="margin-top:6px">Учитель молчит и показывает «светофор»: зелёный — верно, жёлтый — почти, красный — ещё раз. Потом роли меняются: учитель нарочно ошибается в артикле или окончании, а ученица ищет ошибку.</div></div>
   </section>
 </main>
 <footer>Keine Anmeldung, keine Daten: Alles bleibt in deinem Browser. Tipp: Auf dem Handy Ton einschalten.</footer>
@@ -811,12 +890,81 @@ $('#vreset').addEventListener('click',()=>{try{localStorage.removeItem('k2-spots
 })();
 buildSpots();
 
+
+/* ---------- Sprechen: Artikel + Adjektivendungen ---------- */
+const SP_PLACES=[["die","Großstadt"],["die","Kleinstadt"],["das","Dorf"],["das","Hochhaus"],["das","Gebäude"],["die","Bibliothek"],["das","Museum"],["das","Kino"],["das","Einkaufszentrum"],["der","Bahnhof"],["das","Denkmal"],["das","Freibad"],["die","Universität"],["das","Zentrum"],["der","See"],["der","Fluss"],["die","Kirche"]];
+const SP_VEH=[["die","U-Bahn"],["die","S-Bahn"],["die","Straßenbahn"],["der","Obus"],["der","Bus"],["das","Linientaxi"],["das","Taxi"],["das","Fahrrad"],["der","Elektroroller"],["der","Nachtbus"]];
+const SP_WOHN=[["die","Großstadt"],["die","Kleinstadt"],["das","Dorf"],["das","Hochhaus"],["das","Haus"],["die","Wohnung"]];
+const SP_ADJ={place:["modern","alt","neu","groß","klein","schön","gemütlich","lebendig","ruhig","laut","bekannt","wunderschön","sauber"],veh:["modern","alt","neu","schnell","bequem","günstig","pünktlich","laut","sauber","bunt"],wohn:["modern","alt","neu","groß","klein","schön","gemütlich","ruhig","laut","sauber"]};
+const SP_ART={nom:{m:"ein",f:"eine",n:"ein"},akk:{m:"einen",f:"eine",n:"ein"},dat:{m:"einem",f:"einer",n:"einem"}};
+const SP_END={nom:{m:"er",f:"e",n:"es"},akk:{m:"en",f:"e",n:"es"},dat:{m:"en",f:"en",n:"en"}};
+const SP_G={der:"m",die:"f",das:"n"};
+const SP_CASE={nom:"Nominativ",akk:"Akkusativ",dat:"Dativ"};
+const SP_HINT={nom:"Nominativ: <b>-er = der · -e = die · -es = das</b>",akk:"Akkusativ: nur <b>der</b> ändert sich (einen … -en). <b>die → -e · das → -es</b>",dat:"Dativ: nach ein-Wörtern immer <b>-en</b> (einem / einer / einem)"};
+const spPick=a=>a[Math.floor(Math.random()*a.length)];
+let spPat='nom',spQueue=[],spCur=null,spOk=0,spN=10,spMissed=[],spSeen=new Set();
+function spMake(pat){
+  if(pat==='mix')pat=spPick(['nom','akk','dat']);
+  let noun,grp,frame;
+  if(pat==='nom'){const v=Math.random()<.4;noun=spPick(v?SP_VEH:SP_PLACES);grp=v?'veh':'place';frame='Das ist'}
+  else if(pat==='akk'){const v=Math.random()<.4;noun=spPick(v?SP_VEH:SP_PLACES);grp=v?'veh':'place';frame=spPick(v?['Ich nehme','Ich brauche']:['Ich sehe','Ich suche'])}
+  else if(Math.random()<.5){noun=spPick(SP_VEH);grp='veh';frame='Ich fahre mit'}
+  else{noun=spPick(SP_WOHN);grp='wohn';frame='Ich wohne in'}
+  return {cs:pat,frame,art:noun[0],noun:noun[1],g:SP_G[noun[0]],adj:spPick(SP_ADJ[grp]),tries:0};
+}
+function spSentence(c){return `${c.frame} ${SP_ART[c.cs][c.g]} ${c.adj}${SP_END[c.cs][c.g]} ${c.noun}.`}
+function spStart(){
+  const seen=new Set();spQueue=[];
+  let guard=0;
+  while(spQueue.length<spN&&guard++<500){const c=spMake(spPat),k=c.cs+c.frame+c.noun+c.adj;if(!seen.has(k)){seen.add(k);spQueue.push(c)}}
+  spOk=0;spMissed=[];$('#sp-play').hidden=false;$('#sp-done').hidden=true;spNext();
+}
+function spProgress(){const done=spN-spQueue.length-(spCur?1:0);$('#sp-prog').textContent=`Karte ${Math.min(done+1,spN)} von ${spN} · gleich richtig: ${spOk}`}
+function spNext(){
+  if(!spQueue.length){spEnd();return}
+  spCur=spQueue.shift();spRender();
+}
+function spRender(){
+  const c=spCur;
+  $('#sp-pat').innerHTML=`${esc(c.frame)} …<small>${SP_CASE[c.cs]}</small>`;
+  $('#sp-noun').innerHTML=($('#sp-hint').checked?`<span class="art ${c.art}" style="font-size:.55em;vertical-align:middle">${c.art}</span> `:'')+esc(c.noun);
+  $('#sp-adj').textContent=c.adj;
+  $('#sp-sol').hidden=true;$('#sp-why').hidden=true;$('#sp-ans').hidden=true;$('#sp-show').hidden=false;$('#sp-hear').disabled=true;
+  spProgress();
+}
+function spShow(){
+  const c=spCur,ar=SP_ART[c.cs][c.g],en=SP_END[c.cs][c.g];
+  $('#sp-sol').innerHTML=`${esc(c.frame)} <b class="g-${c.art}">${ar}</b> ${esc(c.adj)}<b class="sp-end">${en}</b> <span class="g-${c.art}" style="font-weight:800">${esc(c.noun)}</span>.`;
+  $('#sp-why').innerHTML=`<span class="art ${c.art}">${c.art}</span> ${esc(c.noun)} → ${SP_CASE[c.cs]}: <b>${ar}</b> + Endung <b>-${en}</b><br><span class="hint">${SP_HINT[c.cs]}</span>`;
+  $('#sp-sol').hidden=false;$('#sp-why').hidden=false;$('#sp-ans').hidden=false;$('#sp-show').hidden=true;$('#sp-hear').disabled=false;
+}
+function spAnswer(ok){
+  const c=spCur;
+  if(ok){if(c.tries===0)spOk++}
+  else{c.tries++;if(!spMissed.some(m=>m.noun===c.noun&&m.art===c.art))spMissed.push(c);spQueue.splice(Math.min(spQueue.length,2+Math.floor(Math.random()*2)),0,c)}
+  spCur=null;spNext();
+}
+function spEnd(){
+  $('#sp-play').hidden=true;$('#sp-done').hidden=false;spProgress();
+  $('#sp-done-txt').textContent=`${spOk} von ${spN} Sätzen gleich richtig.`+(spMissed.length?' Das war schwierig:':'');
+  $('#sp-missed').innerHTML=spMissed.map(c=>`<span lang="de"><b class="g-${c.art}">${c.art}</b> ${esc(c.noun)}</span>`).join('');
+}
+$('#sp-show').addEventListener('click',spShow);
+$('#sp-hear').addEventListener('click',()=>{if(spCur)speak(spSentence(spCur))});
+$('#sp-yes').addEventListener('click',()=>spAnswer(true));
+$('#sp-no').addEventListener('click',()=>spAnswer(false));
+$('#sp-again').addEventListener('click',spStart);
+$('#sp-hint').addEventListener('change',()=>{if(spCur)spRender()});
+$$('.psegb').forEach(b=>b.addEventListener('click',()=>{spPat=b.dataset.pat;$$('.psegb').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));spStart()}));
+spStart();
+
 /* ---------- Tabs ---------- */
 $$('.stamp').forEach(t=>t.addEventListener('click',()=>{
   if('speechSynthesis' in window)speechSynthesis.cancel();
   document.body.dataset.tab=t.dataset.tab;
   $$('.stamp').forEach(x=>x.setAttribute('aria-selected',String(x===t)));
   $$('.panel').forEach(s=>s.classList.toggle('active',s.id===t.dataset.tab));
+  try{history.replaceState(null,'',t.dataset.tab==='dict'?location.pathname+location.search:'#'+t.dataset.tab)}catch(e){}
 }));
 
 /* ---------- Start ---------- */
@@ -825,6 +973,7 @@ if('speechSynthesis' in window){
   if(speechSynthesis.addEventListener)speechSynthesis.addEventListener('voiceschanged',loadVoices);else speechSynthesis.onvoiceschanged=loadVoices;
 }else setMsg('Dieser Browser kann nicht vorlesen. Probiere Chrome, Edge oder Safari.',true);
 buildChips();renderDict();startCards();
+(function(){const h=location.hash.slice(1);const t=h&&document.querySelector('.stamp[data-tab="'+h+'"]');if(t)t.click()})();
 </script>
 </body>
 </html>
