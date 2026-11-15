@@ -1074,9 +1074,9 @@ function spNext(){
 }
 function spRender(){
   const c=spCur;
-  $('#sp-pat').innerHTML=`${esc(c.frame)} …<small>${SP_CASE[c.cs]}</small>`;
-  $('#sp-noun').innerHTML=($('#sp-hint').checked?`<span class="art ${c.art}" style="font-size:.55em;vertical-align:middle">${c.art}</span> `:'')+esc(c.noun);
-  $('#sp-adj').textContent=c.adj;
+    const p=$('#sp-pat'); if(p) p.innerHTML=`${esc(c.frame)} …<small>${SP_CASE[c.cs]}</small>`;
+  const n=$('#sp-noun'); if(n) n.innerHTML=($('#sp-hint').checked?`<span class="art ${c.art}" style="font-size:.55em;vertical-align:middle">${c.art}</span> `:'')+esc(c.noun);
+  const a=$('#sp-adj'); if(a) a.textContent=c.adj;
   $('#sp-sol').hidden=true;$('#sp-why').hidden=true;$('#sp-ans').hidden=true;$('#sp-show').hidden=false;$('#sp-hear').disabled=true;
   spProgress();
 }
