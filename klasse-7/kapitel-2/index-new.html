@@ -305,8 +305,23 @@ function nextCard(){progress();if(!queue.length){showDone();return}cur=queue.shi
 function renderCard(){const w=cur,a=artOf(w),fm=formsOf(w);const badge=a?`<span class="art ${a}">${a}</span> `:'';const deFull=`${badge}${esc(bare(w))}`;const deFront=(a&&hideArt)?esc(bare(w)):deFull;const hint=dir==='de'?((a&&hideArt)?'<div class="hint">der, die oder das?</div>':(w.cat==='starke'?'<div class="hint">Wie lauten die Formen?</div>':'')):'';const long=(s)=>s.length>26?' small':'';let front,back;if(dir==='de'){front=`<div class="type">${TYPE[w.cat]}</div><div class="big${long(w.de)}" lang="de">${deFront}</div>${hint}`;back=`<div class="big${long(w.ru)}" lang="ru">${esc(w.ru)}</div><div class="sec" lang="de">${deFull}</div>${fm?`<div class="formsbig">${esc(fm)}</div>`:''}<div class="exs" lang="de">${esc(w.ex)}</div>`}else{front=`<div class="type">${TYPE[w.cat]}</div><div class="big${long(w.ru)}" lang="ru">${esc(w.ru)}</div><div class="hint">${a?'Wie heißt das? (mit Artikel)':(w.cat==='starke'?'Wie heißt das? + Formen':'Wie heißt das auf Deutsch?')}</div>`;back=`<div class="big${long(w.de)}" lang="de">${deFull}</div>${fm?`<div class="formsbig">${esc(fm)}</div>`:''}<div class="exs" lang="de">${esc(w.ex)}</div>`}$('#ffront').innerHTML=front;$('#fback').innerHTML=back;syncFlip()}
 function syncFlip(){$('#fc').classList.toggle('flip',flipped);$('#ffront').setAttribute('aria-hidden',String(flipped));$('#fback').setAttribute('aria-hidden',String(!flipped));$('#fc').setAttribute('aria-label',flipped?'Karte zurückdrehen':'Karte umdrehen');$('#a-no').disabled=!flipped;$('#a-yes').disabled=!flipped;$('#c-ex').disabled=!flipped;$('#c-word').disabled=(dir==='ru'&&!flipped);$('#tip').textContent=flipped?'Wusstest du es?':'Tippe auf die Karte, um sie umzudrehen.'}
 function flip(){if(!cur)return;flipped=!flipped;syncFlip()}
-function answer(ok){if(!flipped||!cur)return;if(ok)known++;else{missed.add(cur.id);queue.splice(Math.min(queue.length,3+Math.floor(Math.random()*3)),0,cur)}nextCard()}
-function showDone(){cur=null;$('#play').hidden=true;$('#done').hidden=false;const n=missed.size;$('#done-txt').textContent=n?`Du hast alle ${deck.length} Karten geschafft. ${n} ${n===1?'Wort war':'Wörter waren'} schwierig:`:`Alle ${deck.length} Karten gewusst. Super!`;$('#missed').innerHTML=[...missed].map(id=>`<span lang="de">${esc(W[id].de)}</span>`).join('');$('#again-missed').hidden=!n;$('#again-missed').textContent=`Schwierige Wörter üben (${n})`}
+function answer(ok){if(!flipped||!cur)return;
+if(ok)known++;
+  else{missed.add(cur.id);queue.splice(Math.min(queue.length,3+Math.floor(Math.random()*3)),0,cur)}
+  nextCard();
+}
+
+function showDone(){
+  cur=null;
+  $('#play').hidden=true;
+  $('#done').hidden=false;
+  const n=missed.size;
+  $('#done-txt').textContent=n?`Du hast alle ${deck.length} Karten geschafft. ${n} ${n===1?'Wort war':'Wörter waren'} schwierig:`:`Alle ${deck.length} Karten gewusst. Super!`;
+  $('#missed').innerHTML=[...missed].map(id=>`<span lang="de">${esc(W[id].de)}</span>`).join('');
+  $('#again-missed').hidden=!n;
+  $('#again-missed').textContent=`Schwierige Wörter üben (${n})`;
+}
+
 $('#fc').addEventListener('click',flip);
 $('#fc').addEventListener('keydown',e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();flip()}});
 $('#a-yes').addEventListener('click',()=>answer(true));
@@ -318,28 +333,148 @@ $('#again-all').addEventListener('click',()=>startCards());
 $('#again-missed').addEventListener('click',()=>startCards(true));
 $('#hideart').addEventListener('change',e=>{hideArt=e.target.checked;if(cur)renderCard()});
 $$('.segb').forEach(b=>b.addEventListener('click',()=>{dir=b.dataset.dir;$$('.segb').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));startCards()}));
-document.addEventListener('keydown',e=>{if(!$('#cards').classList.contains('active')||!cur)return;if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;if(e.key==='ArrowLeft'){e.preventDefault();answer(false)}else if(e.key==='ArrowRight'){e.preventDefault();answer(true)}});
+
+document.addEventListener('keydown',e=>{
+  if(!$('#cards').classList.contains('active')||!cur)return;
+  if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;
+  if(e.key==='ArrowLeft'){e.preventDefault();answer(false)}
+  else if(e.key==='ArrowRight'){e.preventDefault();answer(true)}
+});
+
 const DATV={der:'dem',die:'der',das:'dem'};
-const VK=[{id:'ubahn',art:'die',w:'U-Bahn',pl:'die U-Bahnen',ru:'метро',q:'Womit fährst du?',pre:'Ich fahre mit',post:'U-Bahn.',fact:'Die U-Bahn fährt oft unter der Erde, aber nicht nur: In Berlin fährt sie stellenweise auch auf Brücken über der Straße. In Minsk fährt sie seit 1984.',factRu:'Метро часто ездит под землёй, но не только: в Берлине местами оно идёт по эстакадам над улицей. В Минске метро работает с 1984 года.',x:38.3,y:87.3},{id:'sbahn',art:'die',w:'S-Bahn',pl:'die S-Bahnen',ru:'городская электричка',q:'Womit fährst du?',pre:'Ich fahre mit',post:'S-Bahn.',fact:'Die S-Bahn verbindet die Stadt mit den Vororten. Sie fährt auf Schienen, oft oben auf Brücken, manchmal auch im Tunnel.',factRu:'S-Bahn соединяет город с пригородами. Она ходит по рельсам, часто по эстакадам, иногда и в тоннеле.',x:75.8,y:22},{id:'tram',art:'die',w:'Straßenbahn',alt:'auch: die Tram',pl:'die Straßenbahnen',ru:'трамвай',q:'Womit fährst du?',pre:'Ich fahre mit',post:'Straßenbahn.',fact:'Die Straßenbahn fährt auf Schienen mitten in der Straße. Ihren Strom bekommt sie aus einem Kabel über der Straße.',factRu:'Трамвай едет по рельсам прямо по улице. Электричество он получает от провода над улицей.',x:12.5,y:52.9},{id:'obus',art:'der',w:'Obus',pl:'die Obusse',ru:'троллейбус',q:'Womit fährst du?',pre:'Ich fahre mit',post:'Obus.',fact:'Der Obus sieht aus wie ein Bus, fährt aber mit Strom aus zwei Kabeln über der Straße. Schienen braucht er nicht.',factRu:'Троллейбус похож на автобус, но едет на электричестве от двух проводов над улицей. Рельсы ему не нужны.',x:35.8,y:51.5},{id:'bus',art:'der',w:'Bus',pl:'die Busse',ru:'автобус',q:'Womit fährst du?',pre:'Ich fahre mit',post:'Bus.',fact:'Der Bus hält an jeder Haltestelle. Viele Städte kaufen heute Elektrobusse: Sie sind leiser als Busse mit Diesel.',factRu:'Автобус останавливается на каждой остановке. Сегодня многие города покупают электробусы: они тише дизельных.',x:59.6,y:51.3},{id:'taxi',art:'das',w:'Taxi',pl:'die Taxis',ru:'такси',q:'Womit fährst du?',pre:'Ich fahre mit',post:'Taxi.',fact:'Das Taxi bringt dich genau dorthin, wohin du willst. Dafür kostet es mehr als Bus oder Bahn. Man kann es per Telefon oder per App bestellen.',factRu:'Такси привезёт тебя точно туда, куда ты хочешь. Зато оно дороже автобуса или метро. Его можно заказать по телефону или через приложение.',x:15.4,y:65.8},{id:'linientaxi',art:'das',w:'Linientaxi',pl:'die Linientaxis',ru:'маршрутное такси',q:'Womit fährst du?',pre:'Ich fahre mit',post:'Linientaxi.',fact:'Das Linientaxi ist kleiner als ein Bus und fährt immer dieselbe Strecke. Oft hält es auch auf Wunsch zwischen den Haltestellen.',factRu:'Маршрутка меньше автобуса и ездит по одному маршруту. Часто она останавливается по просьбе и между остановками.',x:32.9,y:64.5},{id:'haltestelle',art:'die',w:'Haltestelle',pl:'die Haltestellen',ru:'остановка',q:'Wo wartest du?',pre:'Ich warte an',post:'Haltestelle.',fact:'An der Haltestelle wartest du auf Bus, Obus oder Straßenbahn. Den Fahrplan findest du oft direkt am Schild.',factRu:'На остановке ты ждёшь автобус, троллейбус или трамвай. Расписание часто висит прямо на знаке.',x:48.5,y:65.3},{id:'fahrrad',art:'das',w:'Fahrrad',pl:'die Fahrräder',ru:'велосипед',q:'Womit fährst du?',pre:'Ich fahre mit',post:'Fahrrad.',fact:'Mit dem Fahrrad brauchst du keinen Fahrschein und kein Benzin. In vielen Städten gibt es eigene Fahrradwege.',factRu:'На велосипеде не нужен ни билет, ни бензин. Во многих городах есть отдельные велодорожки.',x:80,y:62},{id:'roller',art:'der',w:'Elektroroller',pl:'die Elektroroller',ru:'электросамокат',q:'Womit fährst du?',pre:'Ich fahre mit',post:'Elektroroller.',fact:'Elektroroller kann man in vielen Städten per App mieten. Fahre vorsichtig und achte auf die Fußgänger!',factRu:'Электросамокаты во многих городах можно арендовать через приложение. Езди осторожно и смотри на пешеходов!',x:93.2,y:64.5}];
+
+const VK=[
+{id:'ubahn',art:'die',w:'U-Bahn',pl:'die U-Bahnen',ru:'метро',q:'Womit fährst du?',pre:'Ich fahre mit',post:'U-Bahn.',fact:'Die U-Bahn fährt oft unter der Erde, aber nicht nur: In Berlin fährt sie stellenweise auch auf Brücken über der Straße. In Minsk fährt sie seit 1984.',factRu:'Метро часто ездит под землёй, но не только: в Берлине местами оно идёт по эстакадам над улицей. В Минске метро работает с 1984 года.',x:38.3,y:87.3},
+{id:'sbahn',art:'die',w:'S-Bahn',pl:'die S-Bahnen',ru:'городская электричка',q:'Womit fährst du?',pre:'Ich fahre mit',post:'S-Bahn.',fact:'Die S-Bahn verbindet die Stadt mit den Vororten. Sie fährt auf Schienen, oft oben auf Brücken, manchmal auch im Tunnel.',factRu:'S-Bahn соединяет город с пригородами. Она ходит по рельсам, часто по эстакадам, иногда и в тоннеле.',x:75.8,y:22},
+{id:'tram',art:'die',w:'Straßenbahn',alt:'auch: die Tram',pl:'die Straßenbahnen',ru:'трамвай',q:'Womit fährst du?',pre:'Ich fahre mit',post:'Straßenbahn.',fact:'Die Straßenbahn fährt auf Schienen mitten in der Straße. Ihren Strom bekommt sie aus einem Kabel über der Straße.',factRu:'Трамвай едет по рельсам прямо по улице. Электричество он получает от провода над улицей.',x:12.5,y:52.9},
+{id:'obus',art:'der',w:'Obus',pl:'die Obusse',ru:'троллейбус',q:'Womit fährst du?',pre:'Ich fahre mit',post:'Obus.',fact:'Der Obus sieht aus wie ein Bus, fährt aber mit Strom aus zwei Kabeln über der Straße. Schienen braucht er nicht.',factRu:'Троллейбус похож на автобус, но едет на электричестве от двух проводов над улицей. Рельсы ему не нужны.',x:35.8,y:51.5},
+{id:'bus',art:'der',w:'Bus',pl:'die Busse',ru:'автобус',q:'Womit fährst du?',pre:'Ich fahre mit',post:'Bus.',fact:'Der Bus hält an jeder Haltestelle. Viele Städte kaufen heute Elektrobusse: Sie sind leiser als Busse mit Diesel.',factRu:'Автобус останавливается на каждой остановке. Сегодня многие города покупают электробусы: они тише дизельных.',x:59.6,y:51.3},
+{id:'taxi',art:'das',w:'Taxi',pl:'die Taxis',ru:'такси',q:'Womit fährst du?',pre:'Ich fahre mit',post:'Taxi.',fact:'Das Taxi bringt dich genau dorthin, wohin du willst. Dafür kostet es mehr als Bus oder Bahn. Man kann es per Telefon oder per App bestellen.',factRu:'Такси привезёт тебя точно туда, куда ты хочешь. Зато оно дороже автобуса или метро. Его можно заказать по телефону или через приложение.',x:15.4,y:65.8},
+{id:'linientaxi',art:'das',w:'Linientaxi',pl:'die Linientaxis',ru:'маршрутное такси',q:'Womit fährst du?',pre:'Ich fahre mit',post:'Linientaxi.',fact:'Das Linientaxi ist kleiner als ein Bus und fährt immer dieselbe Strecke. Oft hält es auch auf Wunsch zwischen den Haltestellen.',factRu:'Маршрутка меньше автобуса и ездит по одному маршруту. Часто она останавливается по просьбе и между остановками.',x:32.9,y:64.5},
+{id:'haltestelle',art:'die',w:'Haltestelle',pl:'die Haltestellen',ru:'остановка',q:'Wo wartest du?',pre:'Ich warte an',post:'Haltestelle.',fact:'An der Haltestelle wartest du auf Bus, Obus oder Straßenbahn. Den Fahrplan findest du oft direkt am Schild.',factRu:'На остановке ты ждёшь автобус, троллейбус или трамвай. Расписание часто висит прямо на знаке.',x:48.5,y:65.3},
+{id:'fahrrad',art:'das',w:'Fahrrad',pl:'die Fahrräder',ru:'велосипед',q:'Womit fährst du?',pre:'Ich fahre mit',post:'Fahrrad.',fact:'Mit dem Fahrrad brauchst du keinen Fahrschein und kein Benzin. In vielen Städten gibt es eigene Fahrradwege.',factRu:'На велосипеде не нужен ни билет, ни бензин. Во многих городах есть отдельные велодорожки.',x:80,y:62},
+{id:'roller',art:'der',w:'Elektroroller',pl:'die Elektroroller',ru:'электросамокат',q:'Womit fährst du?',pre:'Ich fahre mit',post:'Elektroroller.',fact:'Elektroroller kann man in vielen Städten per App mieten. Fahre vorsichtig und achte auf die Fußgänger!',factRu:'Электросамокаты во многих городах можно арендовать через приложение. Езди осторожно и смотри на пешеходов!',x:93.2,y:64.5}
+];
+
 const EDIT=/[?&]edit(?:&|$|=)/.test(location.search);
 const IMGPOS={ubahn:{x:51.7,y:84.5},sbahn:{x:66,y:20},tram:{x:20.2,y:46.9},obus:{x:55.2,y:47.3},bus:{x:84.7,y:45},taxi:{x:26.4,y:57.5},linientaxi:{x:50,y:56.8},haltestelle:{x:66,y:58.1},fahrrad:{x:80.5,y:56.5},roller:{x:93.5,y:62.5}};
+
 let vSel=-1,vSeen=new Set(),vg=null,vpos={},vMode='svg';
-function vLoadPos(){VK.forEach(v=>vpos[v.id]=vMode==='img'?{...IMGPOS[v.id]}:{x:v.x,y:v.y});if(EDIT){try{const sv=JSON.parse(localStorage.getItem('k2-spots-'+vMode)||'null');if(sv)Object.keys(sv).forEach(k=>{if(vpos[k])vpos[k]=sv[k]})}catch(e){}}}
+
+function vLoadPos(){
+  VK.forEach(v=>vpos[v.id]=vMode==='img'?{...IMGPOS[v.id]}:{x:v.x,y:v.y});
+  if(EDIT){try{const sv=JSON.parse(localStorage.getItem('k2-spots-'+vMode)||'null');if(sv)Object.keys(sv).forEach(k=>{if(vpos[k])vpos[k]=sv[k]})}catch(e){}}
+}
+
 function vUpdEdit(){$('#vjson').value=JSON.stringify(vpos)}
-function vLabels(){$$('.spot').forEach((b,i)=>{const v=VK[i];b.setAttribute('aria-label',(vg&&!vg.done)?`Verkehrsmittel ${i+1}`:`${v.art} ${v.w}: Info anzeigen`)})}
-function vSync(){$$('.spot').forEach((b,i)=>{b.setAttribute('aria-pressed',String(i===vSel));b.classList.toggle('seen',vSeen.has(i));b.firstChild.textContent=vSeen.has(i)&&i!==vSel?'✓':'?'});$('#vseen').textContent=`Entdeckt: ${vSeen.size} von ${VK.length}`}
-function vDrag(b,v){b.classList.add('drag');b.style.touchAction='none';b.addEventListener('pointerdown',e=>{e.preventDefault();b.setPointerCapture(e.pointerId);const r=$('#scene-inner').getBoundingClientRect();const mv=ev=>{const x=Math.min(100,Math.max(0,(ev.clientX-r.left)/r.width*100)),y=Math.min(100,Math.max(0,(ev.clientY-r.top)/r.height*100));vpos[v.id]={x:+x.toFixed(1),y:+y.toFixed(1)};b.style.left=x+'%';b.style.top=y+'%';vUpdEdit()};const up=()=>{b.removeEventListener('pointermove',mv);b.removeEventListener('pointerup',up);try{localStorage.setItem('k2-spots-'+vMode,JSON.stringify(vpos))}catch(e){}};b.addEventListener('pointermove',mv);b.addEventListener('pointerup',up)})}
-function buildSpots(){vLoadPos();const box=$('#spots');box.innerHTML='';VK.forEach((v,i)=>{const b=document.createElement('button');b.type='button';b.className='spot';b.style.left=vpos[v.id].x+'%';b.style.top=vpos[v.id].y+'%';b.innerHTML='<span aria-hidden="true">?</span>';b.setAttribute('aria-pressed','false');if(EDIT)vDrag(b,v);else b.addEventListener('click',()=>vPick(i));box.append(b)});vLabels();vSync();if(EDIT){$('#vedit').hidden=false;vUpdEdit()}}
-function vInfo(i){const v=VK[i];vSel=i;vSeen.add(i);$('#v-art').textContent=v.art;$('#v-art').className='art '+v.art;$('#v-word').textContent=v.w;$('#v-alt').textContent=v.alt?`(${v.alt})`:'';$('#v-pl').textContent='Pl.: '+v.pl;$('#v-ru').textContent=v.ru;$('#v-fact').textContent=v.fact;$('#v-factru').textContent=v.factRu;$('#v-q').textContent=v.q;$('#v-sent').innerHTML=`${esc(v.pre)} <span class="dat">${DATV[v.art]}</span> ${esc(v.post)}`;const c=$('#vcard');c.hidden=false;if(getComputedStyle(c).position==='fixed'){requestAnimationFrame(()=>{const mb=$$('.spot')[i].getBoundingClientRect(),top=c.getBoundingClientRect().top;if(mb.bottom>top-12)window.scrollBy({top:mb.bottom-top+70,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});else if(mb.top<70)window.scrollBy({top:mb.top-90,behavior:'auto'})})}if(getComputedStyle(c).position==='relative')c.scrollIntoView({block:'nearest',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});vSync()}
+
+function vLabels(){
+  $$('.spot').forEach((b,i)=>{const v=VK[i];b.setAttribute('aria-label',(vg&&!vg.done)?`Verkehrsmittel ${i+1}`:`${v.art} ${v.w}: Info anzeigen`)});
+}
+
+function vSync(){
+  $$('.spot').forEach((b,i)=>{
+    b.setAttribute('aria-pressed',String(i===vSel));
+    b.classList.toggle('seen',vSeen.has(i));
+    b.firstChild.textContent=vSeen.has(i)&&i!==vSel?'✓':'?';
+  });
+  $('#vseen').textContent=`Entdeckt: ${vSeen.size} von ${VK.length}`;
+}
+
+function vDrag(b,v){
+  b.classList.add('drag');b.style.touchAction='none';
+  b.addEventListener('pointerdown',e=>{
+    e.preventDefault();b.setPointerCapture(e.pointerId);
+    const r=$('#scene-inner').getBoundingClientRect();
+    const mv=ev=>{
+      const x=Math.min(100,Math.max(0,(ev.clientX-r.left)/r.width*100)),y=Math.min(100,Math.max(0,(ev.clientY-r.top)/r.height*100));
+      vpos[v.id]={x:+x.toFixed(1),y:+y.toFixed(1)};
+      b.style.left=x+'%';b.style.top=y+'%';vUpdEdit();
+    };
+    const up=()=>{
+      b.removeEventListener('pointermove',mv);
+      b.removeEventListener('pointerup',up);
+      try{localStorage.setItem('k2-spots-'+vMode,JSON.stringify(vpos))}catch(e){}
+    };
+    b.addEventListener('pointermove',mv);b.addEventListener('pointerup',up);
+  });
+}
+
+function buildSpots(){
+  vLoadPos();
+  const box=$('#spots');box.innerHTML='';
+  VK.forEach((v,i)=>{
+    const b=document.createElement('button');
+    b.type='button';b.className='spot';
+    b.style.left=vpos[v.id].x+'%';b.style.top=vpos[v.id].y+'%';
+    b.innerHTML='<span aria-hidden="true">?</span>';b.setAttribute('aria-pressed','false');
+    if(EDIT)vDrag(b,v);else b.addEventListener('click',()=>vPick(i));
+    box.append(b);
+  });
+  vLabels();vSync();
+  if(EDIT){$('#vedit').hidden=false;vUpdEdit()}
+}
+
+function vInfo(i){
+  const v=VK[i];vSel=i;vSeen.add(i);
+  $('#v-art').textContent=v.art;$('#v-art').className='art '+v.art;
+  $('#v-word').textContent=v.w;$('#v-alt').textContent=v.alt?`(${v.alt})`:'';
+  $('#v-pl').textContent='Pl.: '+v.pl;$('#v-ru').textContent=v.ru;
+  $('#v-fact').textContent=v.fact;$('#v-factru').textContent=v.factRu;
+  $('#v-q').textContent=v.q;
+  $('#v-sent').innerHTML=`${esc(v.pre)} <span class="dat">${DATV[v.art]}</span> ${esc(v.post)}`;
+  const c=$('#vcard');c.hidden=false;
+  if(getComputedStyle(c).position==='fixed'){
+    requestAnimationFrame(()=>{
+      const mb=$$('.spot')[i].getBoundingClientRect(),top=c.getBoundingClientRect().top;
+      if(mb.bottom>top-12)window.scrollBy({top:mb.bottom-top+70,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+      else if(mb.top<70)window.scrollBy({top:mb.top-90,behavior:'auto'})
+    });
+  }
+  if(getComputedStyle(c).position==='relative')c.scrollIntoView({block:'nearest',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+  vSync();
+}
+
 function vSayWord(i){const v=VK[i];speak(`${v.art} ${v.w}, ${v.pl}`)}
 function vSayRound(){if(vg&&!vg.done){const v=VK[vg.order[vg.i]];speak(`${v.art} ${v.w}`)}}
 function vCls(){$('#verkehr').classList.toggle('gaming',!!(vg&&!vg.done))}
 function vFeed(t,cls){const f=$('#vfeed');f.textContent=t;f.className='status'+(cls?' '+cls:'')}
-function vStartGame(){vg={order:shuffle(VK.map((_,i)=>i)),i:0,ok:0,tries:0,wait:false,done:false};$('#vgame').hidden=false;$('#vstart').hidden=true;vLabels();vCls();vRound()}
-function vRound(){if(vg.i>=VK.length){vEnd();return}const v=VK[vg.order[vg.i]];vg.tries=0;vg.wait=false;vSel=-1;$('#vprompt').innerHTML=`Finde: <span class="art ${v.art}">${v.art}</span> ${esc(v.w)} <span class="hint" style="font-size:.55em;font-weight:700">(${vg.i+1} / ${VK.length})</span>`;$('#vnext').hidden=true;$('#vhear').hidden=false;$('#vcard').hidden=true;vFeed('Tippe auf das richtige Verkehrsmittel.');vSync()}
-function vEnd(){vg.done=true;vSel=-1;vLabels();vCls();$('#vprompt').textContent=`Geschafft! ${vg.ok} von ${VK.length} gleich beim ersten Versuch.`;$('#vhear').hidden=true;$('#vnext').hidden=false;$('#vnext').textContent='Noch einmal';vFeed('');vSync()}
+
+function vStartGame(){
+  vg={order:shuffle(VK.map((_,i)=>i)),i:0,ok:0,tries:0,wait:false,done:false};
+  $('#vgame').hidden=false;$('#vstart').hidden=true;vLabels();vCls();vRound();
+}
+
+function vRound(){
+  if(vg.i>=VK.length){vEnd();return}
+  const v=VK[vg.order[vg.i]];vg.tries=0;vg.wait=false;vSel=-1;
+  $('#vprompt').innerHTML=`Finde: <span class="art ${v.art}">${v.art}</span> ${esc(v.w)} <span class="hint" style="font-size:.55em;font-weight:700">(${vg.i+1} / ${VK.length})</span>`;
+  $('#vnext').hidden=true;$('#vhear').hidden=false;$('#vcard').hidden=true;
+  vFeed('Tippe auf das richtige Verkehrsmittel.');vSync();
+}
+
+function vEnd(){
+  vg.done=true;vSel=-1;vLabels();vCls();
+  $('#vprompt').textContent=`Geschafft! ${vg.ok} von ${VK.length} gleich beim ersten Versuch.`;
+  $('#vhear').hidden=true;$('#vnext').hidden=false;$('#vnext').textContent='Noch einmal';vFeed('');vSync();
+}
+
 function vQuit(){vg=null;vCls();$('#vgame').hidden=true;$('#vstart').hidden=false;vLabels();vSel=-1;vSync()}
-function vPick(i){if(!vg||vg.done||vg.wait){vInfo(i);return}const t=vg.order[vg.i];if(i===t){if(vg.tries===0)vg.ok++;vg.wait=true;vFeed('Richtig!','good');vInfo(i);$('#vnext').hidden=false;$('#vnext').textContent=(vg.i+1<VK.length)?'Weiter':'Ergebnis';$('#vhear').hidden=true}else{vg.tries++;const w=VK[i],b=$$('.spot')[i];vFeed(`Nicht ganz: Das ist ${w.art} ${w.w}. Suche weiter!`,'warn');b.classList.remove('shake');void b.offsetWidth;b.classList.add('shake')}}
+
+function vPick(i){
+  if(!vg||vg.done||vg.wait){vInfo(i);return}
+  const t=vg.order[vg.i];
+  if(i===t){
+    if(vg.tries===0)vg.ok++;
+    vg.wait=true;vFeed('Richtig!','good');vInfo(i);
+    $('#vnext').hidden=false;$('#vnext').textContent=(vg.i+1<VK.length)?'Weiter':'Ergebnis';$('#vhear').hidden=true;
+  }else{
+    vg.tries++;const w=VK[i],b=$$('.spot')[i];
+    vFeed(`Nicht ganz: Das ist ${w.art} ${w.w}. Suche weiter!`,'warn');
+    b.classList.remove('shake');void b.offsetWidth;b.classList.add('shake');
+  }
+}
+
 $('#vstart').addEventListener('click',vStartGame);
 $('#vquit').addEventListener('click',vQuit);
 new MutationObserver(()=>$('#verkehr').classList.toggle('sheet',!$('#vcard').hidden)).observe($('#vcard'),{attributes:true,attributeFilter:['hidden']});
@@ -353,8 +488,9 @@ $('#v-fact').addEventListener('click',()=>{if(vSel>=0)speak(VK[vSel].fact)});
 $('#v-sent-say').addEventListener('click',()=>{if(vSel>=0){const v=VK[vSel];speak(`${v.pre} ${DATV[v.art]} ${v.post}`)}});
 $('#vcopy').addEventListener('click',()=>{const t=$('#vjson');t.select();try{navigator.clipboard.writeText(t.value)}catch(e){document.execCommand('copy')}});
 $('#vreset').addEventListener('click',()=>{try{localStorage.removeItem('k2-spots-'+vMode)}catch(e){}buildSpots()});
-(function(){const img=$('#scene-img'),names=['verkehr.webp','verkehr.jpg','verkehr.png'];let k=0;img.onload=()=>{if(img.naturalWidth){$('#scene-inner').style.aspectRatio=img.naturalWidth+'/'+img.naturalHeight;img.hidden=false;$('#scene-svg').hidden=true;vMode='img';$('#verkehr').classList.toggle('portrait',img.naturalHeight>img.naturalWidth*1.1);buildSpots()}};img.onerror=()=>{k++;if(k<names.length)img.src=names[k]};img.src=names[0]})();
+
 buildSpots();
+
 const SP_PLACES=[["die","Großstadt"],["die","Kleinstadt"],["das","Dorf"],["das","Hochhaus"],["das","Gebäude"],["die","Bibliothek"],["das","Museum"],["das","Kino"],["das","Einkaufszentrum"],["der","Bahnhof"],["das","Denkmal"],["das","Freibad"],["die","Universität"],["das","Zentrum"],["der","See"],["der","Fluss"],["die","Kirche"]];
 const SP_VEH=[["die","U-Bahn"],["die","S-Bahn"],["die","Straßenbahn"],["der","Obus"],["der","Bus"],["das","Linientaxi"],["das","Taxi"],["das","Fahrrad"],["der","Elektroroller"],["der","Nachtbus"]];
 const SP_WOHN=[["die","Großstadt"],["die","Kleinstadt"],["das","Dorf"],["das","Hochhaus"],["das","Haus"],["die","Wohnung"]];
@@ -365,16 +501,68 @@ const SP_G={der:"m",die:"f",das:"n"};
 const SP_CASE={nom:"Nominativ",akk:"Akkusativ",dat:"Dativ"};
 const SP_HINT={nom:"Nominativ: <b>-er = der · -e = die · -es = das</b>",akk:"Akkusativ: nur <b>der</b> ändert sich (einen … -en). <b>die → -e · das → -es</b>",dat:"Dativ: nach ein-Wörtern immer <b>-en</b> (einem / einer / einem)"};
 const spPick=a=>a[Math.floor(Math.random()*a.length)];
+
 let spPat='nom',spQueue=[],spCur=null,spOk=0,spN=10,spMissed=[],spSeen=new Set();
-function spMake(pat){if(pat==='mix')pat=spPick(['nom','akk','dat']);let noun,grp,frame;if(pat==='nom'){const v=Math.random()<.4;noun=spPick(v?SP_VEH:SP_PLACES);grp=v?'veh':'place';frame='Das ist'}else if(pat==='akk'){const v=Math.random()<.4;noun=spPick(v?SP_VEH:SP_PLACES);grp=v?'veh':'place';frame=spPick(v?['Ich nehme','Ich brauche']:['Ich sehe','Ich suche'])}else if(Math.random()<.5){noun=spPick(SP_VEH);grp='veh';frame='Ich fahre mit'}else{noun=spPick(SP_WOHN);grp='wohn';frame='Ich wohne in'}return {cs:pat,frame,art:noun[0],noun:noun[1],g:SP_G[noun[0]],adj:spPick(SP_ADJ[grp]),tries:0}}
+
+function spMake(pat){
+  if(pat==='mix')pat=spPick(['nom','akk','dat']);
+  let noun,grp,frame;
+  if(pat==='nom'){const v=Math.random()<.4;noun=spPick(v?SP_VEH:SP_PLACES);grp=v?'veh':'place';frame='Das ist'}
+  else if(pat==='akk'){const v=Math.random()<.4;noun=spPick(v?SP_VEH:SP_PLACES);grp=v?'veh':'place';frame=spPick(v?['Ich nehme','Ich brauche']:['Ich sehe','Ich suche'])}
+  else if(Math.random()<.5){noun=spPick(SP_VEH);grp='veh';frame='Ich fahre mit'}
+  else{noun=spPick(SP_WOHN);grp='wohn';frame='Ich wohne in'}
+  return {cs:pat,frame,art:noun[0],noun:noun[1],g:SP_G[noun[0]],adj:spPick(SP_ADJ[grp]),tries:0};
+}
+
 function spSentence(c){return `${c.frame} ${SP_ART[c.cs][c.g]} ${c.adj}${SP_END[c.cs][c.g]} ${c.noun}.`}
-function spStart(){const seen=new Set();spQueue=[];let guard=0;while(spQueue.length<spN&&guard++<500){const c=spMake(spPat),k=c.cs+c.frame+c.noun+c.adj;if(!seen.has(k)){seen.add(k);spQueue.push(c)}}spOk=0;spMissed=[];$('#sp-play').hidden=false;$('#sp-done').hidden=true;spNext()}
+
+function spStart(){
+  const seen=new Set();spQueue=[];
+  let guard=0;
+  while(spQueue.length<spN&&guard++<500){const c=spMake(spPat),k=c.cs+c.frame+c.noun+c.adj;if(!seen.has(k)){seen.add(k);spQueue.push(c)}}
+  spOk=0;spMissed=[];$('#sp-play').hidden=false;$('#sp-done').hidden=true;spNext();
+}
+
 function spProgress(){const done=spN-spQueue.length-(spCur?1:0);$('#sp-prog').textContent=`Karte ${Math.min(done+1,spN)} von ${spN} · gleich richtig: ${spOk}`}
-function spNext(){if(!spQueue.length){spEnd();return}spCur=spQueue.shift();spRender()}
-function spRender(){const c=spCur;const p=$('#sp-pat');if(p)p.innerHTML=`${esc(c.frame)} …<small>${SP_CASE[c.cs]}</small>`;const n=$('#sp-noun');if(n)n.innerHTML=($('#sp-hint')&&$('#sp-hint').checked?`<span class="art ${c.art}" style="font-size:.55em;vertical-align:middle">${c.art}</span> `:'')+esc(c.noun);const a=$('#sp-adj');if(a)a.textContent=c.adj;if($('#sp-sol'))$('#sp-sol').hidden=true;if($('#sp-why'))$('#sp-why').hidden=true;if($('#sp-ans'))$('#sp-ans').hidden=true;if($('#sp-show'))$('#sp-show').hidden=false;if($('#sp-hear'))$('#sp-hear').disabled=true;spProgress()}
-function spShow(){const c=spCur,ar=SP_ART[c.cs][c.g],en=SP_END[c.cs][c.g];$('#sp-sol').innerHTML=`${esc(c.frame)} <b class="g-${c.art}">${ar}</b> ${esc(c.adj)}<b class="sp-end">${en}</b> <span class="g-${c.art}" style="font-weight:800">${esc(c.noun)}</span>.`;$('#sp-why').innerHTML=`<span class="art ${c.art}">${c.art}</span> ${esc(c.noun)} → ${SP_CASE[c.cs]}: <b>${ar}</b> + Endung <b>-${en}</b><br><span class="hint">${SP_HINT[c.cs]}</span>`;$('#sp-sol').hidden=false;$('#sp-why').hidden=false;$('#sp-ans').hidden=false;$('#sp-show').hidden=true;$('#sp-hear').disabled=false}
-function spAnswer(ok){const c=spCur;if(ok){if(c.tries===0)spOk++}else{c.tries++;if(!spMissed.some(m=>m.noun===c.noun&&m.art===c.art))spMissed.push(c);spQueue.splice(Math.min(spQueue.length,2+Math.floor(Math.random()*2)),0,c)}spCur=null;spNext()}
-function spEnd(){$('#sp-play').hidden=true;$('#sp-done').hidden=false;spProgress();$('#sp-done-txt').textContent=`${spOk} von ${spN} Sätzen gleich richtig.`+(spMissed.length?' Das war schwierig:':'');$('#sp-missed').innerHTML=spMissed.map(c=>`<span lang="de"><b class="g-${c.art}">${c.art}</b> ${esc(c.noun)}</span>`).join('')}
+
+function spNext(){
+  if(!spQueue.length){spEnd();return}
+  spCur=spQueue.shift();spRender();
+}
+
+function spRender(){
+  const c=spCur;
+  const p=$('#sp-pat'); if(p) p.innerHTML=`${esc(c.frame)} …<small>${SP_CASE[c.cs]}</small>`;
+  const n=$('#sp-noun'); if(n) n.innerHTML=($('#sp-hint')&&$('#sp-hint').checked?`<span class="art ${c.art}" style="font-size:.55em;vertical-align:middle">${c.art}</span> `:'')+esc(c.noun);
+  const a=$('#sp-adj'); if(a) a.textContent=c.adj;
+  if($('#sp-sol'))$('#sp-sol').hidden=true;
+  if($('#sp-why'))$('#sp-why').hidden=true;
+  if($('#sp-ans'))$('#sp-ans').hidden=true;
+  if($('#sp-show'))$('#sp-show').hidden=false;
+  if($('#sp-hear'))$('#sp-hear').disabled=true;
+  spProgress();
+}
+
+function spShow(){
+  const c=spCur,ar=SP_ART[c.cs][c.g],en=SP_END[c.cs][c.g];
+  $('#sp-sol').innerHTML=`${esc(c.frame)} <b class="g-${c.art}">${ar}</b> ${esc(c.adj)}<b class="sp-end">${en}</b> <span class="g-${c.art}" style="font-weight:800">${esc(c.noun)}</span>.`;
+  $('#sp-why').innerHTML=`<span class="art ${c.art}">${c.art}</span> ${esc(c.noun)} → ${SP_CASE[c.cs]}: <b>${ar}</b> + Endung <b>-${en}</b><br><span class="hint">${SP_HINT[c.cs]}</span>`;
+  $('#sp-sol').hidden=false;$('#sp-why').hidden=false;$('#sp-ans').hidden=false;$('#sp-show').hidden=true;$('#sp-hear').disabled=false;
+}
+
+function spAnswer(ok){
+  const c=spCur;
+  if(ok){if(c.tries===0)spOk++}
+  else{c.tries++;if(!spMissed.some(m=>m.noun===c.noun&&m.art===c.art))spMissed.push(c);spQueue.splice(Math.min(spQueue.length,2+Math.floor(Math.random()*2)),0,c)}
+  spCur=null;spNext();
+}
+
+function spEnd(){
+  $('#sp-play').hidden=true;$('#sp-done').hidden=false;spProgress();
+  $('#sp-done-txt').textContent=`${spOk} von ${spN} Sätzen gleich richtig.`+(spMissed.length?' Das war schwierig:':'');
+  $('#sp-missed').innerHTML=spMissed.map(c=>`<span lang="de"><b class="g-${c.art}">${c.art}</b> ${esc(c.noun)}</span>`).join('');
+}
+
 $('#sp-show').addEventListener('click',spShow);
 $('#sp-hear').addEventListener('click',()=>{if(spCur)speak(spSentence(spCur))});
 $('#sp-yes').addEventListener('click',()=>spAnswer(true));
@@ -383,8 +571,20 @@ $('#sp-again').addEventListener('click',spStart);
 $('#sp-hint').addEventListener('change',()=>{if(spCur)spRender()});
 $$('.psegb').forEach(b=>b.addEventListener('click',()=>{spPat=b.dataset.pat;$$('.psegb').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));spStart()}));
 spStart();
-$$('.stamp').forEach(t=>t.addEventListener('click',()=>{if('speechSynthesis' in window)speechSynthesis.cancel();document.body.dataset.tab=t.dataset.tab;$$('.stamp').forEach(x=>x.setAttribute('aria-selected',String(x===t)));$$('.panel').forEach(s=>s.classList.toggle('active',s.id===t.dataset.tab));try{history.replaceState(null,'',t.dataset.tab==='dict'?location.pathname+location.search:'#'+t.dataset.tab)}catch(e){}}));
-if('speechSynthesis' in window){loadVoices();if(speechSynthesis.addEventListener)speechSynthesis.addEventListener('voiceschanged',loadVoices);else speechSynthesis.onvoiceschanged=loadVoices}else setMsg('Dieser Browser kann nicht vorlesen. Probiere Chrome, Edge oder Safari.',true);
+
+$$('.stamp').forEach(t=>t.addEventListener('click',()=>{
+  if('speechSynthesis' in window)speechSynthesis.cancel();
+  document.body.dataset.tab=t.dataset.tab;
+  $$('.stamp').forEach(x=>x.setAttribute('aria-selected',String(x===t)));
+  $$('.panel').forEach(s=>s.classList.toggle('active',s.id===t.dataset.tab));
+  try{history.replaceState(null,'',t.dataset.tab==='dict'?location.pathname+location.search:'#'+t.dataset.tab)}catch(e){}
+}));
+
+if('speechSynthesis' in window){
+  loadVoices();
+  if(speechSynthesis.addEventListener)speechSynthesis.addEventListener('voiceschanged',loadVoices);else speechSynthesis.onvoiceschanged=loadVoices;
+}else setMsg('Dieser Browser kann nicht vorlesen. Probiere Chrome, Edge oder Safari.',true);
+
 buildChips();renderDict();startCards();
 (function(){const h=location.hash.slice(1);const t=h&&document.querySelector('.stamp[data-tab="'+h+'"]');if(t)t.click()})();
 </script>
