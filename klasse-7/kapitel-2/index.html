@@ -387,7 +387,22 @@ footer{color:var(--muted);font-size:13px;padding-top:8px;padding-bottom:44px;fon
   main{padding-top:18px}
 }
 @media print{
-  <body data-tab="dict">
+  body{background:#fff;font-size:12pt}
+  nav,.filters,.msg,#cards,.toolbar button,.say,footer{display:none!important}
+  .toolbar{display:none!important}
+  #dict{display:block!important}
+  .entries{column-count:2!important;column-gap:20px}
+  .grp h3{margin-top:18px;font-size:11pt}
+  header{padding:0 0 8px}
+  h1{font-size:22pt;color:#000;background:none;-webkit-text-fill-color:initial}
+  .entry{padding:8px 0}
+  .line{font-size:12pt}
+  .ex{font-size:10pt;padding:2px 0;min-height:0;color:#333}
+  .grp h3{break-after:avoid}
+  .art,.tag,.formsbig{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head><body data-tab="dict">
 <header>
   <h1>Wortschatz</h1>
   <p class="lead">Kapitel 2 · Das Leben in der Stadt und auf dem Lande</p>
@@ -548,8 +563,7 @@ footer{color:var(--muted);font-size:13px;padding-top:8px;padding-bottom:44px;fon
     <div id="sp-play">
       <div class="sp-card">
         <div class="sp-pat" id="sp-pat"></div>
-        <div class="sp-words"><span class="sp-chip noun" id="sp-noun" lang="de"></span><span class="sp-plus" aria-hidden="true">+</span
-  <span class="sp-chip adj" id="sp-adj" lang="de"></span></div>
+        <div class="sp-words"><span class="sp-chip noun" id="sp-noun" lang="de"></span><span class="sp-plus" aria-hidden="true">+</span<span class="sp-chip adj" id="sp-adj" lang="de"></span></div>
         <div class="sp-q">Sag den ganzen Satz! <span lang="ru">Скажи предложение целиком.</span></div>
         <div class="sp-sol" id="sp-sol" hidden lang="de"></div>
         <div class="sp-why" id="sp-why" hidden></div>
@@ -580,8 +594,7 @@ footer{color:var(--muted);font-size:13px;padding-top:8px;padding-bottom:44px;fon
       <div class="rus" lang="ru" style="margin-top:6px">Учитель молчит и показывает «светофор»: зелёный — верно, жёлтый — почти, красный — ещё раз. Потом роли меняются: учитель нарочно ошибается в артикле или окончании, а ученица ищет ошибку.</div></div>
   </section>
 </main>
-<footer>Keine Anmeldung, keine Daten: Alles bleibt in deinem Browser. Tipp: Auf dem Handy Ton einschalten.</footer>
-  <script>
+<footer>Keine Anmeldung, keine Daten: Alles bleibt in deinem Browser. Tipp: Auf dem Handy Ton einschalten.</footer><script>
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
 const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
