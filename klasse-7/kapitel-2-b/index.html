@@ -1,0 +1,848 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kapitel 2 B: Die Stadt Minsk erkunden</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏛️</text></svg>">
+<style>
+:root{
+  --paper:#FAFAF7; --card:#FFFFFF; --ink:#1E2A5A; --muted:#4D5675;
+  --blue:#2F5DD8; --blue-l:#E4EBFB; --coral:#C7461F; --coral-l:#FCE6DF; --line:#D5DAE6;
+  --font:'Avenir Next Rounded','Nunito','Trebuchet MS','Segoe UI',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.5;padding-bottom:env(safe-area-inset-bottom,0px)}
+.airmail{height:12px;background:repeating-linear-gradient(-45deg,var(--blue) 0 16px,#fff 16px 24px,var(--coral) 24px 40px,#fff 40px 48px)}
+header,nav,.filters,main{max-width:1000px;margin:0 auto;padding-left:20px;padding-right:20px}
+header{padding-top:calc(26px + env(safe-area-inset-top,0px));padding-bottom:6px}
+h1{margin:0;font-size:clamp(30px,5vw,44px);line-height:1.1;font-weight:800;letter-spacing:-.5px}
+.lead{margin:6px 0 0;color:var(--muted)}
+nav{padding-top:14px;padding-bottom:4px;display:flex;flex-wrap:wrap;gap:10px}
+.stamp{border:0;cursor:pointer;padding:7px;font:inherit;color:inherit;background:radial-gradient(circle,transparent 3.5px,#fff 4px) -6px -6px/12px 12px;filter:drop-shadow(0 1px 1px rgba(30,42,90,.25));transition:transform .15s}
+.stamp span{display:block;background:#fff;border:2px solid var(--ink);padding:8px 16px;font-weight:800;font-size:16px;white-space:nowrap}
+.stamp[aria-selected="true"]{transform:rotate(-2deg)}
+.stamp[aria-selected="true"] span{background:var(--blue);border-color:var(--blue);color:#fff}
+.stamp:focus-visible,.cat:focus-visible,.btn:focus-visible,.say:focus-visible,.ex:focus-visible,.fc:focus-visible,.segb:focus-visible,#q:focus-visible,#voice:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+
+.filters{padding-top:12px;padding-bottom:4px;display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;justify-content:space-between}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.cat{font:inherit;font-weight:700;font-size:15px;border:2px solid var(--ink);background:#fff;color:var(--ink);border-radius:999px;padding:8px 14px;min-height:44px;cursor:pointer}
+.cat[aria-pressed="true"]{background:var(--ink);color:#fff}
+.voice{font-weight:700;font-size:15px}
+.voice summary{cursor:pointer;min-height:44px;display:flex;align-items:center;padding:0 4px}
+.voice summary::after{content:"▾";margin-left:6px}
+.voice summary:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+.voice select{margin-top:2px}
+#voice{font:inherit;font-size:15px;max-width:230px;padding:8px;border:2px solid var(--ink);border-radius:10px;background:#fff;color:var(--ink);min-height:44px}
+.msg{max-width:1000px;margin:0 auto;padding:0 20px;font-weight:700;min-height:0}
+.msg.warn{color:var(--coral);padding-top:6px}
+main{padding-top:10px;padding-bottom:48px}
+.panel{display:none}
+.panel.active{display:block}
+.btn{font:inherit;font-weight:800;border:2px solid var(--ink);background:#fff;color:var(--ink);border-radius:10px;padding:10px 18px;cursor:pointer;min-height:44px}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn.main{background:var(--ink);color:#fff}
+.hint{color:var(--muted)}
+
+/* Dictionary */
+.toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin:8px 0 6px}
+#q{font:inherit;font-size:17px;flex:1 1 240px;max-width:420px;border:2px solid var(--ink);border-radius:12px;padding:10px 14px;min-height:46px;background:#fff;color:var(--ink)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.grp h3{margin:26px 0 4px;font-size:22px;display:flex;align-items:center;gap:10px;border-bottom:3px solid var(--ink);padding-bottom:4px}
+.grp h3 .n{font-size:14px;font-weight:800;background:var(--blue-l);color:var(--ink);border-radius:999px;padding:1px 10px}
+.entries{list-style:none;margin:0;padding:0;column-count:1;column-gap:36px}
+@media (min-width:860px){.entries{column-count:2}}
+.entry{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--line);break-inside:avoid}
+.say{flex:none;width:44px;height:44px;border-radius:50%;border:2px solid var(--ink);background:#fff;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+.say:hover{background:var(--blue-l)}
+.body{min-width:0}
+.line{font-size:20px;line-height:1.3}
+.w{font-weight:800}
+.art{display:inline-block;padding:0 9px;border-radius:999px;font-weight:800;font-size:.8em;border:2px solid currentColor;margin-right:4px;line-height:1.35}
+.art.der{color:#2448B8;background:#E4EBFB}
+.art.die{color:#B23C17;background:#FCE6DF}
+.art.das{color:#1A6E43;background:#E1F3E8}
+.tag{display:inline-block;font-size:12px;font-weight:800;color:#B23C17;background:var(--coral-l);border-radius:6px;padding:1px 8px;vertical-align:middle;margin-left:6px}
+.forms{color:var(--muted);font-size:15px}
+.ru{font-size:17px}
+.ex{display:block;font:inherit;font-size:15px;font-style:italic;color:var(--muted);background:none;border:0;padding:6px 0;text-align:left;cursor:pointer;min-height:40px}
+.ex:hover{color:var(--ink);text-decoration:underline dotted}
+
+/* Cards */
+.opts{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin:8px 0 12px}
+.seg{display:inline-flex;border:2px solid var(--ink);border-radius:12px;overflow:hidden}
+.segb{font:inherit;font-weight:800;font-size:15px;border:0;background:#fff;color:var(--ink);padding:10px 14px;min-height:44px;cursor:pointer}
+.segb+.segb{border-left:2px solid var(--ink)}
+.segb[aria-pressed="true"]{background:var(--ink);color:#fff}
+.chk{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px;min-height:44px}
+.chk input{width:22px;height:22px}
+.prog{display:flex;align-items:center;gap:14px;margin:4px 0 16px}
+.bar{flex:1;height:14px;border-radius:999px;background:var(--blue-l);overflow:hidden}
+.bar span{display:block;height:100%;width:0;background:var(--blue);transition:width .3s}
+#ptxt{font-weight:700;font-size:15px;white-space:nowrap}
+.stage{perspective:1100px;max-width:600px;margin:0 auto}
+.fc{display:grid;transform-style:preserve-3d;transition:transform .5s;cursor:pointer;border-radius:22px;-webkit-tap-highlight-color:transparent}
+.fc.flip{transform:rotateY(180deg)}
+.face{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;min-height:310px;border-radius:22px;padding:34px 22px 22px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px;position:relative;overflow:hidden;border:3px solid var(--ink)}
+.face::before{content:"";position:absolute;left:0;right:0;top:0;height:12px;background:repeating-linear-gradient(-45deg,var(--blue) 0 14px,#fff 14px 20px,var(--coral) 20px 34px,#fff 34px 40px)}
+.front{background:#fff}
+.back{background:var(--blue-l);transform:rotateY(180deg)}
+.type{font-size:13px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted)}
+.big{font-size:clamp(30px,8vw,46px);font-weight:800;line-height:1.15;overflow-wrap:anywhere}
+.big .art{font-size:.55em;vertical-align:middle}
+.big.small{font-size:clamp(24px,6vw,34px)}
+.sec{font-size:22px;font-weight:700}
+.sec .art{font-size:.75em}
+.formsbig{font-size:21px;font-weight:800;color:#B23C17;background:var(--coral-l);border-radius:12px;padding:6px 14px}
+.exs{font-size:18px;font-style:italic;color:var(--ink);max-width:460px}
+.tools{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin:16px 0 6px}
+.tip{text-align:center;color:var(--muted);margin:4px 0 10px;min-height:1.5em}
+.ans{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:600px;margin:0 auto}
+.ans .btn{display:flex;flex-direction:column;align-items:center;gap:0;padding:12px 10px;font-size:19px;line-height:1.2}
+.ans small{font-weight:600;font-size:13px;color:inherit;opacity:.85}
+.ans .again{border-color:var(--coral);color:var(--coral)}
+.ans .good{background:var(--blue);border-color:var(--blue);color:#fff}
+.done{max-width:600px;margin:10px auto;text-align:center;background:#fff;border:3px solid var(--ink);border-radius:22px;padding:28px 20px}
+.done h2{margin:0 0 6px;font-size:30px}
+.missed{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:12px 0 18px}
+.missed span{background:var(--coral-l);border:2px solid var(--coral);border-radius:999px;padding:4px 12px;font-weight:700;font-size:15px}
+.done .row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+footer{max-width:1000px;margin:0 auto;padding:0 20px 32px;color:var(--muted);font-size:14px}
+
+
+/* Sprechen */
+body[data-tab="sprechen"] .chips{display:none}
+.psegs{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.psegb{font:inherit;font-weight:800;font-size:15px;border:2px solid var(--ink);background:#fff;color:var(--ink);border-radius:999px;padding:8px 14px;min-height:44px;cursor:pointer}
+.psegb[aria-pressed="true"]{background:var(--ink);color:#fff}
+.psegb:focus-visible,.sp-sum:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+.sp-card{background:#fff;border:3px solid var(--ink);border-radius:22px;padding:30px 20px 20px;max-width:640px;margin:12px 0;text-align:center;position:relative;overflow:hidden}
+.sp-card::before{content:"";position:absolute;left:0;right:0;top:0;height:12px;background:repeating-linear-gradient(-45deg,var(--blue) 0 14px,#fff 14px 20px,var(--coral) 20px 34px,#fff 34px 40px)}
+.sp-pat{font-size:clamp(24px,6vw,32px);font-weight:800;margin:6px 0 12px;line-height:1.2}
+.sp-pat small{display:block;font-size:14px;font-weight:700;color:var(--muted);letter-spacing:.5px}
+.sp-words{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px}
+.sp-chip{border-radius:14px;padding:8px 18px;font-size:clamp(24px,6.5vw,36px);font-weight:800;border:3px solid var(--ink)}
+.sp-chip.noun{background:var(--blue-l)}
+.sp-chip.adj{background:var(--coral-l);border-color:var(--coral);color:#8A3F0F}
+.sp-plus{font-size:26px;font-weight:800;color:var(--muted)}
+.sp-q{margin-top:14px;color:var(--muted)}
+.sp-sol{margin-top:14px;font-size:clamp(20px,5vw,28px);font-weight:700;line-height:1.6;background:var(--blue-l);border-radius:14px;padding:12px 14px}
+.sp-why{margin-top:10px;font-size:16px;text-align:left}
+.g-der{color:#2448B8}.g-die{color:#B23C17}.g-das{color:#1A6E43}
+.sp-end{background:#FFE08A;border-radius:6px;padding:0 3px;color:var(--ink)}
+.sp-ans{max-width:640px;margin:0}
+.sp-tools{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;margin:6px 0 10px}
+.sp-det{max-width:640px;margin:10px 0}
+.sp-sum{font-weight:800;font-size:17px;cursor:pointer;min-height:44px;display:flex;align-items:center}
+.sp-tab{border-collapse:collapse;width:100%;font-size:16px;background:#fff}
+.sp-tab th,.sp-tab td{border:2px solid var(--line);padding:6px 10px;text-align:left;vertical-align:top}
+.sp-tab th{background:var(--paper);font-weight:800}
+.sp-box{max-width:640px;background:#fff;border:2px solid #CFE3E8;border-radius:16px;padding:12px 16px;margin:12px 0;line-height:1.45}
+.sp-box ol{margin:6px 0 0 20px;padding:0}
+.sp-box .rus{color:var(--muted);font-size:15px}
+@media (max-width:640px){
+  .stamp span{padding:7px 12px;font-size:15px}
+  .face{min-height:240px;padding:28px 14px 14px;gap:8px}
+  .opts{gap:6px 12px;margin:4px 0 8px}
+  .seg{width:100%}.segb{flex:1;padding:8px 6px;font-size:14px;min-height:44px}
+  .opts .btn{padding:8px 14px;font-size:15px}
+  .prog{margin:2px 0 10px}
+  .tools{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0 2px}
+  .tools .btn{padding:8px 6px;font-size:15px}
+  .tip{margin:2px 0 8px;font-size:15px}
+  .ans .btn{padding:8px 10px;font-size:18px}
+  .filters{padding-top:8px}
+  .cat{padding:6px 12px;font-size:14px}
+  header{padding-top:calc(16px + env(safe-area-inset-top,0px))}
+  nav{padding-top:8px}
+  #voice{max-width:100%;width:100%}
+  .chips{flex-wrap:nowrap;overflow-x:auto;margin:0 -20px;padding:2px 20px 8px;width:calc(100% + 40px);scrollbar-width:thin}
+  .cat{flex:none}
+  .filters{flex-direction:column;align-items:stretch;gap:0}
+}
+@media (prefers-reduced-motion:reduce){.fc,.stamp,.bar span{transition:none}}
+@media print{
+  body{background:#fff;font-size:12pt}
+  .airmail,nav,.filters,.msg,#cards,.toolbar button,.say,footer{display:none!important}
+  .toolbar{display:none!important}
+  #dict{display:block!important}
+  .entries{column-count:2!important;column-gap:20px}
+  .grp h3{margin-top:14px;font-size:15pt}
+  header{padding:0 0 6px}
+  h1{font-size:24pt}
+  .entry{padding:6px 0}
+  .line{font-size:13pt}
+  .ex{font-size:10pt;padding:2px 0;min-height:0;color:#333}
+  .grp h3{break-after:avoid}
+  .art,.tag,.formsbig{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+
+/* Tabs: nur Wörterbuch + Karten haben Themen-Filter */
+body[data-tab="ueben"] .chips,body[data-tab="sprechen"] .chips{display:none}
+.vh{margin:8px 0 2px;font-size:26px}
+.small{font-size:14px;margin:6px 0 0}
+
+/* Üben */
+.u-card{max-width:680px;text-align:left}
+.u-q{font-size:clamp(20px,5vw,26px);font-weight:800;line-height:1.35;margin:8px 0 12px}
+.u-big{font-size:clamp(30px,8vw,44px);font-weight:800}
+.u-sub{color:var(--muted);font-size:16px;font-weight:600;margin:-4px 0 10px}
+.u-fields{display:grid;gap:10px;margin:10px 0}
+.u-f{display:grid;gap:4px;font-weight:700;font-size:15px;color:var(--muted)}
+.u-f input{font:inherit;font-size:20px;font-weight:700;color:var(--ink);border:3px solid var(--ink);border-radius:12px;padding:9px 12px;min-height:48px;background:#fff;width:100%}
+.u-f input:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+.u-f input.ok{background:#E1F3E8;border-color:#1A6E43}
+.u-f input.bad{background:var(--coral-l);border-color:var(--coral)}
+.u-opts{display:grid;gap:10px;margin:10px 0}
+.u-opt{font:inherit;font-weight:700;font-size:18px;text-align:left;border:3px solid var(--ink);background:#fff;color:var(--ink);border-radius:14px;padding:10px 14px;min-height:48px;cursor:pointer;line-height:1.3}
+.u-opt:hover:not([disabled]){background:var(--blue-l)}
+.u-opt[disabled]{cursor:default}
+.u-opt.ok{background:#E1F3E8;border-color:#1A6E43}
+.u-opt.bad{background:var(--coral-l);border-color:var(--coral)}
+.u-opt:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+.u-fb{min-height:1.5em;font-weight:800;font-size:18px;margin:8px 0}
+.u-fb.good{color:#1A6E43}.u-fb.warn{color:var(--coral)}
+.u-note{color:var(--muted);font-size:16px;margin:4px 0 8px}
+.u-gap{display:inline-block;min-width:3.2em;border-bottom:3px solid var(--ink);text-align:center;color:var(--coral)}
+.u-sol{background:var(--blue-l);border-radius:14px;padding:12px 14px;font-size:clamp(19px,4.6vw,24px);font-weight:700;line-height:1.5;margin:10px 0}
+.u-card .vrow{margin-top:8px}
+.sp-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:8px 0 4px}
+.sp-step{background:#fff;border:2px solid var(--line);border-radius:14px;padding:10px 12px;font-size:16px}
+.sp-step b{display:block;color:var(--coral)}
+.sp-ask{list-style:none;margin:10px 0 0;padding:0;text-align:left;font-size:18px;line-height:1.45}
+.sp-ask li{padding:6px 0;border-bottom:1px solid var(--line)}
+.sp-ask li b{color:var(--coral)}
+.sp-line{font-size:clamp(18px,4.4vw,23px);font-weight:700;line-height:1.45;margin:4px 0;text-align:left}
+.sp-line .lb{display:inline-block;font-size:13px;font-weight:800;color:#B23C17;background:var(--coral-l);border-radius:6px;padding:0 8px;margin-right:6px;vertical-align:middle}
+@media print{#ueben,#sprechen{display:none!important}}
+.vrow{display:flex;flex-wrap:wrap;gap:8px}
+
+</style>
+</head>
+<body data-tab="dict">
+<div class="airmail" aria-hidden="true"></div>
+<header>
+  <h1>Wortschatz</h1>
+  <p class="lead">Kapitel 2, Teil B: Die Stadt Minsk erkunden</p>
+</header>
+
+<nav role="tablist" aria-label="Ansicht">
+  <button class="stamp" role="tab" aria-selected="true" data-tab="dict"><span>Wörterbuch</span></button>
+  <button class="stamp" role="tab" aria-selected="false" data-tab="cards"><span>Karten</span></button>
+  <button class="stamp" role="tab" aria-selected="false" data-tab="ueben"><span>Üben</span></button>
+  <button class="stamp" role="tab" aria-selected="false" data-tab="sprechen"><span>Sprechen</span></button>
+</nav>
+
+<div class="filters">
+  <div class="chips" role="group" aria-label="Thema wählen"></div>
+  <details class="voice"><summary>Stimme wählen</summary><select id="voice" aria-label="Stimme"></select></details>
+</div>
+<p class="msg" id="tts-msg" role="status"></p>
+
+<main>
+  <section id="dict" class="panel active" role="tabpanel">
+    <div class="toolbar">
+      <label class="sr" for="q">Suchen</label>
+      <input id="q" type="search" placeholder="Suchen: deutsches Wort oder Übersetzung" autocomplete="off">
+      <span id="dict-count" class="hint"></span>
+      <button class="btn" id="print" type="button">Drucken</button>
+    </div>
+    <div id="dict-list"></div>
+  </section>
+
+  <section id="cards" class="panel" role="tabpanel">
+    <div class="opts">
+      <div class="seg" role="group" aria-label="Richtung">
+        <button class="segb" type="button" data-dir="de" aria-pressed="true">Deutsch → Russisch</button>
+        <button class="segb" type="button" data-dir="ru" aria-pressed="false">Russisch → Deutsch</button>
+      </div>
+      <label class="chk"><input type="checkbox" id="hideart"> Artikel erraten</label>
+      <button class="btn" id="reshuffle" type="button">Neu mischen</button>
+    </div>
+    <div class="prog"><div class="bar" id="pbar" role="progressbar" aria-label="Fortschritt" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="pfill"></span></div><span id="ptxt"></span></div>
+
+    <div id="play">
+      <div class="stage">
+        <div class="fc" id="fc" role="button" tabindex="0" aria-label="Karte umdrehen">
+          <div class="face front" id="ffront"></div>
+          <div class="face back" id="fback"></div>
+        </div>
+      </div>
+      <div class="tools">
+        <button class="btn" id="c-word" type="button">Wort anhören</button>
+        <button class="btn" id="c-ex" type="button">Satz anhören</button>
+      </div>
+      <p class="tip" id="tip">Tippe auf die Karte, um sie umzudrehen.</p>
+      <div class="ans">
+        <button class="btn again" id="a-no" type="button"><b>Nochmal</b><small lang="ru">ещё раз</small></button>
+        <button class="btn good" id="a-yes" type="button"><b>Gewusst</b><small lang="ru">знаю</small></button>
+      </div>
+    </div>
+
+    <div class="done" id="done" hidden>
+      <h2>Geschafft!</h2>
+      <p id="done-txt"></p>
+      <div class="missed" id="missed"></div>
+      <div class="row">
+        <button class="btn main" id="again-missed" type="button" hidden>Schwierige Wörter üben</button>
+        <button class="btn" id="again-all" type="button">Alles noch einmal</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="ueben" class="panel" role="tabpanel">
+    <h2 class="vh">Üben: Vergleichen, Gründe, Lage</h2>
+    <p class="hint">Wähle eine Übung. Tippe die Antwort ein oder wähle eine Antwort. Falsche Aufgaben kommen noch einmal.</p>
+    <div class="psegs" id="u-modes" role="group" aria-label="Übung wählen">
+      <button class="psegb" type="button" data-m="steig" aria-pressed="true">Steigern</button>
+      <button class="psegb" type="button" data-m="vergl" aria-pressed="false">Sätze vergleichen</button>
+      <button class="psegb" type="button" data-m="komp" aria-pressed="false">Komposita</button>
+      <button class="psegb" type="button" data-m="grund" aria-pressed="false">denn / deshalb</button>
+      <button class="psegb" type="button" data-m="lage" aria-pressed="false">Wo liegt das?</button>
+      <button class="psegb" type="button" data-m="rf" aria-pressed="false">Richtig / falsch</button>
+    </div>
+    <div class="sp-tools"><span class="hint" id="u-prog" role="status"></span></div>
+    <div id="u-play"><div class="sp-card u-card" id="u-card"></div></div>
+    <div class="done" id="u-done" hidden style="margin-left:0">
+      <h2>Geschafft!</h2>
+      <p id="u-done-txt"></p>
+      <div class="missed" id="u-missed"></div>
+      <div class="row"><button class="btn main" id="u-again" type="button">Neue Runde</button></div>
+    </div>
+    <details class="sp-det">
+      <summary class="sp-sum">Hilfe: Komparativ und Superlativ</summary>
+      <table class="sp-tab"><thead><tr><th>Positiv</th><th>Komparativ</th><th>Superlativ</th></tr></thead><tbody>
+        <tr><td>schnell</td><td>schnell<span class="sp-end">er</span></td><td>am schnell<span class="sp-end">sten</span></td></tr>
+        <tr><td>groß · alt · klug</td><td>gr<span class="sp-end">ö</span>ßer · <span class="sp-end">ä</span>lter · kl<span class="sp-end">ü</span>ger</td><td>am gr<span class="sp-end">ö</span>ßten · am <span class="sp-end">ä</span>ltesten · am kl<span class="sp-end">ü</span>gsten</td></tr>
+        <tr><td>gut · viel · gern · nah · hoch</td><td>besser · mehr · lieber · näher · höher</td><td>am besten · am meisten · am liebsten · am nächsten · am höchsten</td></tr>
+      </tbody></table>
+      <p class="hint" style="margin:8px 0 0">Ohne Umlaut: <b>schmal, flach, laut, langsam</b>. Nach -d, -t, -s, -ß, -z, -sch: <b>-esten</b> (am ältesten, am breitesten). Vergleich mit <b>als</b>: <i>Der Bus ist schneller <b>als</b> das Fahrrad.</i></p>
+      <p class="hint" style="margin:6px 0 0" lang="ru">Умлаут: a→ä, o→ö, u→ü. Без умлаута: schmal, flach, laut, langsam. После -d, -t, -s, -ß, -z, -sch: -esten.</p>
+    </details>
+  </section>
+
+  <section id="sprechen" class="panel" role="tabpanel">
+    <h2 class="vh">Sprechen: Eine Führung durch Minsk</h2>
+    <p class="hint">Ziehe eine Karte und sag drei Sätze über die Sehenswürdigkeit. Dann zeig eine Beispiel-Lösung und prüfe dich.</p>
+    <div class="sp-tools"><span class="hint" id="sp-prog" role="status"></span></div>
+    <div id="sp-play">
+      <div class="sp-card">
+        <div class="sp-pat" id="sp-pat"></div>
+        <ol class="sp-ask">
+          <li><b>Satz 1:</b> Wo liegt es? Wie sieht es aus? <span class="hint" lang="ru">Где находится? Как выглядит?</span></li>
+          <li><b>Satz 2:</b> Was gibt es dort? Was kann man machen? <span class="hint" lang="ru">Что там есть / можно делать?</span></li>
+          <li><b>Satz 3:</b> Warum ist es interessant? (denn / deshalb / darum) <span class="hint" lang="ru">Почему это интересно?</span></li>
+        </ol>
+        <div class="sp-sol" id="sp-sol" hidden lang="de" style="text-align:left;font-size:inherit;font-weight:400"></div>
+      </div>
+      <div class="vrow" style="margin-bottom:10px"><button class="btn main" id="sp-show" type="button">Beispiel zeigen</button><button class="btn" id="sp-hear" type="button" disabled>Beispiel anhören</button></div>
+      <div class="ans sp-ans" id="sp-ans" hidden>
+        <button class="btn again" id="sp-no" type="button"><b>Nochmal</b><small lang="ru">повторим позже</small></button>
+        <button class="btn good" id="sp-yes" type="button"><b>Gut</b><small lang="ru">справился(лась)</small></button>
+      </div>
+    </div>
+    <div class="done" id="sp-done" hidden style="margin-left:0">
+      <h2>Geschafft!</h2>
+      <p id="sp-done-txt"></p>
+      <div class="missed" id="sp-missed"></div>
+      <div class="row"><button class="btn main" id="sp-again" type="button">Neue Runde</button></div>
+    </div>
+    <details class="sp-det">
+      <summary class="sp-sum">Hilfe: Führung in drei Schritten</summary>
+      <div class="sp-steps">
+        <div class="sp-step"><b>Schritt 1</b>Liebe Gäste! Ich möchte Ihnen über meine Heimatstadt … erzählen.</div>
+        <div class="sp-step"><b>Schritt 2</b>… liegt im Zentrum der Stadt / am Stadtrand. · … befindet sich gegenüber / neben / nicht weit von … · Besonders gern besuchen die Gäste … · … zieht viele Touristen an.</div>
+        <div class="sp-step"><b>Schritt 3</b>Herzlich willkommen in meiner Heimatstadt!</div>
+      </div>
+    </details>
+    <div class="sp-box"><b>So geht's zu zweit</b> <span class="rus" lang="ru">(Учитель + ученица)</span>
+      <ol><li>Die Schülerin zieht eine Karte und sagt drei Sätze.</li><li>Die Lehrerin sagt nichts. Sie zeigt nur eine Ampel: grün = richtig, gelb = fast, rot = nochmal.</li><li>Dann zeigt ihr das Beispiel und sprecht es noch einmal zusammen.</li><li>Rollenspiel: Eine Person ist Tourist(in) und fragt: „Entschuldigung. Wo befindet sich …? Und wie komme ich dahin?“ Die andere erklärt den Weg.</li></ol>
+      <div class="rus" lang="ru" style="margin-top:6px">Ученица тянет карточку и говорит три предложения. Учитель молчит и показывает «светофор». Потом роли меняются: один — турист, спрашивает дорогу, другой объясняет.</div></div>
+  </section>
+</main>
+<footer>Keine Anmeldung, keine Daten: Alles bleibt in deinem Browser. Tipp: Auf dem Handy Ton einschalten.</footer>
+
+<script>
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const ICON='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>';
+/* ---------- Wortschatz: [Thema, Wort, Formen, Übersetzung, Beispielsatz] ---------- */
+const RAW=[
+/* Sehenswürdigkeiten */
+["sehens","das Wahrzeichen","die Wahrzeichen","символ города, визитная карточка","Die Minsk-Arena ist ein Wahrzeichen der Stadt."],
+["sehens","die Führung","die Führungen","экскурсия","Wir machen eine Führung durch die Altstadt."],
+["sehens","der Stadtführer","die Stadtführer (f.: die Stadtführerin)","гид, экскурсовод","Unsere Stadtführerin heißt Nadja."],
+["sehens","der Vorort","die Vororte","пригород","Der Troizkoje Vorort ist ein Stück Altstadt."],
+["sehens","die Altstadt","die Altstädte","старый город","In der Altstadt gibt es kleine Häuser."],
+["sehens","die Apotheke","die Apotheken","аптека","Die Apotheke auf dem Berg ist sehr alt."],
+["sehens","das Regierungsgebäude","die Regierungsgebäude","здание правительства","Das Regierungsgebäude ist aus dem Jahr 1933."],
+["sehens","der Sitz","die Sitze","резиденция, место заседания","Das Gebäude ist der Sitz der Regierung."],
+["sehens","das Bauwerk","die Bauwerke","сооружение","Der Museumskomplex ist ein beeindruckendes Bauwerk."],
+["sehens","die Glasfassade","die Glasfassaden","стеклянный фасад","Der Bahnhof hat eine Glasfassade."],
+["sehens","die Eisenbahn","die Eisenbahnen","железная дорога","Die Eisenbahn ist für unser Land wichtig."],
+["sehens","der Hauptbahnhof","die Hauptbahnhöfe","главный вокзал","Der Hauptbahnhof liegt nicht weit vom Zentrum."],
+["sehens","die Aussichtsplattform","die Aussichtsplattformen","смотровая площадка","Von der Aussichtsplattform sieht man die ganze Stadt."],
+["sehens","das Stadtpanorama","die Stadtpanoramen","панорама города","Das Stadtpanorama ist wunderschön."],
+["sehens","der Wettkampf","die Wettkämpfe","соревнование","In der Arena finden Wettkämpfe statt."],
+["sehens","die Aufführung","die Aufführungen","представление, спектакль","Ich gehe gern zu Aufführungen im Theater."],
+["sehens","der Brunnen","die Brunnen","фонтан; колодец","Vor dem Theater steht ein Brunnen."],
+["sehens","die Skulptur","die Skulpturen","скульптура","Im Park gibt es viele Skulpturen."],
+["sehens","der Hügel","die Hügel","холм","Das Theater liegt auf einem Hügel."],
+["sehens","die Ausstellung","die Ausstellungen","выставка","Im Museum gibt es eine neue Ausstellung."],
+["sehens","der Vergnügungspark","die Vergnügungsparks","парк развлечений","Der Gorki Park ist ein Vergnügungspark."],
+["sehens","das Riesenrad","die Riesenräder","колесо обозрения","Das Riesenrad im Gorki Park ist 54 Meter hoch."],
+["sehens","das Karussell","die Karussells","карусель","Kinder fahren gern Karussell."],
+["sehens","der Souvenirladen","die Souvenirläden","сувенирная лавка","Im Souvenirladen gibt es viele Kleinigkeiten."],
+["sehens","das Andenken","die Andenken","сувенир, память","Ich kaufe ein Andenken an Minsk."],
+["sehens","das Museum","die Museen","музей","Am Sonntag besuchen wir ein Museum."],
+["sehens","die Kirche","die Kirchen","церковь","Die Rote Kirche ist ein markantes Gebäude."],
+["sehens","der Platz","die Plätze","площадь","Der Platz im Zentrum ist groß und schön."],
+/* Verben */
+["verben","besichtigen","besichtigte – hat besichtigt","осматривать (достопримечательность)","Am Sonntag besichtigen wir das Museum."],
+["verben","betrachten","betrachtete – hat betrachtet","рассматривать, наблюдать","Von oben kann man die Stadt betrachten."],
+["verben","veranstalten","veranstaltete – hat veranstaltet","устраивать, проводить","Im Museum veranstaltet man oft Ausstellungen."],
+["verben","errichten","errichtete – hat errichtet","возводить","Man hat ein neues Gebäude errichtet."],
+["verben","vermuten","vermutete – hat vermutet","предполагать","Ich vermute, dass das Bild A das Regierungsgebäude zeigt."],
+["verben","beeindrucken","beeindruckte – hat beeindruckt","впечатлять","Das Gebäude beeindruckt viele Touristen."],
+["verben","überraschen","überraschte – hat überrascht","удивлять","Es hat mich überrascht, dass die Apotheke so alt ist."],
+["verben","erinnern an (+ Akk.)","erinnerte – hat erinnert","напоминать о","Das Denkmal erinnert an die Vergangenheit."],
+["verben","gehören zu (+ Dat.)","gehörte – hat gehört","относиться к, входить в","Der Park gehört zu den Wahrzeichen der Stadt."],
+["verben","sich ausruhen","ruhte sich aus – hat sich ausgeruht","отдыхать","Nach einer hektischen Woche ruhe ich mich aus."],
+["verben","sich erholen","erholte sich – hat sich erholt","отдыхать, восстанавливать силы","Im Park kann man sich gut erholen."],
+["verben","sich überzeugen (von + Dat.)","überzeugte sich – hat sich überzeugt","убедиться (самому)","Besuche die Stadt und überzeuge dich selbst!"],
+["verben","sich auskennen (in + Dat.)","kannte sich aus – hat sich ausgekannt","хорошо ориентироваться, знать","Ich kenne mich in meiner Stadt gut aus."],
+["verben","sich (Dat.) vorstellen","stellte sich vor – hat sich vorgestellt","представлять себе","Ich kann mir vorstellen, dass das Museum interessant ist."],
+["verben","aufzählen","zählte auf – hat aufgezählt","перечислять","Man kann nicht alle Sehenswürdigkeiten aufzählen."],
+/* Starke Verben */
+["starke","stattfinden","fand statt – hat stattgefunden","проходить, состояться","In der Arena findet ein Wettkampf statt."],
+["starke","annehmen","(er) nimmt an – nahm an – hat angenommen","предполагать; принимать","Ich nehme an, dass das Bild B das Regierungsgebäude zeigt."],
+["starke","anziehen","zog an – hat angezogen","привлекать; надевать","Die Stadt zieht viele Touristen an."],
+["starke","erfahren","(er) erfährt – erfuhr – hat erfahren","узнавать","Ich habe erfahren, dass die Bibliothek eine Aussichtsplattform hat."],
+["starke","bestehen (seit + Dat.)","bestand – hat bestanden","существовать (с …)","Das Theater besteht seit 1933."],
+["starke","vorschlagen","(er) schlägt vor – schlug vor – hat vorgeschlagen","предлагать","Ich schlage vor, dass wir das Museum besuchen."],
+/* Steigerung */
+["komp","groß","größer – am größten","большой","Der Platz ist größer als der Park."],
+["komp","alt","älter – am ältesten","старый","Das Theater ist älter als das Kino."],
+["komp","jung","jünger – am jüngsten","молодой","Mein Bruder ist jünger als ich."],
+["komp","lang","länger – am längsten","длинный","Der Weg zur Schule ist länger als der Weg zum Bahnhof."],
+["komp","kurz","kürzer – am kürzesten","короткий","Der Fußweg ist kürzer als die Fahrt."],
+["komp","klug","klüger – am klügsten","умный","Mein Hund ist klüger als die Katze."],
+["komp","schmal","schmaler – am schmalsten","узкий","Die Gasse ist schmaler als die Straße."],
+["komp","breit","breiter – am breitesten","широкий","Der Prospekt ist breiter als die Straße."],
+["komp","schnell","schneller – am schnellsten","быстрый","Die U-Bahn ist schneller als der Bus."],
+["komp","langsam","langsamer – am langsamsten","медленный","Das Fahrrad ist langsamer als das Auto."],
+["komp","sauber","sauberer – am saubersten","чистый","Die Luft im Park ist sauberer als an der Straße."],
+["komp","teuer","teurer – am teuersten","дорогой","Das Taxi ist teurer als der Bus."],
+["komp","interessant","interessanter – am interessantesten","интересный","Das Museum finde ich interessanter als das Kino."],
+["komp","hoch","höher – am höchsten","высокий","Das Hochhaus ist höher als das Haus."],
+["komp","gut","besser – am besten","хороший","Das Eis schmeckt gut, aber die Torte schmeckt besser."],
+["komp","viel","mehr – am meisten","много","Im Zentrum gibt es mehr Verkehr als am Stadtrand."],
+["komp","gern","lieber – am liebsten","охотно, с удовольствием","Ich fahre am liebsten mit dem Fahrrad."],
+["komp","nah","näher – am nächsten","близко","Die Haltestelle liegt näher als der Bahnhof."],
+/* Adjektive */
+["adj","historisch","","исторический","Das historische Gebäude besteht seit 1933."],
+["adj","modern","","современный","Minsk ist modern und gleichzeitig historisch."],
+["adj","hochmodern","","ультрасовременный","Die Bibliothek steht in einem hochmodernen Gebäude."],
+["adj","repräsentativ","","представительный, внушительный","Das Theater sieht sehr repräsentativ aus."],
+["adj","beeindruckend","","впечатляющий","Der Museumskomplex ist ein beeindruckendes Bauwerk."],
+["adj","markant","","выразительный, броский","Die Rote Kirche ist ein markantes Gebäude."],
+["adj","schick","","стильный","Der Bahnhof sieht mit seiner Glasfassade schick aus."],
+["adj","tragisch","","трагический","Das Museum zeigt die tragische Geschichte des Landes."],
+["adj","ruhmreich","","славный","Das Land hat auch eine ruhmreiche Geschichte."],
+["adj","international","","международный","In der Arena finden internationale Wettkämpfe statt."],
+["adj","hektisch","","суетливый, напряжённый","Nach einer hektischen Woche brauche ich Ruhe."],
+/* Redemittel */
+["red","Ich vermute, dass …","","Я предполагаю, что …","Ich vermute, dass das Bild A das Regierungsgebäude zeigt."],
+["red","Ich nehme an, dass …","","Я полагаю, что …","Ich nehme an, dass der Park im Zentrum liegt."],
+["red","Ich kann mir vorstellen, …","","Могу себе представить, …","Ich kann mir vorstellen, dass das Museum interessant ist."],
+["red","Ich bin nicht sicher, aber ich denke, …","","Я не уверен(а), но думаю, …","Ich bin nicht sicher, aber ich denke, das ist die Bibliothek."],
+["red","Ich habe keine Ahnung.","","Понятия не имею.","Wo die Arena liegt? Ich habe keine Ahnung."],
+["red","Ich weiß genau, dass …","","Я точно знаю, что …","Ich weiß genau, dass Minsk die Hauptstadt ist."],
+["red","Meiner Meinung nach …","","По моему мнению …","Meiner Meinung nach ist der Gorki Park am schönsten."],
+["red","Ich habe erfahren, dass …","","Я узнал(а), что …","Ich habe erfahren, dass die Bibliothek seit 2006 in einem hochmodernen Gebäude ist."],
+["red","Es war für mich neu, dass …","","Для меня было новым, что …","Es war für mich neu, dass das Theater auf einem Hügel liegt."],
+["red","Es hat mich überrascht, dass …","","Меня удивило, что …","Es hat mich überrascht, dass die Apotheke so alt ist."],
+["red","Besonders interessant finde ich, dass …","","Особенно интересно, что …","Besonders interessant finde ich, dass es ein Haus der Natur gibt."],
+["red","Ich möchte … besuchen, denn …","","Я хочу посетить …, потому что …","Ich möchte das Museum besuchen, denn dort gibt es eine neue Ausstellung."],
+["red","…, deshalb / darum …","","…, поэтому …","Der Bus ist voll, deshalb gehe ich zu Fuß."],
+["red","Entschuldigung. Wo ist / befindet sich …?","","Извините. Где находится …?","Entschuldigung. Wo befindet sich die Nationalbibliothek?"],
+["red","Und wie komme ich dahin?","","И как мне туда добраться?","Und wie komme ich dahin?"],
+["red","Sie gehen geradeaus / bis zu … / … entlang","","Вы идёте прямо / до … / вдоль …","Sie gehen geradeaus bis zur Haltestelle."],
+["red","Dann biegen Sie nach links / rechts ab.","","Затем поверните налево / направо.","Dann biegen Sie nach links ab."],
+["red","Sie fahren … Station(en) mit der U-Bahn","","Вы едете … станции на метро","Sie fahren drei Stationen mit der U-Bahn."],
+["red","Leider kann ich Ihnen nicht helfen.","","К сожалению, не могу вам помочь.","Leider kann ich Ihnen nicht helfen. Ich weiß es nicht."],
+["red","Gern geschehen. / Bitte sehr.","","Пожалуйста.","Danke schön! – Gern geschehen."],
+["red","aus der Vogelperspektive","","с высоты птичьего полёта","Von der Plattform sieht man die Stadt aus der Vogelperspektive."],
+["red","sich gegenüber / neben / nicht weit von + Dat. befinden","","находиться напротив / рядом / недалеко от","Die Universität befindet sich gegenüber dem Regierungshaus."],
+["red","im Zentrum / am Stadtrand liegen","","находиться в центре / на окраине","Das Museum liegt am Stadtrand."],
+["red","viele Touristen anziehen","","привлекать много туристов","Die Stadt zieht viele Touristen an."],
+["red","jmdn. (Akk.) an die Vergangenheit erinnern","","напоминать о прошлом","Das Denkmal erinnert uns an die Vergangenheit."],
+["red","am häufigsten besuchen","","чаще всего посещать","Touristen besuchen am häufigsten das Theater."],
+["red","Herzlich willkommen in meiner Heimatstadt!","","Добро пожаловать в мой родной город!","Liebe Gäste, herzlich willkommen in meiner Heimatstadt!"]
+];
+const W=RAW.map((a,i)=>({id:i,cat:a[0],de:a[1],f:a[2],ru:a[3],ex:a[4]}));
+const CATS=[["all","Alle"],["sehens","Sehenswürdigkeiten"],["verben","Verben"],["starke","Starke Verben"],["komp","Steigerung"],["adj","Adjektive"],["red","Redemittel"]];
+const CAT_TITLE={sehens:"Sehenswürdigkeiten und Gebäude",verben:"Verben",starke:"Starke Verben (3 Formen!)",komp:"Steigerung: Komparativ und Superlativ",adj:"Adjektive",red:"Redemittel"};
+const TYPE={sehens:"Substantiv",verben:"Verb",starke:"Starkes Verb",komp:"Steigerung",adj:"Adjektiv",red:"Redemittel"};
+const NOUN=['sehens'];
+const artOf=w=>{if(!NOUN.includes(w.cat))return null;const m=/^(der|die|das) /.exec(w.de);return m?m[1]:null};
+const bare=w=>artOf(w)?w.de.replace(/^(der|die|das) /,''):w.de;
+const formsOf=w=>artOf(w)?(w.f==='—'?'kein Plural':'Pl.: '+w.f):(w.f||'');
+let cat='all';
+
+/* ---------- Sprache ---------- */
+let voices=[];
+function voiceScore(v){
+  const n=v.name,l=(v.lang||'').toLowerCase().replace('_','-');
+  if(!l.startsWith('de'))return -1;
+  let s=0;
+  if(l==='de-de')s+=3;
+  if(/natural|neural|online|premium|enhanced|erweitert|wavenet|studio/i.test(n))s+=10;
+  if(/google/i.test(n))s+=6;
+  if(/siri/i.test(n))s+=7;
+  if(/anna|helena|petra|katja|conrad|amala|seraphina|florian|marlene|vicki/i.test(n))s+=2;
+  if(!v.localService)s+=2;
+  if(/espeak|compact|eloquence|grandma|grandpa|rocko|shelley|reed|sandy|flo|eddy/i.test(n))s-=8;
+  return s;
+}
+function setMsg(t,warn){const m=$('#tts-msg');m.textContent=t;m.className='msg'+(warn?' warn':'')}
+function loadVoices(){
+  voices=speechSynthesis.getVoices().filter(v=>voiceScore(v)>=0).sort((a,b)=>voiceScore(b)-voiceScore(a));
+  const sel=$('#voice'),prev=sel.value;sel.innerHTML='';
+  voices.forEach((v,i)=>{const o=document.createElement('option');o.value=v.name;o.textContent=v.name.replace(/Microsoft |Google /,'')+(i===0?' (empfohlen)':'');sel.append(o)});
+  if(prev&&voices.some(v=>v.name===prev))sel.value=prev;
+  setMsg(voices.length?'':'Keine deutsche Stimme gefunden. Bitte in den Einstellungen des Geräts eine deutsche Stimme installieren.',!voices.length);
+}
+function speak(text){
+  if(!('speechSynthesis' in window)){setMsg('Dieser Browser kann nicht vorlesen. Probiere Chrome, Edge oder Safari.',true);return}
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  const v=voices.find(x=>x.name===$('#voice').value)||voices[0];
+  if(v){u.voice=v;u.lang=v.lang}else u.lang='de-DE';
+  u.rate=.9;speechSynthesis.speak(u);
+}
+function sayText(w){
+  if(w.cat==='red')return w.ex;
+  let t=w.de;
+  if(w.f&&w.f!=='—')t+=', '+w.f;
+  return t.replace(/\(Akk\.\/Dat\.:[^)]*\)/g,'').replace(/\(er\)\s*/g,'er ').replace(/\s*[–·]\s*/g,', ').replace(/\s*\/\s*/g,', ').replace(/\(\s*(\+\s*)?(Akk|Dat)\.?\s*\)/g,'').replace(/\s+/g,' ').trim();
+}
+
+/* ---------- Filter ---------- */
+function buildChips(){
+  const box=$('.chips');box.innerHTML='';
+  CATS.forEach(([k,l])=>{
+    const n=k==='all'?W.length:W.filter(w=>w.cat===k).length;
+    const b=document.createElement('button');b.type='button';b.className='cat';
+    b.setAttribute('aria-pressed',String(k===cat));b.textContent=`${l} (${n})`;
+    b.addEventListener('click',()=>{cat=k;buildChips();renderDict();startCards()});
+    box.append(b);
+  });
+}
+
+/* ---------- Wörterbuch ---------- */
+function entryHtml(w){
+  const a=artOf(w),fm=formsOf(w);
+  return `<li class="entry"><button class="say" type="button" data-say="${w.id}" aria-label="Anhören: ${esc(bare(w))}">${ICON}</button>`+
+  `<div class="body"><div class="line">${a?`<span class="art ${a}">${a}</span>`:''}<span class="w">${esc(bare(w))}</span>${w.cat==='starke'?'<span class="tag">stark</span>':''}</div>`+
+  (fm?`<div class="forms">${esc(fm)}</div>`:'')+
+  `<div class="ru" lang="ru">${esc(w.ru)}</div>`+
+  `<button class="ex" type="button" data-ex="${w.id}" lang="de" aria-label="Satz anhören: ${esc(w.ex)}">${esc(w.ex)}</button></div></li>`;
+}
+function renderDict(){
+  const q=$('#q').value.trim().toLowerCase();let html='',total=0;
+  CATS.slice(1).forEach(([k])=>{
+    if(cat!=='all'&&cat!==k)return;
+    const list=W.filter(w=>w.cat===k&&(!q||(w.de+' '+w.ru+' '+w.f).toLowerCase().includes(q)));
+    if(!list.length)return;total+=list.length;
+    html+=`<div class="grp"><h3>${CAT_TITLE[k]} <span class="n">${list.length}</span></h3><ul class="entries">${list.map(entryHtml).join('')}</ul></div>`;
+  });
+  $('#dict-list').innerHTML=html||'<p class="hint">Nichts gefunden.</p>';
+  $('#dict-count').textContent=`${total} Wörter`;
+}
+$('#dict-list').addEventListener('click',e=>{
+  const s=e.target.closest('[data-say]');if(s){speak(sayText(W[+s.dataset.say]));return}
+  const x=e.target.closest('[data-ex]');if(x)speak(W[+x.dataset.ex].ex);
+});
+$('#q').addEventListener('input',renderDict);
+$('#print').addEventListener('click',()=>window.print());
+
+/* ---------- Karten ---------- */
+let dir='de',hideArt=false,deck=[],queue=[],known=0,missed=new Set(),cur=null,flipped=false;
+function startCards(onlyMissed){
+  const base=onlyMissed?W.filter(w=>missed.has(w.id)):W.filter(w=>cat==='all'||w.cat===cat);
+  missed=new Set();deck=base;queue=shuffle(base.slice());known=0;
+  $('#play').hidden=false;$('#done').hidden=true;nextCard();
+}
+function progress(){
+  const p=deck.length?Math.round(known/deck.length*100):0;
+  $('#pfill').style.width=p+'%';$('#pbar').setAttribute('aria-valuenow',p);
+  $('#ptxt').textContent=`${known} von ${deck.length} gewusst`;
+}
+function nextCard(){
+  progress();
+  if(!queue.length){showDone();return}
+  cur=queue.shift();flipped=false;renderCard();
+}
+function renderCard(){
+  const w=cur,a=artOf(w),fm=formsOf(w);
+  const badge=a?`<span class="art ${a}">${a}</span> `:'';
+  const deFull=`${badge}${esc(bare(w))}`;
+  const deFront=(a&&hideArt)?esc(bare(w)):deFull;
+  const hint=dir==='de'?((a&&hideArt)?'<div class="hint">der, die oder das?</div>':(w.cat==='starke'?'<div class="hint">Wie lauten die Formen?</div>':'')):'';
+  const long=(s)=>s.length>26?' small':'';
+  let front,back;
+  if(dir==='de'){
+    front=`<div class="type">${TYPE[w.cat]}</div><div class="big${long(w.de)}" lang="de">${deFront}</div>${hint}`;
+    back=`<div class="big${long(w.ru)}" lang="ru">${esc(w.ru)}</div><div class="sec" lang="de">${deFull}</div>${fm?`<div class="formsbig">${esc(fm)}</div>`:''}<div class="exs" lang="de">${esc(w.ex)}</div>`;
+  }else{
+    front=`<div class="type">${TYPE[w.cat]}</div><div class="big${long(w.ru)}" lang="ru">${esc(w.ru)}</div><div class="hint">${a?'Wie heißt das? (mit Artikel)':(w.cat==='starke'?'Wie heißt das? + Formen':'Wie heißt das auf Deutsch?')}</div>`;
+    back=`<div class="big${long(w.de)}" lang="de">${deFull}</div>${fm?`<div class="formsbig">${esc(fm)}</div>`:''}<div class="exs" lang="de">${esc(w.ex)}</div>`;
+  }
+  $('#ffront').innerHTML=front;$('#fback').innerHTML=back;
+  syncFlip();
+}
+function syncFlip(){
+  $('#fc').classList.toggle('flip',flipped);
+  $('#ffront').setAttribute('aria-hidden',String(flipped));
+  $('#fback').setAttribute('aria-hidden',String(!flipped));
+  $('#fc').setAttribute('aria-label',flipped?'Karte zurückdrehen':'Karte umdrehen');
+  $('#a-no').disabled=!flipped;$('#a-yes').disabled=!flipped;
+  $('#c-ex').disabled=!flipped;
+  $('#c-word').disabled=(dir==='ru'&&!flipped);
+  $('#tip').textContent=flipped?'Wusstest du es?':'Tippe auf die Karte, um sie umzudrehen.';
+}
+function flip(){if(!cur)return;flipped=!flipped;syncFlip()}
+function answer(ok){
+  if(!flipped||!cur)return;
+  if(ok)known++;
+  else{missed.add(cur.id);queue.splice(Math.min(queue.length,3+Math.floor(Math.random()*3)),0,cur)}
+  nextCard();
+}
+function showDone(){
+  cur=null;$('#play').hidden=true;$('#done').hidden=false;
+  const n=missed.size;
+  $('#done-txt').textContent=n?`Du hast alle ${deck.length} Karten geschafft. ${n} ${n===1?'Wort war':'Wörter waren'} schwierig:`:`Alle ${deck.length} Karten gewusst. Super!`;
+  $('#missed').innerHTML=[...missed].map(id=>`<span lang="de">${esc(W[id].de)}</span>`).join('');
+  $('#again-missed').hidden=!n;
+  $('#again-missed').textContent=`Schwierige Wörter üben (${n})`;
+}
+$('#fc').addEventListener('click',flip);
+$('#fc').addEventListener('keydown',e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();flip()}});
+$('#a-yes').addEventListener('click',()=>answer(true));
+$('#a-no').addEventListener('click',()=>answer(false));
+$('#c-word').addEventListener('click',()=>{if(cur)speak(sayText(cur))});
+$('#c-ex').addEventListener('click',()=>{if(cur)speak(cur.ex)});
+$('#reshuffle').addEventListener('click',()=>startCards());
+$('#again-all').addEventListener('click',()=>startCards());
+$('#again-missed').addEventListener('click',()=>startCards(true));
+$('#hideart').addEventListener('change',e=>{hideArt=e.target.checked;if(cur)renderCard()});
+$$('.segb').forEach(b=>b.addEventListener('click',()=>{dir=b.dataset.dir;$$('.segb').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));startCards()}));
+document.addEventListener('keydown',e=>{
+  if(!$('#cards').classList.contains('active')||!cur)return;
+  if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;
+  if(e.key==='ArrowLeft'){e.preventDefault();answer(false)}
+  else if(e.key==='ArrowRight'){e.preventDefault();answer(true)}
+});
+/* ---------- Üben ---------- */
+const norm=s=>s.toLowerCase().replace(/\s+/g,' ').trim();
+const loose=s=>norm(s).replace(/[\s-]/g,'');
+const STEIG=[["klein","kleiner","am kleinsten"],["jung","jünger","am jüngsten"],["lang","länger","am längsten"],["kurz","kürzer","am kürzesten"],["alt","älter","am ältesten"],["groß","größer","am größten"],["klug","klüger","am klügsten"],["schmal","schmaler","am schmalsten"],["flach","flacher","am flachsten"],["schnell","schneller","am schnellsten"],["langsam","langsamer","am langsamsten"],["sauber","sauberer","am saubersten"],["interessant","interessanter","am interessantesten"],["breit","breiter","am breitesten"],["schön","schöner","am schönsten"],["bequem","bequemer","am bequemsten"],["gefährlich","gefährlicher","am gefährlichsten"],["laut","lauter","am lautesten"],["modern","moderner","am modernsten"],["teuer","teurer","am teuersten"],["gut","besser","am besten"],["viel","mehr","am meisten"],["gern","lieber","am liebsten"],["nah","näher","am nächsten"],["hoch","höher","am höchsten"]];
+const VERGL=[
+["Das Fahrrad ist schnell.","der Obus, die U-Bahn","Der Obus ist schneller. Die U-Bahn ist am schnellsten."],
+["Der Park ist groß.","der Platz, der Wald","Der Platz ist größer. Der Wald ist am größten."],
+["Das Haus ist alt.","die Kirche, das Schloss","Die Kirche ist älter. Das Schloss ist am ältesten."],
+["Der Hof ist schmal.","der Weg, die Gasse","Der Weg ist schmaler. Die Gasse ist am schmalsten."],
+["Das Eis ist teuer.","der Kuchen, die Pizza","Der Kuchen ist teurer. Die Pizza ist am teuersten."],
+["Das Kino ist gut.","das Theater, das Museum","Das Theater ist besser. Das Museum ist am besten."],
+["Ich fahre gern mit dem Bus.","mit dem Obus, mit dem Fahrrad","Ich fahre lieber mit dem Obus. Ich fahre am liebsten mit dem Fahrrad."],
+["Die Schule liegt nah.","die Haltestelle, der Bahnhof","Die Haltestelle liegt näher. Der Bahnhof liegt am nächsten."],
+["Das Haus ist hoch.","das Hochhaus, der Fernsehturm","Das Hochhaus ist höher. Der Fernsehturm ist am höchsten."],
+["Im Zentrum gibt es viel Verkehr.","auf der Hauptstraße, am Bahnhof","Auf der Hauptstraße gibt es mehr Verkehr. Am Bahnhof gibt es am meisten Verkehr."],
+["Der Bus ist bequem.","die Straßenbahn, die U-Bahn","Die Straßenbahn ist bequemer. Die U-Bahn ist am bequemsten."],
+["Die Straße ist breit.","der Prospekt, der Platz","Der Prospekt ist breiter. Der Platz ist am breitesten."]
+];
+const KOMPO=[["die Stadt","der Plan","der Stadtplan"],["das Fahrrad","der Weg","der Fahrradweg"],["der Bus","die Haltestelle","die Bushaltestelle"],["die Stadt","die Führung","die Stadtführung"],["die Nacht","der Bus","der Nachtbus"],["die Stadt","das Zentrum","das Stadtzentrum"],["die Schule","der Weg","der Schulweg"],["die Kirche","der Turm","der Kirchturm"],["das Kino","die Karte","die Kinokarte"],["das Eis","das Café","das Eiscafé"],["die Aussicht","die Plattform","die Aussichtsplattform"],["der Vogel","die Perspektive","die Vogelperspektive"],["die Mode","das Geschäft","das Modegeschäft"],["das Schach","der Klub","der Schachklub"],["die Kunst","das Museum","das Kunstmuseum"],["die U-Bahn","die Station","die U-Bahn-Station"]];
+const GRUND=[
+["Minsk ist die Hauptstadt. Viele Touristen besuchen die Stadt.","Minsk ist die Hauptstadt, deshalb besuchen viele Touristen die Stadt.",["Minsk ist die Hauptstadt, deshalb viele Touristen besuchen die Stadt.","Minsk ist die Hauptstadt, denn besuchen viele Touristen die Stadt."]],
+["Die U-Bahn ist schnell. Ich fahre mit der U-Bahn zur Schule.","Die U-Bahn ist schnell, darum fahre ich mit der U-Bahn zur Schule.",["Die U-Bahn ist schnell, darum ich fahre mit der U-Bahn zur Schule.","Die U-Bahn ist schnell, denn fahre ich mit der U-Bahn zur Schule."]],
+["Die Bibliothek hat eine Aussichtsplattform. Man kann dort das Stadtpanorama sehen.","Die Bibliothek hat eine Aussichtsplattform, deshalb kann man dort das Stadtpanorama sehen.",["Die Bibliothek hat eine Aussichtsplattform, deshalb man kann dort das Stadtpanorama sehen.","Die Bibliothek hat eine Aussichtsplattform, denn kann man dort das Stadtpanorama sehen."]],
+["Der Bus ist voll. Ich gehe zu Fuß.","Der Bus ist voll, deshalb gehe ich zu Fuß.",["Der Bus ist voll, deshalb ich gehe zu Fuß.","Der Bus ist voll, darum zu Fuß gehe ich."]],
+["Ich besuche das Museum. Dort gibt es eine neue Ausstellung.","Ich besuche das Museum, denn dort gibt es eine neue Ausstellung.",["Ich besuche das Museum, denn gibt es dort eine neue Ausstellung.","Ich besuche das Museum, deshalb dort gibt es eine neue Ausstellung."]],
+["Im Gorki Park gibt es ein Riesenrad. Ich fahre gern dorthin.","Im Gorki Park gibt es ein Riesenrad, deshalb fahre ich gern dorthin.",["Im Gorki Park gibt es ein Riesenrad, deshalb ich fahre gern dorthin.","Im Gorki Park gibt es ein Riesenrad, denn fahre ich gern dorthin."]],
+["Wir bleiben im Museum. Es regnet.","Wir bleiben im Museum, denn es regnet.",["Wir bleiben im Museum, denn regnet es.","Wir bleiben im Museum, darum es regnet."]],
+["Das Taxi ist teuer. Wir nehmen den Bus.","Das Taxi ist teuer, darum nehmen wir den Bus.",["Das Taxi ist teuer, darum wir nehmen den Bus.","Das Taxi ist teuer, denn nehmen wir den Bus."]]
+];
+const LAGE=[
+["Das Regierungsgebäude befindet sich","Platz der Unabhängigkeit.","am",["am","im","vom","auf dem"]],
+["Die Nationalbibliothek liegt","Osten von Minsk.","im",["am","im","vom","in der"]],
+["Der Hauptbahnhof liegt nicht weit","Platz der Unabhängigkeit.","vom",["vom","am","im","zum"]],
+["Der Gorki Park befindet sich","Zentrum der Stadt.","im",["am","im","vom","in der"]],
+["Die Apotheke befindet sich","Troizkaja Berg.","auf dem",["auf dem","auf der","im","vom"]],
+["Die Haltestelle liegt","Museum. (напротив)","gegenüber dem",["gegenüber dem","gegenüber der","neben der","in der"]],
+["Das Café befindet sich","Bibliothek. (рядом с)","neben der",["neben dem","neben der","neben die","im"]],
+["Das Museum liegt","Stadtrand. (на окраине)","am",["am","im","vom","zum"]]
+];
+const RF=[
+["Das Regierungsgebäude am Platz der Unabhängigkeit ist aus dem Jahr 1933.",true,"Text S. 92: Regierungsgebäude aus dem Jahr 1933."],
+["Der Hauptbahnhof liegt weit vom Platz der Unabhängigkeit.",false,"Er liegt nicht weit vom Platz der Unabhängigkeit."],
+["Das neue Bahnhofsgebäude hat man 2001 errichtet.",true,"Text S. 93: 2001 hat man ein neues Bahnhofsgebäude errichtet."],
+["Die Nationalbibliothek befindet sich im Westen von Minsk.",false,"Sie befindet sich im Osten von Minsk."],
+["Die Erzählerin war noch nie auf der Aussichtsplattform der Bibliothek.",false,"Sie war schon auf der Plattform, aber noch nicht als Leserin in der Bibliothek."],
+["In der Minsk-Arena finden viele internationale Wettkämpfe statt.",true,"Text S. 94."],
+["Im Gorki Park gibt es ein 54 Meter hohes Riesenrad.",true,"Text S. 93."],
+["Das Gebäude des Bolschoj Theaters besteht seit 1933.",true,"Text S. 94."],
+["Im Troizkoje Vorort gibt es keine Museen und keine Galerien.",false,"Es gibt Souvenirläden, Galerien und Museen. (S. 96)"],
+["Die erste Apotheke in Minsk stammt aus dem Jahr 1659.",true,"Text S. 96."],
+["Das Bolschoj Theater ist im Zweiten Weltkrieg zerstört worden.",false,"Es gehört zu den wenigen Gebäuden, die erhalten geblieben sind."],
+["Die Belarussische Staatliche Universität befindet sich gegenüber dem Regierungshaus.",true,"Text S. 92."]
+];
+const UM={
+  steig:()=>STEIG.map(([a,c,s])=>{const s2=s.replace(/^am /,'');return{kind:'type',q:`<span class="u-big">${esc(a)}</span>`,sub:'Komparativ und Superlativ',fields:[{label:'Komparativ',ans:[c]},{label:'Superlativ (am …)',ans:[s,s2]}],show:`${c} · ${s}`,say:`${a}, ${c}, ${s}`}}),
+  vergl:()=>VERGL.map(([q,h,s])=>({kind:'say',q:esc(q),sub:'('+h+')  Sag zwei Sätze: Komparativ und Superlativ.',show:esc(s),say:s})),
+  komp:()=>KOMPO.map(([a,b,r])=>({kind:'type',q:`${esc(a)} + ${esc(b)} = ?`,sub:'Schreibe das Wort mit Artikel. Der Artikel kommt vom letzten Wort.',fields:[{label:'Zusammengesetztes Wort',ans:[r],bare:r.replace(/^(der|die|das) /,'')}],show:r,say:r})),
+  grund:()=>GRUND.map(([q,c,w])=>({kind:'mc',q:esc(q),sub:'Welche Verbindung ist richtig?',opts:[c,...w],ans:c,note:'Nach deshalb / darum steht das Verb an zweiter Stelle. Nach denn bleibt die normale Wortstellung.',say:c})),
+  lage:()=>LAGE.map(([a,b,r,o])=>({kind:'mc',q:`${esc(a)} <span class="u-gap">&nbsp;?&nbsp;</span> ${esc(b)}`,sub:'Ergänze Präposition und Artikel.',opts:o,ans:r,note:'Dativ: der → dem, die → der, das → dem. an + dem = am, in + dem = im, von + dem = vom.',say:`${a} ${r} ${b.replace(/\(.*\)/,'')}`.trim()})),
+  rf:()=>RF.map(([q,t,n])=>({kind:'mc',q:esc(q),sub:'Richtig oder falsch? (Text im Buch, S. 92–96)',opts:['Richtig','Falsch'],fixed:true,ans:t?'Richtig':'Falsch',note:n,say:q}))
+};
+let uMode='steig',uQueue=[],uCur=null,uOk=0,uTotal=0,uMiss=[],uDone=false;
+const U_N=10;
+function uStart(){
+  uQueue=shuffle(UM[uMode]().slice()).slice(0,U_N).map(x=>({...x,tries:0}));
+  uTotal=uQueue.length;uOk=0;uMiss=[];$('#u-play').hidden=false;$('#u-done').hidden=true;uNext();
+}
+function uProg(){$('#u-prog').textContent=`Noch ${uQueue.length+(uCur?1:0)} von ${uTotal} · gleich richtig: ${uOk}`}
+function uNext(){
+  if(!uQueue.length){uEnd();return}
+  uCur=uQueue.shift();uDone=false;uRender();uProg();
+}
+function uRender(){
+  const c=uCur;let h=`<div class="u-q">${c.q}</div>${c.sub?`<div class="u-sub">${esc(c.sub)}</div>`:''}`;
+  if(c.kind==='type'){
+    h+=`<div class="u-fields">${c.fields.map((f,i)=>`<label class="u-f"><span>${esc(f.label)}</span><input type="text" data-f="${i}" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"></label>`).join('')}</div>`;
+    h+=`<div class="u-fb" id="u-fb" role="status"></div><div class="vrow"><button class="btn main" type="button" data-act="check">Prüfen</button></div>`;
+  }else if(c.kind==='mc'){
+    const o=c.fixed?c.opts.slice():shuffle(c.opts.slice());c.shown=o;
+    h+=`<div class="u-opts">${o.map((t,i)=>`<button class="u-opt" type="button" data-act="opt" data-i="${i}">${esc(t)}</button>`).join('')}</div>`;
+    h+=`<div class="u-fb" id="u-fb" role="status"></div><div class="u-note" id="u-note" hidden></div><div class="vrow" id="u-after" hidden><button class="btn main" type="button" data-act="next">Weiter</button><button class="btn" type="button" data-act="hear">Satz anhören</button></div>`;
+  }else{
+    h+=`<div class="u-sol" id="u-sol" hidden lang="de">${c.show}</div>`;
+    h+=`<div class="vrow" id="u-say-b"><button class="btn main" type="button" data-act="show">Lösung zeigen</button></div>`;
+    h+=`<div class="ans sp-ans" id="u-ans" hidden style="margin-top:10px"><button class="btn again" type="button" data-act="no"><b>Nochmal</b><small lang="ru">повторим позже</small></button><button class="btn good" type="button" data-act="yes"><b>Richtig</b><small lang="ru">сказал(а) верно</small></button></div><div class="vrow" id="u-hear-b" hidden style="margin-top:8px"><button class="btn" type="button" data-act="hear">Lösung anhören</button></div>`;
+  }
+  $('#u-card').innerHTML=h;
+  const f=$('#u-card input');if(f&&!matchMedia('(pointer:coarse)').matches)f.focus();
+}
+function uFinish(ok,msg){
+  uDone=true;
+  if(ok){if(uCur.tries===0)uOk++}
+  else{uCur.tries++;if(!uMiss.includes(uCur.say))uMiss.push(uCur.say);uQueue.splice(Math.min(uQueue.length,2+Math.floor(Math.random()*3)),0,uCur)}
+  const fb=$('#u-fb');if(fb){fb.textContent=msg;fb.className='u-fb '+(ok?'good':'warn')}
+  uProg();
+}
+function uCheck(){
+  const c=uCur,ins=$$('#u-card input');
+  if(ins.some(i=>!i.value.trim())){const fb=$('#u-fb');fb.textContent='Bitte alle Felder ausfüllen.';fb.className='u-fb warn';ins.find(i=>!i.value.trim()).focus();return}
+  let all=true,extra='';
+  ins.forEach((inp,i)=>{const f=c.fields[i],v=loose(inp.value),ok=f.ans.some(a=>loose(a)===v);inp.classList.toggle('ok',ok);inp.classList.toggle('bad',!ok);inp.readOnly=true;if(!ok){all=false;if(f.bare&&v===loose(f.bare))extra='Mit Artikel! '}});
+  uFinish(all,all?'Richtig!':`${extra}Richtig ist: ${c.show}`);
+  $('#u-card .vrow').innerHTML=`<button class="btn main" type="button" data-act="next">Weiter</button><button class="btn" type="button" data-act="hear">Anhören</button>`;
+}
+function uOpt(i){
+  if(uDone)return;
+  const c=uCur,pick=c.shown[i],ok=pick===c.ans;
+  $$('#u-card .u-opt').forEach((b,j)=>{b.disabled=true;if(c.shown[j]===c.ans)b.classList.add('ok');else if(j===i)b.classList.add('bad')});
+  uFinish(ok,ok?'Richtig!':`Nicht ganz. Richtig ist: ${c.ans}`);
+  if(c.note){const n=$('#u-note');n.textContent=c.note;n.hidden=false}
+  $('#u-after').hidden=false;
+  const nb=$('#u-card [data-act="next"]');if(nb)nb.focus();
+}
+function uEnd(){
+  uCur=null;$('#u-play').hidden=true;$('#u-done').hidden=false;$('#u-prog').textContent='';
+  $('#u-done-txt').textContent=`${uOk} von ${uTotal} gleich richtig.`+(uMiss.length?' Das war schwierig:':' Super!');
+  $('#u-missed').innerHTML=uMiss.map(t=>`<span lang="de">${esc(t)}</span>`).join('');
+}
+$('#u-card').addEventListener('click',e=>{
+  const b=e.target.closest('[data-act]');if(!b||!uCur)return;
+  const a=b.dataset.act;
+  if(a==='check')uCheck();
+  else if(a==='opt')uOpt(+b.dataset.i);
+  else if(a==='next')uNext();
+  else if(a==='hear')speak(uCur.say);
+  else if(a==='show'){$('#u-sol').hidden=false;$('#u-say-b').hidden=true;$('#u-ans').hidden=false;$('#u-hear-b').hidden=false}
+  else if(a==='yes'){uFinish(true,'');uNext()}
+  else if(a==='no'){uFinish(false,'');uNext()}
+});
+$('#u-card').addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&e.target.tagName==='INPUT'){e.preventDefault();if(uDone)uNext();else uCheck()}
+});
+$$('#u-modes .psegb').forEach(b=>b.addEventListener('click',()=>{uMode=b.dataset.m;$$('#u-modes .psegb').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));uStart()}));
+$('#u-again').addEventListener('click',uStart);
+
+/* ---------- Sprechen: Sehenswürdigkeiten vorstellen ---------- */
+const SIGHTS=[
+{art:'der',name:'Platz der Unabhängigkeit',s:["Er liegt im Zentrum von Minsk.","Dort sieht man sofort, dass die Hauptstadt modern und gleichzeitig historisch ist.","Der Platz ist besonders schön, denn man sieht dort neue Gebäude, klassische Häuser und die Rote Kirche."]},
+{art:'das',name:'Regierungsgebäude',s:["Es befindet sich am Platz der Unabhängigkeit.","Es ist aus dem Jahr 1933 und heute der Sitz des Parlaments und der Regierung.","Dem Regierungshaus gegenüber befindet sich die Belarussische Staatliche Universität."]},
+{art:'der',name:'Hauptbahnhof',s:["Er liegt nicht weit vom Platz der Unabhängigkeit.","Das neue Bahnhofsgebäude mit der Glasfassade hat man 2001 errichtet.","Die Eisenbahn ist für das Land äußerst wichtig, deshalb hat man ein neues Gebäude errichtet."]},
+{art:'der',name:'Gorki Park',s:["Er liegt im Zentrum der Stadt.","Man kann Karussell und Riesenrad fahren, im Sommer Fahrrad fahren oder Tretboot fahren.","Dort kann man sich nach einer hektischen Woche ausruhen, darum fahre ich gern in den Park."]},
+{art:'das',name:'Museum für die Geschichte des Großen Vaterländischen Krieges',s:["Der Museumskomplex ist ganz neu und ein beeindruckendes Bauwerk.","Er vereint ein modernes Gebäude mit Glaskuppel mit einem Kriegsdenkmal.","Das Museum erinnert an die Vergangenheit, deshalb ist es für mich besonders interessant."]},
+{art:'die',name:'Nationalbibliothek',s:["Sie befindet sich im Osten von Minsk in einem hochmodernen Gebäude.","Auf der Aussichtsplattform kann man das Stadtpanorama aus der Vogelperspektive betrachten.","Die Bibliothek ist ein Wahrzeichen der Stadt, deshalb besuchen Touristen sie gern."]},
+{art:'die',name:'Minsk-Arena',s:["Sie ist ein Wahrzeichen von Minsk.","Hier finden viele internationale Wettkämpfe statt.","Die Arena ist interessant, denn dort kann man große Wettkämpfe sehen."]},
+{art:'das',name:'Bolschoj Theater für Oper und Ballett',s:["Es liegt auf einem Hügel und sieht mit Brunnen und Skulpturen sehr repräsentativ aus.","Das Gebäude besteht seit 1933, und man zeigt dort Aufführungen.","Es ist im Zweiten Weltkrieg erhalten geblieben, deshalb ist es ein besonders historisches Gebäude."]},
+{art:'der',name:'Troizkoje Vorort',s:["Er ist ein Stück Altstadt im modernen Minsk.","Es gibt dort Souvenirläden, Galerien, Museen und eine alte Apotheke.","Ich möchte ihn noch einmal besuchen, denn dort kann man alles in Ruhe anschauen."]}
+];
+let spQueue=[],spCur=null,spOk=0,spMiss=[];
+function spStart(){spQueue=shuffle(SIGHTS.slice()).map(x=>({...x,tries:0}));spOk=0;spMiss=[];$('#sp-play').hidden=false;$('#sp-done').hidden=true;spNext()}
+function spProg(){$('#sp-prog').textContent=`Noch ${spQueue.length+(spCur?1:0)} von ${SIGHTS.length} · gleich gut: ${spOk}`}
+function spNext(){
+  if(!spQueue.length){spEnd();return}
+  spCur=spQueue.shift();const c=spCur;
+  $('#sp-pat').innerHTML=`<span class="art ${c.art}">${c.art}</span> ${esc(c.name)}<small>Stelle diese Sehenswürdigkeit vor.</small>`;
+  $('#sp-sol').hidden=true;$('#sp-ans').hidden=true;$('#sp-show').hidden=false;$('#sp-hear').disabled=true;spProg();
+}
+function spShow(){
+  const c=spCur,lb=['Satz 1','Satz 2','Satz 3'];
+  $('#sp-sol').innerHTML=c.s.map((t,i)=>`<div class="sp-line"><span class="lb">${lb[i]}</span>${esc(t)}</div>`).join('');
+  $('#sp-sol').hidden=false;$('#sp-ans').hidden=false;$('#sp-show').hidden=true;$('#sp-hear').disabled=false;
+}
+function spAnswer(ok){
+  const c=spCur;
+  if(ok){if(c.tries===0)spOk++}
+  else{c.tries++;if(!spMiss.includes(c.name))spMiss.push(c.name);spQueue.splice(Math.min(spQueue.length,2+Math.floor(Math.random()*2)),0,c)}
+  spCur=null;spNext();
+}
+function spEnd(){
+  $('#sp-play').hidden=true;$('#sp-done').hidden=false;$('#sp-prog').textContent='';
+  $('#sp-done-txt').textContent=`${spOk} von ${SIGHTS.length} Karten gleich gut.`+(spMiss.length?' Das war schwierig:':' Super!');
+  $('#sp-missed').innerHTML=spMiss.map(n=>`<span lang="de">${esc(n)}</span>`).join('');
+}
+$('#sp-show').addEventListener('click',spShow);
+$('#sp-hear').addEventListener('click',()=>{if(spCur)speak(spCur.s.join(' '))});
+$('#sp-yes').addEventListener('click',()=>spAnswer(true));
+$('#sp-no').addEventListener('click',()=>spAnswer(false));
+$('#sp-again').addEventListener('click',spStart);
+uStart();spStart();
+
+/* ---------- Tabs ---------- */
+$$('.stamp').forEach(t=>t.addEventListener('click',()=>{
+  if('speechSynthesis' in window)speechSynthesis.cancel();
+  document.body.dataset.tab=t.dataset.tab;
+  $$('.stamp').forEach(x=>x.setAttribute('aria-selected',String(x===t)));
+  $$('.panel').forEach(s=>s.classList.toggle('active',s.id===t.dataset.tab));
+  try{history.replaceState(null,'',t.dataset.tab==='dict'?location.pathname+location.search:'#'+t.dataset.tab)}catch(e){}
+}));
+
+/* ---------- Start ---------- */
+if('speechSynthesis' in window){
+  loadVoices();
+  if(speechSynthesis.addEventListener)speechSynthesis.addEventListener('voiceschanged',loadVoices);else speechSynthesis.onvoiceschanged=loadVoices;
+}else setMsg('Dieser Browser kann nicht vorlesen. Probiere Chrome, Edge oder Safari.',true);
+buildChips();renderDict();startCards();
+(function(){const h=location.hash.slice(1);const t=h&&document.querySelector('.stamp[data-tab="'+h+'"]');if(t)t.click()})();
+</script>
+</body>
+</html>
